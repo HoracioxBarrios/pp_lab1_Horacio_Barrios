@@ -145,6 +145,17 @@ def seleccionar_jugador_segun_indice(lista_jugadores : list[dict])-> None | int:
         print("La lista está vacia")
         return -1
 
+'''
+3) Después de mostrar las estadísticas de un jugador seleccionado por el usuario,
+permite al usuario guardar las estadísticas de ese jugador en un archivo CSV. El
+archivo CSV debe contener los siguientes campos: nombre, posición, temporadas,
+puntos totales,promedio de puntos porpartido,rebotestotales,promedioderebotes
+por partido, asistencias totales, promedio de asistencias por partido, robos totales,
+bloqueos totales, porcentaje de tiros de campo, porcentaje de tiros libres y
+porcentajedetirostriples
+'''
+
+
 
 #--Menú y ejecucion de la app
 
