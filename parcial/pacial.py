@@ -164,7 +164,7 @@ def opciones_del_menu()-> str:
     '''
     Opciones del menu.
     Recibe: No aplica.
-    Devuelve: una cadena str.
+    Devuelve: una cadena str .
     '''
     opciones = "Bienvenido:\n1- Ver Jugadores y Posicion de todos los jugadores del Dream Team\n2- Seleccionar un jugador y ver sus estadisticas\n"
     return opciones
