@@ -116,6 +116,7 @@ def preparar_texto_estadisticas(
                     lista_estadisticas = []
                     diccionario_estadisticas = lista_jugadores[indice]["estadisticas"]
                     for clave, valor in diccionario_estadisticas.items():
+                        clave = str(clave).capitalize().replace("_"," ")
                         dato_estadistica = "{0}: {1}".format(clave, valor)
                         lista_estadisticas.append(dato_estadistica)
         estadisticas = "\n".join(lista_estadisticas)
