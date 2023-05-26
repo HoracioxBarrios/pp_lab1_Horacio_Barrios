@@ -298,7 +298,6 @@ def mostrar_nombres_jugadores(lista_jugadores : list[dict])-> None:
         print_dato(jugador["nombre"])
 
 
-
 def pedir_nombre_y_apellido_jugador()-> str:
     '''
     Pide el nombre y apellido del jugador.
@@ -328,11 +327,106 @@ def mostrar_logros_jugador_buscado(lista_jugadores: list[dict]):
             print_dato(cadena_logros)
     print("No existe el nombre en la lista")
 
+#5
+def contar_elementos_en_lista(lista_jugadores : list[dict])-> int:
+    '''
+    Cuenta cuantos (jugadores) hay en una lista
+    Recibe la lista de diccionarios heroes.
+    Devuelve la cantidad de jugadores.
+    '''
+    if(lista_jugadores):
+        cantidad_jugadores = len(lista_jugadores)
+        return cantidad_jugadores
+
+def calcular_promedio_de_puntos_equipo(lista_jugadores : list[dict])-> float:
+    '''
+    Calcula el promedio de puntos por partido de todo el equipo 
+    del Dream team.
+    Recibe la lista de jugadores. List
+    Devuelve el promedio (Float)
+    '''
+    cantidad_de_jugadores = contar_elementos_en_lista(lista_jugadores)
+    acum_promedio_jugador_puntos_por_partido = 0
+    for jugador in lista_jugadores:
+        dicc_estadisticas_jugador = jugador["estadisticas"]
+        for clave, valor in dicc_estadisticas_jugador.items():
+            if(clave == "promedio_puntos_por_partido"):   
+                acum_promedio_jugador_puntos_por_partido += valor
+    promedio_equipo =acum_promedio_jugador_puntos_por_partido / cantidad_de_jugadores
+    
+    return promedio_equipo
 
 
+def ordenar_bubble_sort(lista_original : list[dict], clave = "nombre", orden = "asc")-> list:
+    '''
+    Ordena segun clave
+    Recibe: (arg 1)una lista , (arg2) una clave ej:("nombre"),
+    (arg 3) el orden( "asc" o "des").
+    Devuelve: una lista de nombres ordenada alfabeticamente. list
+    '''
+    if(lista_original):
+        lista = lista_original[:]
+        len_lista = len(lista) - 1
+        flag_swap = True
+        while flag_swap:
+            flag_swap = False
+            for indice in range(len_lista):
+                if lista[indice][clave] > lista[indice + 1][clave] and orden == "asc":
+                    lista[indice], lista[indice + 1] = lista[indice + 1], lista[indice]
+                    flag_swap = True
+                if lista[indice][clave] < lista[indice + 1][clave] and orden == "des":
+                    lista[indice], lista[indice + 1] = lista[indice + 1], lista[indice]
+                    flag_swap = True
+        lista_nombres = []
+        for nombre in lista:
+            lista_nombres.append(nombre[clave])
+        return lista_nombres
 
+ 
+ 
+def tomar_nobre_mas_estadisticas(
+    lista: list, clave_uno="nombre",clave_dos= "estadisticas",
+    clave_dicc_estadisticas ="promedio_puntos_por_partido", orden="asc"):
+    '''
+    De una lista obtiene los nombres de los jugadores con su estadistica,
+    ejemplo promedio de puntos por partido.
+    Recibe: (arg 1)una lista de jugadores, (arg 2) una clave ej "nombre",
+    (arg 3) otra clave (para diccionario dentro ej: "estadisticas",(arg 4)
+    otra clave (para el dentro del dicc estadisticas ej: 
+    "promedio_puntos_por_partido"), (arg 5) orden="asc" (para el ordenamiento)
+    Devuelve - No aplica
+    '''
+    lista_nombres_ordenados = ordenar_bubble_sort(lista, clave_uno, orden)
+    nueva_lista_nombres = []
+    nueva_lista_valores = []
+    
+    for jugador_lista_uno in lista:
+        for jugador_lista_dos in lista_nombres_ordenados:
+            if(jugador_lista_uno[clave_uno] == jugador_lista_dos):
+                nombre = jugador_lista_uno[clave_uno]
+                promedio = jugador_lista_uno[clave_dos][clave_dicc_estadisticas]
+                nueva_lista_nombres.append(nombre)
+                nueva_lista_valores.append(promedio)
+    
+    for indice in range(len(nueva_lista_nombres)):
+        mensaje = "{0} : promedio_puntos_por_partido {1}".format(
+            nueva_lista_nombres[indice], nueva_lista_valores[indice])
+        print_dato(mensaje)
 
-
+def Calcular_y_mostrar_el_promedio_de_puntos_del_dream_team(
+    lista_jugadores : list[dict]):
+    '''
+    calcula y muetra el promedio total del equipo , con el nombre y su promedio
+    individual.
+    Recibe : la lista de Jugadores.
+    Devuelve - no aplica.
+    '''
+    mensaje_promedio_de_equipo = calcular_promedio_de_puntos_equipo(lista_jugadores)    
+    print_dato("El promedio de puntos por partido de todo el equipo es {0} ".format(
+        round(mensaje_promedio_de_equipo, 2)))
+    tomar_nobre_mas_estadisticas(lista_jugadores, clave_uno="nombre",clave_dos= "estadisticas", clave_dicc_estadisticas ="promedio_puntos_por_partido", orden="asc")
+    
+    
 #--Menú y ejecucion de la app
 def opciones_del_menu()-> str:
     '''
@@ -343,7 +437,9 @@ def opciones_del_menu()-> str:
     opciones = "Bienvenido:\n1- Ver Jugadores y Posición de todos los jugadores del Dream Team\n" \
            "2- Seleccionar un jugador para ver sus estadísticas (Opcional: guardar)\n" \
            "3- Guardar estadísticas del jugador seleccionado\n" \
-           "4- Buscar un jugador por su nombre para ver sus logros\n"
+           "4- Buscar un jugador por su nombre para ver sus logros\n" \
+            "5- Ver el promedio de puntos por partido de todo el equipo del Dream team\n"\
+                
 
     return opciones
 
@@ -364,7 +460,7 @@ def menu_principal()-> int:
     '''
     opciones_para_el_usuario = opciones_del_menu()
     print_dato(opciones_para_el_usuario)
-    mensaje_a_mostrar = "Por favor ingrese una opcion "
+    mensaje_a_mostrar = "Por favor ingrese una opcion: "
     numero_ingresado = pedir_ingreso_de_numero(r"^[0-9]+$", mensaje_a_mostrar)
     return numero_ingresado
    
@@ -394,9 +490,17 @@ def aplicacion(lista_Jugadores : list[dict])-> None:
             case 4:
                 mostrar_logros_jugador_buscado(lista_Jugadores)
             case 5:
-                pass
+                Calcular_y_mostrar_el_promedio_de_puntos_del_dream_team(lista_Jugadores)
             case 6:
-                break
+                pass
+            case 7:
+                pass
+            case 8:
+                pass
+            case 9:
+                pass
+            case 10:
+                pass
             case _:
                 print("Opcion incorrecta")
         clear_console()
