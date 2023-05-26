@@ -409,7 +409,7 @@ def tomar_nobre_mas_estadisticas(
                 nueva_lista_valores.append(promedio)
     
     for indice in range(len(nueva_lista_nombres)):
-        mensaje = "{0} : promedio_puntos_por_partido {1}".format(
+        mensaje = "{0} : Promedio puntos por partido {1}".format(
             nueva_lista_nombres[indice], nueva_lista_valores[indice])
         print_dato(mensaje)
 
