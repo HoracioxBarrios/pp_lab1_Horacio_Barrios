@@ -16,7 +16,7 @@ def leer_archivo_json(nombre_path : str)-> list[dict]:
     Recibe la ruta con el nombre de archivo .json.
     Devuelve una lista de jugadores.
     '''
-    with open(nombre_path, "r") as archivo:
+    with open(nombre_path, "r", encoding='utf-8') as archivo:
         equipo = json.load(archivo)
     
         return equipo["jugadores"]
@@ -266,7 +266,7 @@ def sacar_nombre_de_cadena_con_regex(exprecion_re_nombre :str, cadena : str)-> s
 def guardar_estadisticas_del_jugador_elegido(
     lista_jugadores : list[dict], indice_elegido : int)-> None:
     '''
-    Permite guardar a arhivo las estadisticas del jugador antes,
+    Permite guardar a archivo las estadisticas del jugador antes,
     elegido.
     Recibe: (arg 1) la lista de jugadores, y (arg 2) el indice
     de la ulbicacion del jugador.
@@ -284,22 +284,52 @@ def guardar_estadisticas_del_jugador_elegido(
     desea_guardar_como_archivo_csv(
         path_nombre_formateado,nombre_mas_estadisticas_para_guardar)
 
-    
+
+#4
+def mostrar_nombres_jugadores(lista_jugadores : list[dict])-> None:
+    '''
+    Muestra los nombres de los jugadores.
+    Recibe la lista de jugadores.
+    Devuelve - No aplica
+    '''
+    for jugador in lista_jugadores:
+        print_dato(jugador["nombre"])
+
+
+
+def pedir_nombre_y_apellido_jugador():
+    '''
+    Pide el nombre y apellido del jugador.
+    Recibe - no aplica
+    Devuelve - el nombre con apellido validado
+    '''
+    nombre_apellido = input(
+        "Ingrese nombre y apellido del jugador a Buscar ")
+    nombre_apellido_cap = str(nombre_apellido).capitalize()
+    nombre_validado = sacar_nombre_de_cadena_con_regex(
+        r"^[A-Za-z]+\s{1}[A-Za-z]+$", nombre_apellido_cap)
+    return nombre_validado
+
+def mostrar_logros_jugador_buscado(lista_jugadores: list[dict]):
+    '''
+    Muestra los logros del jugador buscado.
+    Recibe la lista de jugadores.
+    Devuelve - No aplica ------
+    '''
+    mostrar_nombres_jugadores(lista_jugadores)
+    nombre_ingresado = pedir_nombre_y_apellido_jugador().lower().strip()
+    for jugador in lista_jugadores:
+        if jugador["nombre"].lower().strip() == nombre_ingresado:
+            cadena_logros = "Nombre del Jugador: {0}\n{1}".format(
+                jugador["nombre"], "\n".join(jugador["logros"]))
+
+            print_dato(cadena_logros)
 
 
 
 
-'''
-  4) Permitir al usuario buscar un jugador por su nombre y mostrar sus logros, como
-    campeonatos de la NBA, participaciones en el All-Star y pertenencia al Salón de la
-    FamadelBaloncesto,etc.
-'''
-  
-  
-  
-  
-  
-  
+
+
 #--Menú y ejecucion de la app
 def opciones_del_menu()-> str:
     '''
@@ -307,7 +337,7 @@ def opciones_del_menu()-> str:
     Recibe: No aplica.
     Devuelve: una cadena str .
     '''
-    opciones = "Bienvenido:\n1- Ver Jugadores y Posicion de todos los jugadores del Dream Team\n2- Seleccionar un jugador para ver sus estadisticas (Opcional: guardar)\n3- Guardar estadisticas del jugador seleccionado\n"
+    opciones = "Bienvenido:\n1- Ver Jugadores y Posicion de todos los jugadores del Dream Team\n2- Seleccionar un jugador para ver sus estadisticas (Opcional: guardar)\n3- Guardar estadisticas del jugador seleccionado\n4- Buscar un jugador por su nombre para ver sus logros\n"
     return opciones
 
 def print_dato(dato : str)->None:
@@ -353,7 +383,7 @@ def aplicacion(lista_Jugadores : list[dict])-> None:
                 else:
                     print("Pase por el punto 2 primero")
             case 4:
-                pass
+                mostrar_logros_jugador_buscado(lista_Jugadores)
             case 5:
                 pass
             case 6:
