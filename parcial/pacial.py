@@ -324,6 +324,7 @@ def mostrar_logros_jugador_buscado(lista_jugadores: list[dict]):
                 jugador["nombre"], "\n".join(jugador["logros"]))
 
             print_dato(cadena_logros)
+    print("No existe el nombre en la lista")
 
 
 
@@ -337,7 +338,11 @@ def opciones_del_menu()-> str:
     Recibe: No aplica.
     Devuelve: una cadena str .
     '''
-    opciones = "Bienvenido:\n1- Ver Jugadores y Posicion de todos los jugadores del Dream Team\n2- Seleccionar un jugador para ver sus estadisticas (Opcional: guardar)\n3- Guardar estadisticas del jugador seleccionado\n4- Buscar un jugador por su nombre para ver sus logros\n"
+    opciones = "Bienvenido:\n1- Ver Jugadores y Posición de todos los jugadores del Dream Team\n" \
+           "2- Seleccionar un jugador para ver sus estadísticas (Opcional: guardar)\n" \
+           "3- Guardar estadísticas del jugador seleccionado\n" \
+           "4- Buscar un jugador por su nombre para ver sus logros\n"
+
     return opciones
 
 def print_dato(dato : str)->None:
