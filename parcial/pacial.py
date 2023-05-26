@@ -265,9 +265,16 @@ def seleccionar_guardar_estadisticas_jugador_elegido(
     nombre_del_jugador_con_espacios =sacar_nombre_de_cadena_con_regex(
         r"Nombre: (.*)", nombre_mas_estadisticas_para_mostrar)
     nombre_del_jugador_guion_con_bajo = nombre_del_jugador_con_espacios.replace(" ", "_")
-    path_nombre_formateado = "parcial\estadisticas_por_jugador\estadisticas_del_jugador_{0}.csv".format(nombre_del_jugador_guion_con_bajo)
-    nombre_mas_estadisticas_para_guardar = preparar_texto_estadisticas_mostrar_o_guardar(lista_jugadores, indice_elegido, para_guardar= True)
-    desea_guardar_como_archivo_csv(path_nombre_formateado,nombre_mas_estadisticas_para_guardar)
+    path_nombre_formateado = "parcial\estadisticas_por_jugador\estadisticas_del_jugador_{0}.csv".format(
+        nombre_del_jugador_guion_con_bajo)
+    nombre_mas_estadisticas_para_guardar = preparar_texto_estadisticas_mostrar_o_guardar(
+        lista_jugadores, indice_elegido, para_guardar= True)
+    desea_guardar_como_archivo_csv(
+        path_nombre_formateado,nombre_mas_estadisticas_para_guardar)
+  
+  
+  
+  
     
 #--Menú y ejecucion de la app
 
