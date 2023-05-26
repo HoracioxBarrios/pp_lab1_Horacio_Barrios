@@ -177,10 +177,12 @@ def preparar_texto_estadisticas_mostrar_o_guardar(
     Devuelve: la cadena de texto.
     '''
     if(para_guardar):
-        mensaje = mensaje_estadisticas_para_guardar(lista_jugadores, indice_elegido)
+        mensaje = mensaje_estadisticas_para_guardar(
+            lista_jugadores, indice_elegido)
         return mensaje
     else:
-        mensaje = mensaje_estadisticas_para_mostrar(lista_jugadores, indice_elegido)
+        mensaje = mensaje_estadisticas_para_mostrar(
+            lista_jugadores, indice_elegido)
         return mensaje
 #3
 def guardar_a_csv(path_nombre : str, dato_a_guardar : str)-> None:
@@ -380,11 +382,13 @@ def aplicacion(lista_Jugadores : list[dict])-> None:
             case 1:
                 mostrar_nombres_posicion_o_ubicacion(lista_Jugadores)
             case 2:
-                indice_elegido = mostrar_estadisticas_del_jugador_elegido(lista_Jugadores)
+                indice_elegido = mostrar_estadisticas_del_jugador_elegido(
+                    lista_Jugadores)
                 flag_guardar_estadisticas = True
             case 3:
                 if(flag_guardar_estadisticas):
-                    guardar_estadisticas_del_jugador_elegido(lista_Jugadores, indice_elegido)
+                    guardar_estadisticas_del_jugador_elegido(
+                        lista_Jugadores, indice_elegido)
                 else:
                     print("Pase por el punto 2 primero")
             case 4:
