@@ -10,30 +10,26 @@ def clear_console() -> None:
     _ = input('Presione una tecla para continuar...')
     os.system('cls')
 
-def leer_archivo_json(nombre_path : str)-> list:
+def leer_archivo_json(nombre_path : str)-> list[dict]:
     '''
     Lee un archvo json.
     Recibe la ruta con el nombre de archivo .json.
-    Devuelve una lista de jugadores
+    Devuelve una lista de jugadores.
     '''
     with open(nombre_path, "r") as archivo:
         equipo = json.load(archivo)
     
         return equipo["jugadores"]
 
-'''
-1) Mostrar la lista de todos los jugadores del Dream Team. Con el formato:
- Nombre Jugador- Posición. Ejemplo:
- Michael Jordan- Escolta
-'''
+#1
 def mostrar_nombres_posicion_o_ubicacion(
-    lista_de_jugadores: list , ver_indice_ubi = False)-> None | int:
+    lista_de_jugadores: list[dict] , ver_indice_ubi = False)-> None | int:
     '''
     Muestra los nombres, posicion de cada jugador y opcionalmente su indice.
-    Recibe: una lista de jugadores y opcional puede elegir ver el indice 
-    donde esta cada jugador (ver_indice = True).
+    Recibe:(arg 1) una lista de jugadores y(arg 2) opcional puede 
+    elegir ver el indice donde esta cada jugador (ver_indice = True).
 
-    Devuelve: -1 en caso de lista vacia
+    Devuelve: None o -1 en caso de lista vacia
     '''
     if(lista_de_jugadores):
         if(ver_indice_ubi):
@@ -52,19 +48,12 @@ def mostrar_nombres_posicion_o_ubicacion(
         print("La lista está vacia")
         return -1
 
-
-
-'''
-2) Permitir al usuario seleccionar un jugador por su índice y mostrar sus estadísticas
- completas, incluyendo temporadas jugadas, puntos totales, promedio de puntos por
- partido, rebotes totales, promedio de rebotes por partido, asistencias totales,
- promedio de asistencias por partido, robos totales, bloqueos totales, porcentaje de
- tiros de campo, porcentaje de tiros libres y porcentaje de tiros triples.
-'''
+#2
 def pedir_ingreso_de_numero(patron_re : str, mensaje_a_mostrar : str)-> int:
     '''
     Pide el usuario un numero.
-    Recibe: (arg1)Un patron Regex para validar.y (arg 2) un mensaje str para mostrar.
+    Recibe: (arg1)Un patron Regex para validar.y (arg 2) un mensaje
+    str para mostrar al usuario.
     Devuelve: el numero ingresado, casteado a int.
     '''
     while(True):
@@ -78,13 +67,12 @@ def pedir_ingreso_de_numero(patron_re : str, mensaje_a_mostrar : str)-> int:
         else:
             print("Incorrecto: ingrese numero valido")
 
-
-def comprobar_indice_valido(lista_jugadores : list, indice_elegido)-> bool:
+def comprobar_indice_valido(
+    lista_jugadores : list[dict], indice_elegido: int)-> bool:
     '''
-    Comprueba si el indice pasado por parametro es menor a los 
-    elementos de la lista de jugadores.
-    Recibe: (arg1)lista_jugadores y (arg2)el numero que representa
-    al indice a evaluar si esta en la lista.
+    Comprueba si el indice pasado por parametro es valido.
+    Recibe: (arg1)lista_jugadores y (arg2)el numero (int ) que 
+    representa al indice a evaluar si esta en la lista.
     Deveulve: boolean
     '''
     len_lista = len(lista_jugadores)
@@ -92,19 +80,71 @@ def comprobar_indice_valido(lista_jugadores : list, indice_elegido)-> bool:
         return True
     else:
         return False
-
-
-
-
-
-   
-def preparar_texto_estadisticas(
-        lista_jugadores : list, indice_elegido : int)-> str:
+    
+def seleccionar_jugador_segun_indice(lista_jugadores : list[dict])-> int | None:
     '''
-    Prepara un texto con el nombre del jugador y sus estadisticas.
-    Recibe: (arg 1) la lista de jugadores y (arg 2) el indice (int) 
-    que eligio el usuario.
-    Devuelve: la cadena de texto.
+    De los jugadores existentes permite al usuario elegir uno 
+    segun su indice.
+    Recibe una lista de Jugadores.
+    Devuelve: el indice del jugador elegido, o 
+    -1 en caso de ser lista vacia.
+    '''
+    if(lista_jugadores):
+        while(True):
+            mostrar_nombres_posicion_o_ubicacion(lista_jugadores, 
+                                                 ver_indice_ubi =True)
+            mensaje = ">>> Ingrese numero de (indice) del jugador para ver sus estadisticas: "
+            indice_elegido = pedir_ingreso_de_numero(r"^[0-9]+$", mensaje)
+            existe_indice = comprobar_indice_valido(lista_jugadores,
+                                                    indice_elegido)
+            if(existe_indice):
+                return indice_elegido
+            else:
+                print("Indice invalido, intente nuevamente...\n ")
+                os.system('cls')           
+    else:
+        print("La lista está vacia")
+        return -1
+
+def mensaje_estadisticas_para_guardar(
+    lista_jugadores: list[dict], indice_elegido: int)-> str | int:
+    '''
+    Arma el mensaje de estadisticas del jugador para guardar a csv.
+    Recibe: (arg 1) una lista de jugadores.(arg 2) el 
+    indice elegido por el usuario.(Int).
+    Devuelve una cadena formateada para csv. o -1 si 
+    lista esta vacia
+    '''
+    if(lista_jugadores):
+        lista_titulo = ["Nombre", "Posicion"]
+        lista_valores = []
+        for indice in range(len(lista_jugadores)):
+            if indice == indice_elegido:
+                lista_valores.append(str(lista_jugadores[indice]["nombre"]))
+                lista_valores.append(str(lista_jugadores[indice]["posicion"]))
+                
+        diccionario_estadist = lista_jugadores[indice]["estadisticas"]
+        for clave, valor in diccionario_estadist.items():
+            clave = str(clave).capitalize().replace("_", " ")
+            lista_titulo.append(clave)
+            lista_valores.append(str(valor))
+        
+        cadena_titulos = ",".join(lista_titulo)
+        cadena_valores = ",".join(lista_valores)
+        return "{0}\n{1}".format(cadena_titulos,cadena_valores)
+    else:
+        print("La lista está vacía")
+        return -1
+
+
+def mensaje_estadisticas_para_mostrar(
+    lista_jugadores : list[dict], indice_elegido : int)-> str | int:
+    '''
+    Arma el mensaje de estadisticas del jugador para mostrar al usuario.
+    Recibe: (arg 1) una lista de jugadores.(arg 2) el 
+    indice elegido por el usuario.(Int).
+    Devuelve una cadena formateada para mostrar al usuario. o -1 si 
+    lista esta vacia.
     '''
     if(lista_jugadores):
         for indice in range(len(lista_jugadores)):
@@ -112,7 +152,6 @@ def preparar_texto_estadisticas(
                     dato_nombre_y_posicion = "Nombre: {0}\nPosicion: {1}".format(
                         lista_jugadores[indice]["nombre"],
                         lista_jugadores[indice]["posicion"])
-                    
                     lista_estadisticas = []
                     diccionario_estadisticas = lista_jugadores[indice]["estadisticas"]
                     for clave, valor in diccionario_estadisticas.items():
@@ -124,57 +163,55 @@ def preparar_texto_estadisticas(
                 dato_nombre_y_posicion, estadisticas)
         return nombre_estadisticas
     else:
-        return "Lista vacia"
-    
-def seleccionar_jugador_segun_indice(lista_jugadores : list[dict])-> None | int:
-    '''
-    Permite selecionar un jugador por su indice en la lista.
-    Recibe una lista de Jugadores.
-    Devuelve: -1 en caso de ser lista vacia.
-    '''
-    if(lista_jugadores):
-        while(True):
-            mostrar_nombres_posicion_o_ubicacion(
-                lista_jugadores, ver_indice_ubi =True)
-            mensaje = ">>> Ingrese numero de (indice) del jugador para ver sus estadisticas: "
-            indice_elegido = pedir_ingreso_de_numero(r"^[0-9]+$", mensaje)
-            existe_indice = comprobar_indice_valido(
-                lista_jugadores, indice_elegido)
-            if(existe_indice):
-                return indice_elegido
-            else:
-                print("Indice invalido, intente nuevamente...\n ")
-                os.system('cls')           
-    else:
-        print("La lista está vacia")
+        print("Lista vacia")
         return -1
+    
 
 
-
-'''
-3) Después de mostrar las estadísticas de un jugador seleccionado por el usuario,
-permite al usuario guardar las estadísticas de ese jugador en un archivo CSV. El
-archivo CSV debe contener los siguientes campos: nombre, posición, temporadas,
-puntos totales,promedio de puntos porpartido,rebotestotales,promedioderebotes
-por partido, asistencias totales, promedio de asistencias por partido, robos totales,
-bloqueos totales, porcentaje de tiros de campo, porcentaje de tiros libres y
-porcentajedetirostriples
-'''
-def guardar_a_csv(path_nombre : str, dato_a_guardar : str):
+def preparar_texto_estadisticas_mostrar_o_guardar(
+        lista_jugadores : list[dict], indice_elegido : int, para_guardar = False)-> str:
+    '''
+    Prepara un texto con el nombre del jugador y sus estadisticas.
+    Recibe: (arg 1) la lista de jugadores y (arg 2) el indice (int) 
+    que eligio el usuario.
+    Devuelve: la cadena de texto.
+    '''
+    if(para_guardar):
+        mensaje = mensaje_estadisticas_para_guardar(lista_jugadores, indice_elegido)
+        return mensaje
+    else:
+        mensaje = mensaje_estadisticas_para_mostrar(lista_jugadores, indice_elegido)
+        return mensaje
+#3
+def guardar_a_csv(path_nombre : str, dato_a_guardar : str)-> None:
+    '''
+    Guarda datos str a archivo .csv
+    Recibe (arg 1)el nombre con la ruta donde se va a guardar el archivo.
+    arg(2) el dato a guardar (str).
+    Retorna - (None) o No aplica.
+    '''
     with open(path_nombre, "w") as archivo:
         archivo.write(dato_a_guardar)
-        nombre_en_lista = re.findall(r"[a-zA-Z_]+\.[csv]{3}", path_nombre)
-        nombre_str = "".join(nombre_en_lista)
-        print("Se guardó archivo como : {0}".format(nombre_str))
+        mostrar_mensaje_se_guardo_como(path_nombre)
 
-           
-def desea_guardar_como_archivo(path_nombre : str, dato_a_guardar : str):
-    mensaje = ">>> Desea Guardarlo como archivo? si/no "
-    respuesta = si_no_del_usuario(mensaje)
-    if(respuesta):
-        guardar_a_csv(path_nombre, dato_a_guardar)
-        
-def si_no_del_usuario(mensaje_a_mostrar : str):
+def mostrar_mensaje_se_guardo_como(path_nombre : str)-> None:
+    ''' 
+    Toma del nombre_path el nombre y lo formatea para armar
+    el mensaje 'se guardo el archivo ...' y lo muestra.
+    Recibe (arg 1) el nombre_path (str).
+    Devuelve: None
+    '''
+    nombre_en_lista = sacar_nombre_de_cadena_con_regex(
+        r"[a-zA-Z_]+\.[csv]{3}", path_nombre)
+    nombre_str = "".join(nombre_en_lista)
+    print("Se guardó archivo como : {0}".format(nombre_str))
+
+def si_no_del_usuario(mensaje_a_mostrar : str)-> bool:
+    '''
+    Pregunta al usuario si/no validando la respuesta.
+    Recibe el mensaje a preguntar.
+    Devuelve: boolean
+    '''
     while(True):
         eleccion_user = input(mensaje_a_mostrar)
         eleccion_user = eleccion_user.lower()
@@ -186,47 +223,51 @@ def si_no_del_usuario(mensaje_a_mostrar : str):
             return False
         else:
            print("Elija una Opcion valida...")
-           
-def separar_campo_y_valor_de_una_lista(lista : list[str])-> str:
+          
+def desea_guardar_como_archivo_csv(path_nombre : str, dato_a_guardar : str)-> None:
     '''
-    separa campos de una lista
-    Recibe una lista de cadenas str
-    Devuelve una cadena ordenada y formateada
+    Pregunta al usuario si quiere guardar el archivo a csv.
+    Recibe (arg 1) el nombre con la ruta donde se va a gudardar(str).
+    (arg 2) el dato a guardar(str).
+    Devuelve: No aplica.
     '''
-    if(lista):
-        lista_campos = []
-        lista_valores = []
-        for indice in range(len(lista)):
-            lista[indice] = lista[indice].strip(" ")
-            if(indice % 2 == 0):
-                lista_campos.append(lista[indice])
-            else:
-                lista_valores.append(lista[indice])
-        cadena_campos = "".join(lista_campos)
-        cadena_valores = "".join(lista_valores)
-        datos_estadisticas_preparada_csv = "{0}\n{1}".format(cadena_campos, cadena_valores)
-        return datos_estadisticas_preparada_csv
-        
+    mensaje = ">>> Desea Guardarlo como archivo? si/no "
+    respuesta = si_no_del_usuario(mensaje)
+    if(respuesta):
+        guardar_a_csv(path_nombre, dato_a_guardar)
     else:
-        print("La lista esta vacia") 
+        print("Eligió no guardar")
+        
     
-    
-#Nombre Michael Jordan
-def sacar_nombre_de_cadena(cadena : str):
-    nombre_lista = re.findall(r"Nombre: (.*)", cadena)
+def sacar_nombre_de_cadena_con_regex(exprecion_re_nombre :str, cadena : str)-> str:
+    ''' 
+    De una cadena toma el nombre del jugador segun expresion regular.
+    Recibe una expresion regular para tomar el nombre (arg 2) y la cadena str.
+    Devuelve el nombre del jugador.
+    '''
+    nombre_lista = re.findall(exprecion_re_nombre, cadena)
     nombre_str = "".join(nombre_lista)
     return nombre_str
 
-def seleccionar_guardar_estadisticas_jugador_elegido(lista_jugadores : list):
+def seleccionar_guardar_estadisticas_jugador_elegido(
+    lista_jugadores : list)-> None:
+    '''
+    Permite al usuario ver lasestadisticas del jugador elegido segun
+    su indice y le permite guardarlo si quiere.
+    Recibe la lista de jugadores.
+    Devuelve: None
+    '''
     indice_elegido = seleccionar_jugador_segun_indice(lista_jugadores)
-    nombre_mas_estadisticas = preparar_texto_estadisticas(lista_jugadores, indice_elegido)
-    print_dato(nombre_mas_estadisticas)
-    nombre_del_jugador_con_espacio =sacar_nombre_de_cadena(nombre_mas_estadisticas)
-    nombre_del_jugador_mas_guion_bajo = nombre_del_jugador_con_espacio.replace(" ", "_")
+    nombre_mas_estadisticas_para_mostrar = preparar_texto_estadisticas_mostrar_o_guardar(
+        lista_jugadores, indice_elegido)
+    print_dato(nombre_mas_estadisticas_para_mostrar)
     
-    path_nombre_formateado = "parcial\estadisticas_del_jugador_{0}.csv".format(nombre_del_jugador_mas_guion_bajo)
-    
-    desea_guardar_como_archivo(path_nombre_formateado,nombre_mas_estadisticas)
+    nombre_del_jugador_con_espacios =sacar_nombre_de_cadena_con_regex(
+        r"Nombre: (.*)", nombre_mas_estadisticas_para_mostrar)
+    nombre_del_jugador_guion_con_bajo = nombre_del_jugador_con_espacios.replace(" ", "_")
+    path_nombre_formateado = "parcial\estadisticas_por_jugador\estadisticas_del_jugador_{0}.csv".format(nombre_del_jugador_guion_con_bajo)
+    nombre_mas_estadisticas_para_guardar = preparar_texto_estadisticas_mostrar_o_guardar(lista_jugadores, indice_elegido, para_guardar= True)
+    desea_guardar_como_archivo_csv(path_nombre_formateado,nombre_mas_estadisticas_para_guardar)
     
 #--Menú y ejecucion de la app
 
