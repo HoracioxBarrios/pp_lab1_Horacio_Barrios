@@ -239,6 +239,19 @@ def desea_guardar_como_archivo_csv(path_nombre : str, dato_a_guardar : str)-> No
         print("Eligió no guardar")
         
     
+def mostrar_estadisticas_del_jugador_elegido( lista_jugadores : list[dict])-> int:
+    '''
+    Seleciona y muestra las estadisticas del jugador elegido.
+    Recibe: La lista de Jugadores
+    Devuelve el indice del jugador elegido.
+    '''
+    indice_elegido = seleccionar_jugador_segun_indice(lista_jugadores)
+    nombre_mas_estadisticas_para_mostrar = preparar_texto_estadisticas_mostrar_o_guardar(
+        lista_jugadores, indice_elegido, para_guardar= False)
+    print_dato(nombre_mas_estadisticas_para_mostrar)
+    return indice_elegido
+
+
 def sacar_nombre_de_cadena_con_regex(exprecion_re_nombre :str, cadena : str)-> str:
     ''' 
     De una cadena toma el nombre del jugador segun expresion regular.
@@ -249,19 +262,18 @@ def sacar_nombre_de_cadena_con_regex(exprecion_re_nombre :str, cadena : str)-> s
     nombre_str = "".join(nombre_lista)
     return nombre_str
 
-def seleccionar_guardar_estadisticas_jugador_elegido(
-    lista_jugadores : list)-> None:
+
+def guardar_estadisticas_del_jugador_elegido(
+    lista_jugadores : list[dict], indice_elegido : int)-> None:
     '''
-    Permite al usuario ver lasestadisticas del jugador elegido segun
-    su indice y le permite guardarlo si quiere.
-    Recibe la lista de jugadores.
-    Devuelve: None
+    Permite guardar a arhivo las estadisticas del jugador antes,
+    elegido.
+    Recibe: (arg 1) la lista de jugadores, y (arg 2) el indice
+    de la ulbicacion del jugador.
+    Devuelve - None
     '''
-    indice_elegido = seleccionar_jugador_segun_indice(lista_jugadores)
     nombre_mas_estadisticas_para_mostrar = preparar_texto_estadisticas_mostrar_o_guardar(
-        lista_jugadores, indice_elegido)
-    print_dato(nombre_mas_estadisticas_para_mostrar)
-    
+        lista_jugadores, indice_elegido, para_guardar= False)
     nombre_del_jugador_con_espacios =sacar_nombre_de_cadena_con_regex(
         r"Nombre: (.*)", nombre_mas_estadisticas_para_mostrar)
     nombre_del_jugador_guion_con_bajo = nombre_del_jugador_con_espacios.replace(" ", "_")
@@ -271,20 +283,31 @@ def seleccionar_guardar_estadisticas_jugador_elegido(
         lista_jugadores, indice_elegido, para_guardar= True)
     desea_guardar_como_archivo_csv(
         path_nombre_formateado,nombre_mas_estadisticas_para_guardar)
-  
-  
-  
-  
-    
-#--Menú y ejecucion de la app
 
+    
+
+
+
+
+'''
+  4) Permitir al usuario buscar un jugador por su nombre y mostrar sus logros, como
+    campeonatos de la NBA, participaciones en el All-Star y pertenencia al Salón de la
+    FamadelBaloncesto,etc.
+'''
+  
+  
+  
+  
+  
+  
+#--Menú y ejecucion de la app
 def opciones_del_menu()-> str:
     '''
     Opciones del menu.
     Recibe: No aplica.
     Devuelve: una cadena str .
     '''
-    opciones = "Bienvenido:\n1- Ver Jugadores y Posicion de todos los jugadores del Dream Team\n2- Seleccionar un jugador para ver sus estadisticas (Opcional: guardar)\n"
+    opciones = "Bienvenido:\n1- Ver Jugadores y Posicion de todos los jugadores del Dream Team\n2- Seleccionar un jugador para ver sus estadisticas (Opcional: guardar)\n3- Guardar estadisticas del jugador seleccionado\n"
     return opciones
 
 def print_dato(dato : str)->None:
@@ -315,15 +338,20 @@ def aplicacion(lista_Jugadores : list[dict])-> None:
     Recibe la lista de Jugadores
     Devuelve: no aplica.
     '''
+    flag_guardar_estadisticas = False
     while(True):
         opciones = menu_principal()
         match(opciones):
             case 1:
                 mostrar_nombres_posicion_o_ubicacion(lista_Jugadores)
             case 2:
-                seleccionar_guardar_estadisticas_jugador_elegido(lista_Jugadores)
+                indice_elegido = mostrar_estadisticas_del_jugador_elegido(lista_Jugadores)
+                flag_guardar_estadisticas = True
             case 3:
-                pass
+                if(flag_guardar_estadisticas):
+                    guardar_estadisticas_del_jugador_elegido(lista_Jugadores, indice_elegido)
+                else:
+                    print("Pase por el punto 2 primero")
             case 4:
                 pass
             case 5:
