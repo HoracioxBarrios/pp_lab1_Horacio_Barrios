@@ -266,7 +266,7 @@ def sacar_nombre_de_cadena_con_regex(exprecion_re_nombre :str, cadena : str)-> s
 def guardar_estadisticas_del_jugador_elegido(
     lista_jugadores : list[dict], indice_elegido : int)-> None:
     '''
-    Permite guardar a archivo las estadisticas del jugador antes,
+    Permite guardar a archivo las estadisticas del jugador antes
     elegido.
     Recibe: (arg 1) la lista de jugadores, y (arg 2) el indice
     de la ulbicacion del jugador.
@@ -297,7 +297,7 @@ def mostrar_nombres_jugadores(lista_jugadores : list[dict])-> None:
 
 
 
-def pedir_nombre_y_apellido_jugador():
+def pedir_nombre_y_apellido_jugador()-> str:
     '''
     Pide el nombre y apellido del jugador.
     Recibe - no aplica
