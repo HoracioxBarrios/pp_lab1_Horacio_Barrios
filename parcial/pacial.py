@@ -434,12 +434,6 @@ def Calcular_y_mostrar_el_promedio_de_puntos_del_dream_team(
                                  orden="asc")
     
 # 6
-'''
-6) Permitir al usuario ingresar el nombre de un jugador y mostrar si ese jugador es
-miembro del Salón de la Fama del Baloncesto.
-
-'''
-
 def buscar_jugador_y_ver_logro(
     lista_jugadores, clave_nombre="nombre", clave_logros="logros",
     valor_logro="Miembro del Salon de la Fama del Baloncesto", 
@@ -473,7 +467,66 @@ def buscar_jugador_y_ver_logro(
     else:
         print("Jugador No existe el nombre en la lista")
 
-            
+
+#7
+'''
+7) Calcular y mostrar el jugador con la mayor cantidad de rebotes totales.
+'''
+def calcular_max_lista_dicc_dicc(
+    lista_jugadores: list[dict], dicc_exter = "estadisticas",
+    clave_dicc_inter = "rebotes_totales")-> dict:
+    '''
+    calcula el jugador que tiene el maxiomo de estadistica buscada.
+    Recibe (Arg 1) Una lista de jugadores [list[dict[dict]]], 
+    (arg 2) clave de dicc exterior ejemplo: "estadisticas", 
+    (arg 3) clave del dicc interior ej: "rebotes_totales", 
+    Devuelve un nuevo dicc
+    '''
+    flag = True
+    nuevo_dicc = {}
+    for indice in range(len(lista_jugadores)):
+        diccionario_estadisticas = lista_jugadores[indice][dicc_exter]
+        revotes = diccionario_estadisticas[clave_dicc_inter]
+        
+        if(flag or revotes > max_revotes): 
+            max_revotes = revotes
+            max_indice = indice
+            flag = False        
+    nuevo_dicc["nombre"] = \
+    lista_jugadores[max_indice]["nombre"]
+    
+    nuevo_dicc[clave_dicc_inter] = max_revotes
+    return nuevo_dicc
+
+
+def separar_datos_de_dicc(diccionario_estadist : dict)-> str:
+    '''
+    Del diccionario separa el texto, por ejemplo queda
+    nombre : 'Lili' \n goles : 15-
+    Recibe el diccionario.
+    devuelve una cadena formateada.
+    '''
+    pares_clave_valor = []
+    for clave, valor in diccionario_estadist.items():
+        texto_par = "{0}: {1}".format(clave, valor)
+        pares_clave_valor.append(texto_par.capitalize().replace("_", " "))
+
+    cadena = "\n".join(pares_clave_valor)
+    return cadena
+
+def calcular_y_mostrar_jugador_mayor_cant_rebotes(lista_jugadores : list):
+    '''
+    calcula y muestra el jugador con mayor cantidad de revotes del equipo.
+    Recibe la lista de jugadores.
+    Devuelve - no aplica.
+    '''
+    nombre_y_estadistica_dicc = calcular_max_lista_dicc_dicc(
+    lista_jugadores, dicc_exter = "estadisticas",
+    clave_dicc_inter = "rebotes_totales")
+    mensaje = separar_datos_de_dicc(nombre_y_estadistica_dicc)
+    print(mensaje)
+
+       
 #--Menú y ejecucion de la app
 def opciones_del_menu()-> str:
     '''
@@ -487,8 +540,9 @@ def opciones_del_menu()-> str:
            "3- Guardar estadísticas del jugador seleccionado\n" \
            "4- Buscar un jugador por su nombre para ver sus logros\n" \
            "5- Ver el promedio de puntos por partido de todo el equipo del Dream team\n"\
-           "6- Ver si el jugador ingresado pertenece al salon de la fama\n"    
-
+           "6- Ver si el jugador ingresado pertenece al salon de la fama\n" \
+           "7- Ver el jugador con la mayor cantidad de rebotes totales\n"      
+              
     return opciones
 
 def print_dato(dato : str)->None:
@@ -542,7 +596,7 @@ def aplicacion(lista_Jugadores : list[dict])-> None:
             case 6:
                 buscar_jugador_y_ver_logro(lista_Jugadores)
             case 7:
-                pass
+                calcular_y_mostrar_jugador_mayor_cant_rebotes(lista_Jugadores)
             case 8:
                 pass
             case 9:
