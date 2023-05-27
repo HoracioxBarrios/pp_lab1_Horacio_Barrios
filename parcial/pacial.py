@@ -523,9 +523,9 @@ def calcular_y_mostrar_jugador_mayor_cant_rebotes(lista_jugadores : list):
     clave_dicc_inter = "rebotes_totales")
     mensaje = separar_datos_de_dicc(nombre_y_estadistica_dicc)
     print(mensaje)
-'''
-8) Calcular y mostrar el jugador con el mayor porcentaje de tiros de campo
-'''
+
+#8
+
 def calcular_y_mostrar_jugador_mayor_porcentaje_tiros_de_campo(lista_jugadores : list):
     '''
     calcula y muestra el jugador con mayor porcentaje de tiros de campo.
@@ -538,7 +538,22 @@ def calcular_y_mostrar_jugador_mayor_porcentaje_tiros_de_campo(lista_jugadores :
     mensaje = separar_datos_de_dicc(nombre_y_estadistica_dicc)
     print(mensaje)
     
-    
+#9
+'''
+9) Calcular y mostrar el jugador con la mayor cantidad de asistencias totales.
+'''
+def calcular_y_mostrar_jugador_mayor_cantidad_de_asistencias_totales(lista_jugadores : list):
+    '''
+    calcula y muestra el jugador con mayor cantidad de asistencias totales.
+    Recibe la lista de jugadores.
+    Devuelve - no aplica.
+    '''
+    nombre_y_estadistica_dicc = calcular_max_lista_dicc_dicc(
+    lista_jugadores, dicc_exter = "estadisticas",
+    clave_dicc_inter = "asistencias_totales")
+    mensaje = separar_datos_de_dicc(nombre_y_estadistica_dicc)
+    print(mensaje)
+  
        
 #--Menú y ejecucion de la app
 def opciones_del_menu()-> str:
@@ -555,7 +570,8 @@ def opciones_del_menu()-> str:
            "5- Ver el promedio de puntos por partido de todo el equipo del Dream team\n"\
            "6- Ver si el jugador ingresado pertenece al salon de la fama\n" \
            "7- Ver el jugador con la mayor cantidad de rebotes totales\n" \
-           "8- Ver el jugador con el mayor porcentaje de tiros de campo"
+           "8- Ver el jugador con el mayor porcentaje de tiros de campo\n" \
+           "9- Ver el jugador con el mayor cantidad de asistencias totales\n"
               
     return opciones
 
@@ -604,17 +620,22 @@ def aplicacion(lista_Jugadores : list[dict])-> None:
                 else:
                     print("Pase por el punto 2 primero")
             case 4:
-                buscar_jugador_y_ver_sus_logros(lista_Jugadores)
+                buscar_jugador_y_ver_sus_logros(
+                    lista_Jugadores)
             case 5:
-                Calcular_y_mostrar_el_promedio_de_puntos_del_dream_team(lista_Jugadores)
+                Calcular_y_mostrar_el_promedio_de_puntos_del_dream_team(
+                    lista_Jugadores)
             case 6:
                 buscar_jugador_y_ver_logro(lista_Jugadores)
             case 7:
-                calcular_y_mostrar_jugador_mayor_cant_rebotes(lista_Jugadores)
+                calcular_y_mostrar_jugador_mayor_cant_rebotes(
+                    lista_Jugadores)
             case 8:
-                calcular_y_mostrar_jugador_mayor_porcentaje_tiros_de_campo(lista_Jugadores)
+                calcular_y_mostrar_jugador_mayor_porcentaje_tiros_de_campo(
+                    lista_Jugadores)
             case 9:
-                pass
+                calcular_y_mostrar_jugador_mayor_cantidad_de_asistencias_totales(
+                    lista_Jugadores)
             case 10:
                 pass
             case _:
