@@ -393,8 +393,8 @@ def ordenar_bubble_sort(lista_original : list[dict], clave = "nombre", orden = "
  
  
 def tomar_nobre_mas_estadisticas(
-    lista: list, clave_uno="nombre",clave_dos= "estadisticas",
-    clave_dicc_estadisticas ="promedio_puntos_por_partido", orden="asc"):
+    lista: list, clave_uno="nombre",clave_estadistica= "estadisticas",
+    clave_interior_estadistica ="promedio_puntos_por_partido", orden="asc"):
     '''
     De una lista obtiene los nombres de los jugadores con su estadistica,
     ejemplo promedio de puntos por partido.
@@ -411,10 +411,10 @@ def tomar_nobre_mas_estadisticas(
         for jugador_lista_uno in lista:
             if(jugador_lista_dos == jugador_lista_uno[clave_uno]):
                 nombre = jugador_lista_uno[clave_uno]
-                promedio = jugador_lista_uno[clave_dos][clave_dicc_estadisticas]
+                promedio = jugador_lista_uno[clave_estadistica][clave_interior_estadistica]
                 nueva_lista_nombres.append(nombre)
                 nueva_lista_valores.append(promedio)
-    clave_dicc_estadisticas_sin_guion = clave_dicc_estadisticas.replace("_", " ")
+    clave_dicc_estadisticas_sin_guion = clave_interior_estadistica.replace("_", " ")
     for indice in range(len(nueva_lista_nombres)):
         mensaje = "{0} :  {1}  {2}".format(
             nueva_lista_nombres[indice], clave_dicc_estadisticas_sin_guion,
@@ -433,8 +433,8 @@ def Calcular_y_mostrar_el_promedio_de_puntos_del_dream_team(
     print_dato("El promedio de puntos por partido de todo el equipo es {0} ".format(
         round(mensaje_promedio_de_equipo, 2)))
     tomar_nobre_mas_estadisticas(lista_jugadores, clave_uno="nombre",
-                                 clave_dos= "estadisticas", 
-                                 clave_dicc_estadisticas ="promedio_puntos_por_partido",
+                                 clave_estadistica= "estadisticas", 
+                                 clave_interior_estadistica ="promedio_puntos_por_partido",
                                  orden="asc")
     
 # 6
@@ -475,8 +475,8 @@ def buscar_jugador_y_ver_logro(
 #7
 
 def calcular_max_lista_dicc_dicc(
-    lista_jugadores: list[dict], dicc_exter = "estadisticas",
-    clave_dicc_inter = "rebotes_totales")-> dict:
+    lista_jugadores: list[dict], clave_estadistica = "estadisticas",
+    clave_interior_estadistica = "rebotes_totales")-> dict:
     '''
     calcula el jugador que tiene el maxiomo de estadistica buscada.
     Recibe (Arg 1) Una lista de jugadores [list[dict[dict]]], 
@@ -487,8 +487,8 @@ def calcular_max_lista_dicc_dicc(
     flag = True
     nuevo_dicc = {}
     for indice in range(len(lista_jugadores)):
-        diccionario_estadisticas = lista_jugadores[indice][dicc_exter]
-        revotes = diccionario_estadisticas[clave_dicc_inter]
+        diccionario_estadisticas = lista_jugadores[indice][clave_estadistica]
+        revotes = diccionario_estadisticas[clave_interior_estadistica]
         
         if(flag or revotes > max_revotes): 
             max_revotes = revotes
@@ -497,72 +497,112 @@ def calcular_max_lista_dicc_dicc(
     nuevo_dicc["nombre"] = \
     lista_jugadores[max_indice]["nombre"]
     
-    nuevo_dicc[clave_dicc_inter] = max_revotes
+    nuevo_dicc[clave_interior_estadistica] = max_revotes
     return nuevo_dicc
 
 
-def separar_datos_de_dicc(diccionario_estadist : dict)-> str:
+def separar_datos_de_dicc(clave_estadistica : dict)-> str:
     '''
-    Del diccionario separa el texto, por ejemplo queda
+    Del diccionario destadistica separa el texto, por ejemplo queda
     nombre : 'Lili' \n goles : 15-
     Recibe el diccionario.
     devuelve una cadena formateada.
     '''
     pares_clave_valor = []
-    for clave, valor in diccionario_estadist.items():
+    for clave, valor in clave_estadistica.items():
         texto_par = "{0}: {1}".format(clave, valor)
         pares_clave_valor.append(texto_par.capitalize().replace("_", " "))
 
     cadena = "\n".join(pares_clave_valor)
     return cadena
 
-def calcular_y_mostrar_jugador_mayor_cant_rebotes(lista_jugadores : list):
+def calcular_y_mostrar_jugador_mayor_cant_rebotes(lista_jugadores : list[dict]):
     '''
-    calcula y muestra el jugador con mayor cantidad de revotes del equipo.
+    Calcula y muestra el jugador con mayor cantidad de revotes del equipo.
     Recibe la lista de jugadores.
     Devuelve - no aplica.
     '''
     nombre_y_estadistica_dicc = calcular_max_lista_dicc_dicc(
-    lista_jugadores, dicc_exter = "estadisticas",
-    clave_dicc_inter = "rebotes_totales")
-    mensaje = separar_datos_de_dicc(nombre_y_estadistica_dicc)
-    print(mensaje)
+    lista_jugadores, clave_estadistica = "estadisticas",
+    clave_interior_estadistica = "rebotes_totales")
+    dato_str = separar_datos_de_dicc(nombre_y_estadistica_dicc)
+    print_dato(dato_str)
 
 #8
 
-def calcular_y_mostrar_jugador_mayor_porcentaje_tiros_de_campo(lista_jugadores : list):
+def calcular_y_mostrar_jugador_mayor_porcentaje_tiros_de_campo(
+    lista_jugadores : list[dict]):
     '''
     calcula y muestra el jugador con mayor porcentaje de tiros de campo.
     Recibe la lista de jugadores.
     Devuelve - no aplica.
     '''
     nombre_y_estadistica_dicc = calcular_max_lista_dicc_dicc(
-    lista_jugadores, dicc_exter = "estadisticas",
-    clave_dicc_inter = "porcentaje_tiros_de_campo")
+    lista_jugadores, clave_estadistica = "estadisticas",
+    clave_interior_estadistica = "porcentaje_tiros_de_campo")
     mensaje = separar_datos_de_dicc(nombre_y_estadistica_dicc)
-    print(mensaje)
+    print_dato(mensaje)
     
 #9
-def calcular_y_mostrar_jugador_mayor_cantidad_de_asistencias_totales(lista_jugadores : list):
+def calcular_y_mostrar_jugador_mayor_cantidad_de_asistencias_totales(
+    lista_jugadores : list[dict]):
     '''
-    calcula y muestra el jugador con mayor cantidad de asistencias totales.
+    Calcula y muestra el jugador con mayor cantidad de asistencias totales.
     Recibe la lista de jugadores.
     Devuelve - no aplica.
     '''
     nombre_y_estadistica_dicc = calcular_max_lista_dicc_dicc(
-    lista_jugadores, dicc_exter = "estadisticas",
-    clave_dicc_inter = "asistencias_totales")
+    lista_jugadores, clave_estadistica = "estadisticas",
+    clave_interior_estadistica = "asistencias_totales")
     mensaje = separar_datos_de_dicc(nombre_y_estadistica_dicc)
-    print(mensaje)
+    print_dato(mensaje)
   
 # 10 
 '''
 10) Permitir al usuario ingresar un valor y mostrar los jugadores que han promediado
 más puntos por partido que ese valor.
 '''
-# mensaje_a_mostrar = "Ingrese un valor numérico: "
-# numero_ingresado = pedir_ingreso_de_numero(r"^[0-9]+(\.[0-9]+)?$", mensaje_a_mostrar)
-# print(numero_ingresado)
+
+def jugadores_mayores_al_ingresado(
+    lista_jugadores: list[dict], clave_estadistica ="estadisticas", 
+    clave_interior_estadistica = "promedio_puntos_por_partido")-> list[dict]:
+    '''
+    Permite ingresar un valor y busca los que superan ese valor.
+    Recibe: (arg 1) la lista de jugadores, (arg 2) clave dicc estadisticas.
+    (ej: clave_dicc_ext ="estadisticas")
+    (arg 3) la clave dentro del dicc estadisticas (ej "promedio_puntos_por_partido")) 
+    '''
+    nueva_lista_Jugadores = []
+    mensaje_a_mostrar = "Ingrese un valor numérico: "
+    numero_ingresado = pedir_ingreso_de_numero(r"^[0-9]+|\.[0-9]+$", mensaje_a_mostrar)
+    encontrado = False
+    
+    for jugador in lista_jugadores:
+        
+        if jugador[clave_estadistica][clave_interior_estadistica] > numero_ingresado:
+            nueva_lista_Jugadores.append(jugador)
+            encontrado = True
+
+    if encontrado == False:
+        print("Jugador No existe el nombre en la lista")
+    else:
+        return nueva_lista_Jugadores
+    
+def mostrar_estadisticas_jugadores(
+    lista_jugadores : list[dict], clave_estadistica: str):
+    '''
+    Muestra las estadisticas de los jugadores.
+    Recibe (arg 1) la lista de jugadores. y (arg 2) la clave del dicc 
+    ej("estadisticas").
+    Retorna - no aplica
+    '''
+    clave_interior_estadistica_guion = clave_estadistica.replace("_"," ").capitalize()
+    for jugador in lista_jugadores:
+        nombre = jugador["nombre"]
+        valor_estadistica = jugador["estadisticas"][clave_estadistica]
+        print("{0}: {1}: {2}".format(
+            nombre, clave_interior_estadistica_guion, valor_estadistica))
+
 
 
      
@@ -583,13 +623,14 @@ def opciones_del_menu()-> str:
            "7- Ver el jugador con la mayor cantidad de rebotes totales\n" \
            "8- Ver el jugador con el mayor porcentaje de tiros de campo\n" \
            "9- Ver el jugador con el mayor cantidad de asistencias totales\n"\
-           "10- Ver los jugadores que tienen el promedio de más puntos por partido que el valor ingresado.\n"
+           "10- Ver los jugadores que tienen el promedio de más puntos por partido que el valor ingresado.\n"\
+            
               
     return opciones
 
 def print_dato(dato : str)->None:
     '''
-    imprime una cadena de texto.
+    Imprime una cadena de texto.
     Recibe una cadena.
     Devuelve: No aplica.
     '''
@@ -598,7 +639,7 @@ def print_dato(dato : str)->None:
 
 def menu_principal()-> int:
     '''
-    imprime el menu y toma una opcion del usuario
+    Imprime el menu y toma una opcion del usuario
     recibe -no aplica
     devuelve la opcion elegida, en caso de False devuelve -1
     '''
@@ -611,7 +652,7 @@ def menu_principal()-> int:
    
 def aplicacion(lista_Jugadores : list[dict])-> None:
     '''
-    opciones para el usuario
+    Opciones para el usuario
     Recibe la lista de Jugadores
     Devuelve: no aplica.
     '''
@@ -649,7 +690,7 @@ def aplicacion(lista_Jugadores : list[dict])-> None:
                 calcular_y_mostrar_jugador_mayor_cantidad_de_asistencias_totales(
                     lista_Jugadores)
             case 10:
-                pass
+                mostrar_estadisticas_jugadores(lista_Jugadores, "promedio_puntos_por_partido")
             case _:
                 print("Opcion incorrecta")
         clear_console()
