@@ -49,23 +49,27 @@ def mostrar_nombres_posicion_o_ubicacion(
         return -1
 
 #2
-def pedir_ingreso_de_numero(patron_re : str, mensaje_a_mostrar : str)-> int:
+
+def pedir_ingreso_de_numero(patron_re: str, mensaje_a_mostrar: str) -> int | float:
     '''
-    Pide el usuario un numero.
-    Recibe: (arg1)Un patron Regex para validar.y (arg 2) un mensaje
-    str para mostrar al usuario.
-    Devuelve: el numero ingresado, casteado a int.
+    Pide al usuario un número.
+    Recibe: (arg1) un patrón Regex para validar y (arg2) un mensaje str para mostrar al usuario.
+    Devuelve: el número ingresado, convertido a int o float.
     '''
-    while(True):
+    while True:
         mensaje = "{0}".format(mensaje_a_mostrar)
         numero_ingresado_str = input(mensaje)
-        num_imgresado = re.findall(patron_re, numero_ingresado_str)
-        if(num_imgresado):
-            resultado_num_str = "".join(num_imgresado)
-            resultado_num_int = int(resultado_num_str)
-            return resultado_num_int
+        num_ingresado = re.findall(patron_re, numero_ingresado_str)
+        if num_ingresado:
+            resultado_num_str = "".join(num_ingresado)
+            if resultado_num_str.count(".") == 1:
+                resultado_num = float(resultado_num_str)
+            elif resultado_num_str.count(".") == 0:
+                resultado_num = int(resultado_num_str)
+            return resultado_num
         else:
-            print(" Incorrecto: ingrese numero valido")
+            print("Incorrecto: ingrese un número válido")
+
 
 def comprobar_indice_valido(
     lista_jugadores : list[dict], indice_elegido: int)-> bool:
@@ -539,9 +543,6 @@ def calcular_y_mostrar_jugador_mayor_porcentaje_tiros_de_campo(lista_jugadores :
     print(mensaje)
     
 #9
-'''
-9) Calcular y mostrar el jugador con la mayor cantidad de asistencias totales.
-'''
 def calcular_y_mostrar_jugador_mayor_cantidad_de_asistencias_totales(lista_jugadores : list):
     '''
     calcula y muestra el jugador con mayor cantidad de asistencias totales.
@@ -554,7 +555,17 @@ def calcular_y_mostrar_jugador_mayor_cantidad_de_asistencias_totales(lista_jugad
     mensaje = separar_datos_de_dicc(nombre_y_estadistica_dicc)
     print(mensaje)
   
-       
+# 10 
+'''
+10) Permitir al usuario ingresar un valor y mostrar los jugadores que han promediado
+más puntos por partido que ese valor.
+'''
+# mensaje_a_mostrar = "Ingrese un valor numérico: "
+# numero_ingresado = pedir_ingreso_de_numero(r"^[0-9]+(\.[0-9]+)?$", mensaje_a_mostrar)
+# print(numero_ingresado)
+
+
+     
 #--Menú y ejecucion de la app
 def opciones_del_menu()-> str:
     '''
@@ -571,7 +582,8 @@ def opciones_del_menu()-> str:
            "6- Ver si el jugador ingresado pertenece al salon de la fama\n" \
            "7- Ver el jugador con la mayor cantidad de rebotes totales\n" \
            "8- Ver el jugador con el mayor porcentaje de tiros de campo\n" \
-           "9- Ver el jugador con el mayor cantidad de asistencias totales\n"
+           "9- Ver el jugador con el mayor cantidad de asistencias totales\n"\
+           "10- Ver los jugadores que tienen el promedio de más puntos por partido que el valor ingresado.\n"
               
     return opciones
 
