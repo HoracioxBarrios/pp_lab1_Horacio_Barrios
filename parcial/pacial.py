@@ -65,7 +65,7 @@ def pedir_ingreso_de_numero(patron_re : str, mensaje_a_mostrar : str)-> int:
             resultado_num_int = int(resultado_num_str)
             return resultado_num_int
         else:
-            print("Incorrecto: ingrese numero valido")
+            print(" Incorrecto: ingrese numero valido")
 
 def comprobar_indice_valido(
     lista_jugadores : list[dict], indice_elegido: int)-> bool:
@@ -93,14 +93,14 @@ def seleccionar_jugador_segun_indice(lista_jugadores : list[dict])-> int | None:
         while(True):
             mostrar_nombres_posicion_o_ubicacion(lista_jugadores, 
                                                  ver_indice_ubi =True)
-            mensaje = ">>> Ingrese numero de (indice) del jugador para ver sus estadisticas: "
+            mensaje = ">>>>> Ingrese numero de (indice) del jugador para ver sus estadisticas: "
             indice_elegido = pedir_ingreso_de_numero(r"^[0-9]+$", mensaje)
             existe_indice = comprobar_indice_valido(lista_jugadores,
                                                     indice_elegido)
             if(existe_indice):
                 return indice_elegido
             else:
-                print("Indice invalido, intente nuevamente...\n ")
+                print(" Indice invalido, intente nuevamente...\n ")
                 os.system('cls')           
     else:
         print("La lista está vacia")
@@ -224,7 +224,7 @@ def si_no_del_usuario(mensaje_a_mostrar : str)-> bool:
         elif(respuesta_str == "no"):
             return False
         else:
-           print("Elija una Opcion valida...")
+           print(" Elija una Opcion valida...")
           
 def desea_guardar_como_archivo_csv(path_nombre : str, dato_a_guardar : str)-> None:
     '''
@@ -233,12 +233,12 @@ def desea_guardar_como_archivo_csv(path_nombre : str, dato_a_guardar : str)-> No
     (arg 2) el dato a guardar(str).
     Devuelve: No aplica.
     '''
-    mensaje = ">>> Desea Guardarlo como archivo? si/no "
+    mensaje = ">>>>> Desea Guardarlo como archivo? si/no "
     respuesta = si_no_del_usuario(mensaje)
     if(respuesta):
         guardar_a_csv(path_nombre, dato_a_guardar)
     else:
-        print("Eligió no guardar")
+        print(" Eligió no guardar")
         
     
 def mostrar_estadisticas_del_jugador_elegido( lista_jugadores : list[dict])-> int:
@@ -306,27 +306,30 @@ def pedir_nombre_y_apellido_jugador()-> str:
     Devuelve - el nombre con apellido validado
     '''
     nombre_apellido = input(
-        "Ingrese nombre y apellido del jugador a Buscar ")
+        ">>>>>> Ingrese nombre y apellido del jugador a Buscar ")
     nombre_apellido_cap = str(nombre_apellido).capitalize()
     nombre_validado = sacar_nombre_de_cadena_con_regex(
         r"^[A-Za-z]+\s{1}[A-Za-z]+$", nombre_apellido_cap)
-    return nombre_validado
+    return nombre_validado.lower().strip()
 
-def mostrar_logros_jugador_buscado(lista_jugadores: list[dict]):
+def buscar_jugador_y_ver_sus_logros(lista_jugadores: list[dict]):
     '''
-    Muestra los logros del jugador buscado.
+    Imprime por consola los logros del jugador buscado.
     Recibe la lista de jugadores.
     Devuelve - No aplica ------
     '''
     mostrar_nombres_jugadores(lista_jugadores)
-    nombre_ingresado = pedir_nombre_y_apellido_jugador().lower().strip()
+    nombre_ingresado_lower = pedir_nombre_y_apellido_jugador()
+    encontrado = False
     for jugador in lista_jugadores:
-        if jugador["nombre"].lower().strip() == nombre_ingresado:
+        if jugador["nombre"].lower().strip() == nombre_ingresado_lower:
+            encontrado = True
+            print("---- jugador encontrado ----")
             cadena_logros = "Nombre del Jugador: {0}\n{1}".format(
                 jugador["nombre"], "\n".join(jugador["logros"]))
-
             print_dato(cadena_logros)
-    print("No existe el nombre en la lista")
+    if encontrado == False:
+        print(" No existe el nombre en la lista")
 
 #5
 def contar_elementos_en_lista(lista_jugadores : list[dict])-> int:
@@ -409,7 +412,7 @@ def tomar_nobre_mas_estadisticas(
                 nueva_lista_valores.append(promedio)
     clave_dicc_estadisticas_sin_guion = clave_dicc_estadisticas.replace("_", " ")
     for indice in range(len(nueva_lista_nombres)):
-        mensaje = "{0} : {1} {2}".format(
+        mensaje = "{0} :  {1}  {2}".format(
             nueva_lista_nombres[indice], clave_dicc_estadisticas_sin_guion,
             nueva_lista_valores[indice])
         print_dato(mensaje)
@@ -425,9 +428,52 @@ def Calcular_y_mostrar_el_promedio_de_puntos_del_dream_team(
     mensaje_promedio_de_equipo = calcular_promedio_de_puntos_equipo(lista_jugadores)    
     print_dato("El promedio de puntos por partido de todo el equipo es {0} ".format(
         round(mensaje_promedio_de_equipo, 2)))
-    tomar_nobre_mas_estadisticas(lista_jugadores, clave_uno="nombre",clave_dos= "estadisticas", clave_dicc_estadisticas ="promedio_puntos_por_partido", orden="asc")
+    tomar_nobre_mas_estadisticas(lista_jugadores, clave_uno="nombre",
+                                 clave_dos= "estadisticas", 
+                                 clave_dicc_estadisticas ="promedio_puntos_por_partido",
+                                 orden="asc")
     
-    
+# 6
+'''
+6) Permitir al usuario ingresar el nombre de un jugador y mostrar si ese jugador es
+miembro del Salón de la Fama del Baloncesto.
+
+'''
+
+def buscar_jugador_y_ver_logro(
+    lista_jugadores, clave_nombre="nombre", clave_logros="logros",
+    valor_logro="Miembro del Salon de la Fama del Baloncesto", 
+    mensaje_a_mostrar_en_print="Pertenece"):
+    '''
+    Permite al usuario ingresar el nombre de un jugador y mostrar su logro.
+    ejemplo : si pertenece al salon de la fama.
+    Recibe (arg ) la lista de jugadores, (arg 2) la clave_logros ejemplo ="logros",
+    (arg 3) valor_logro ejemplo ="Miembro del Salon de la Fama del Baloncesto",
+    (arg 4)mensaje_a_mostrar_en_print ejemplo ="Pertenece"
+    '''
+    mostrar_nombres_jugadores(lista_jugadores)
+    nombre_ingresado_lower = pedir_nombre_y_apellido_jugador()
+    encontrado = False
+    flag_ok_condicion = False
+    for jugador in lista_jugadores:
+        if jugador[clave_nombre].lower().strip() == nombre_ingresado_lower:
+            encontrado = True
+            print("---- jugador encontrado ----")
+            for logro in jugador[clave_logros]:
+                if logro == valor_logro:
+                    flag_ok_condicion = True
+                elif logro != valor_logro:
+                    flag_ok_condicion = False 
+            break     
+    if encontrado:
+        if flag_ok_condicion:
+            print("{0}: {1}".format(mensaje_a_mostrar_en_print, valor_logro))
+        else:
+            print("No {0} como: {1}".format(mensaje_a_mostrar_en_print, valor_logro))
+    else:
+        print("Jugador No existe el nombre en la lista")
+
+            
 #--Menú y ejecucion de la app
 def opciones_del_menu()-> str:
     '''
@@ -435,12 +481,13 @@ def opciones_del_menu()-> str:
     Recibe: No aplica.
     Devuelve: una cadena str .
     '''
-    opciones = "Bienvenido:\n1- Ver Jugadores y Posición de todos los jugadores del Dream Team\n" \
+    opciones = "Bienvenido:\n" \
+           "1- Ver Jugadores y Posición de todos los jugadores del Dream Team\n" \
            "2- Seleccionar un jugador para ver sus estadísticas (Opcional: guardar)\n" \
            "3- Guardar estadísticas del jugador seleccionado\n" \
            "4- Buscar un jugador por su nombre para ver sus logros\n" \
-            "5- Ver el promedio de puntos por partido de todo el equipo del Dream team\n"\
-                
+           "5- Ver el promedio de puntos por partido de todo el equipo del Dream team\n"\
+           "6- Ver si el jugador ingresado pertenece al salon de la fama\n"    
 
     return opciones
 
@@ -489,11 +536,11 @@ def aplicacion(lista_Jugadores : list[dict])-> None:
                 else:
                     print("Pase por el punto 2 primero")
             case 4:
-                mostrar_logros_jugador_buscado(lista_Jugadores)
+                buscar_jugador_y_ver_sus_logros(lista_Jugadores)
             case 5:
                 Calcular_y_mostrar_el_promedio_de_puntos_del_dream_team(lista_Jugadores)
             case 6:
-                pass
+                buscar_jugador_y_ver_logro(lista_Jugadores)
             case 7:
                 pass
             case 8:
