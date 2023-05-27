@@ -469,9 +469,7 @@ def buscar_jugador_y_ver_logro(
 
 
 #7
-'''
-7) Calcular y mostrar el jugador con la mayor cantidad de rebotes totales.
-'''
+
 def calcular_max_lista_dicc_dicc(
     lista_jugadores: list[dict], dicc_exter = "estadisticas",
     clave_dicc_inter = "rebotes_totales")-> dict:
@@ -525,7 +523,22 @@ def calcular_y_mostrar_jugador_mayor_cant_rebotes(lista_jugadores : list):
     clave_dicc_inter = "rebotes_totales")
     mensaje = separar_datos_de_dicc(nombre_y_estadistica_dicc)
     print(mensaje)
-
+'''
+8) Calcular y mostrar el jugador con el mayor porcentaje de tiros de campo
+'''
+def calcular_y_mostrar_jugador_mayor_porcentaje_tiros_de_campo(lista_jugadores : list):
+    '''
+    calcula y muestra el jugador con mayor porcentaje de tiros de campo.
+    Recibe la lista de jugadores.
+    Devuelve - no aplica.
+    '''
+    nombre_y_estadistica_dicc = calcular_max_lista_dicc_dicc(
+    lista_jugadores, dicc_exter = "estadisticas",
+    clave_dicc_inter = "porcentaje_tiros_de_campo")
+    mensaje = separar_datos_de_dicc(nombre_y_estadistica_dicc)
+    print(mensaje)
+    
+    
        
 #--Menú y ejecucion de la app
 def opciones_del_menu()-> str:
@@ -541,7 +554,8 @@ def opciones_del_menu()-> str:
            "4- Buscar un jugador por su nombre para ver sus logros\n" \
            "5- Ver el promedio de puntos por partido de todo el equipo del Dream team\n"\
            "6- Ver si el jugador ingresado pertenece al salon de la fama\n" \
-           "7- Ver el jugador con la mayor cantidad de rebotes totales\n"      
+           "7- Ver el jugador con la mayor cantidad de rebotes totales\n" \
+           "8- Ver el jugador con el mayor porcentaje de tiros de campo"
               
     return opciones
 
@@ -598,7 +612,7 @@ def aplicacion(lista_Jugadores : list[dict])-> None:
             case 7:
                 calcular_y_mostrar_jugador_mayor_cant_rebotes(lista_Jugadores)
             case 8:
-                pass
+                calcular_y_mostrar_jugador_mayor_porcentaje_tiros_de_campo(lista_Jugadores)
             case 9:
                 pass
             case 10:
