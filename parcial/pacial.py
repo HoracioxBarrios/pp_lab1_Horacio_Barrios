@@ -294,8 +294,9 @@ def mostrar_nombres_jugadores(lista_jugadores : list[dict])-> None:
     Recibe la lista de jugadores.
     Devuelve - No aplica
     '''
-    for jugador in lista_jugadores:
-        print_dato(jugador["nombre"])
+    lista_nombres_ordenados = ordenar_bubble_sort(lista_jugadores, clave="nombre")
+    for jugador in lista_nombres_ordenados:
+        print_dato(jugador)
 
 
 def pedir_nombre_y_apellido_jugador()-> str:
