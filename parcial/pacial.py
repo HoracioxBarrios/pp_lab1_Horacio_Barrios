@@ -406,10 +406,11 @@ def tomar_nobre_mas_estadisticas(
                 promedio = jugador_lista_uno[clave_dos][clave_dicc_estadisticas]
                 nueva_lista_nombres.append(nombre)
                 nueva_lista_valores.append(promedio)
-    
+    clave_dicc_estadisticas_sin_guion = clave_dicc_estadisticas.replace("_", " ")
     for indice in range(len(nueva_lista_nombres)):
-        mensaje = "{0} : Promedio puntos por partido {1}".format(
-            nueva_lista_nombres[indice], nueva_lista_valores[indice])
+        mensaje = "{0} : {1} {2}".format(
+            nueva_lista_nombres[indice], clave_dicc_estadisticas_sin_guion,
+            nueva_lista_valores[indice])
         print_dato(mensaje)
 
 def Calcular_y_mostrar_el_promedio_de_puntos_del_dream_team(
