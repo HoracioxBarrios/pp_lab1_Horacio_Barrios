@@ -558,14 +558,10 @@ def calcular_y_mostrar_jugador_mayor_cantidad_de_asistencias_totales(
     print_dato(mensaje)
   
 # 10 
-'''
-10) Permitir al usuario ingresar un valor y mostrar los jugadores que han promediado
-más puntos por partido que ese valor.
-'''
 
 def jugadores_mayores_al_ingresado(
-    lista_jugadores: list[dict], clave_estadistica ="estadisticas", 
-    clave_interior_estadistica = "promedio_puntos_por_partido")-> list[dict]:
+    lista_jugadores: list[dict], clave_estadistica, 
+    clave_interior_estadistica)-> list[dict]:
     '''
     Permite ingresar un valor y busca los que superan ese valor.
     Recibe: (arg 1) la lista de jugadores, (arg 2) clave dicc estadisticas.
@@ -578,32 +574,55 @@ def jugadores_mayores_al_ingresado(
     encontrado = False
     
     for jugador in lista_jugadores:
-        
         if jugador[clave_estadistica][clave_interior_estadistica] > numero_ingresado:
             nueva_lista_Jugadores.append(jugador)
             encontrado = True
-
     if encontrado == False:
         print("Jugador No existe el nombre en la lista")
     else:
         return nueva_lista_Jugadores
     
 def mostrar_estadisticas_jugadores(
-    lista_jugadores : list[dict], clave_estadistica: str):
+    lista_jugadores : list[dict], clave_interior_estadistica: str):
     '''
     Muestra las estadisticas de los jugadores.
     Recibe (arg 1) la lista de jugadores. y (arg 2) la clave del dicc 
     ej("estadisticas").
     Retorna - no aplica
     '''
-    clave_interior_estadistica_guion = clave_estadistica.replace("_"," ").capitalize()
+    clave_interior_estadistica_guion = clave_interior_estadistica.replace("_"," ").capitalize()
     for jugador in lista_jugadores:
         nombre = jugador["nombre"]
-        valor_estadistica = jugador["estadisticas"][clave_estadistica]
+        valor_estadistica = jugador["estadisticas"][clave_interior_estadistica]
         print("{0}: {1}: {2}".format(
             nombre, clave_interior_estadistica_guion, valor_estadistica))
+        
+        
+def mostrar_jugadores_mayores_al_ingresado(
+    lista_jugadores : list[dict], clave_estadistica, 
+    clave_interior_estadistica = "promedio_puntos_por_partido"):
+    '''
+    Permite ingresar un valor y busca los que superan ese valor,
+    y los muestra.
+    Recibe: (arg 1) una lista de jugadores(filtrada antes),
+    (arg 2) clave "estadisticas" ,(arg 3) clave del dicc estadisticas.
+    ejemplo: "promedio_puntos_por_partido".
+    Devuelve - no aplica
+    '''
+    lista_jugadores_obtenida = jugadores_mayores_al_ingresado(
+        lista_jugadores, clave_estadistica, clave_interior_estadistica)
+    if(lista_jugadores_obtenida):
+        mostrar_estadisticas_jugadores(lista_jugadores_obtenida, clave_interior_estadistica)
+    else:
+        print("Ningun jugador supera el valor ingresado")
+    
+    
+#11
+'''
+11) Permitir al usuario ingresar un valor y mostrar los jugadores que han promediado
+más rebotes por partido que ese valor.
 
-
+'''
 
      
 #--Menú y ejecucion de la app
@@ -624,6 +643,7 @@ def opciones_del_menu()-> str:
            "8- Ver el jugador con el mayor porcentaje de tiros de campo\n" \
            "9- Ver el jugador con el mayor cantidad de asistencias totales\n"\
            "10- Ver los jugadores que tienen el promedio de más puntos por partido que el valor ingresado.\n"\
+           "11- Ver los jugadores que tienen el promedio de mas rebotes por partido que el valor ingresado.\n"\
             
               
     return opciones
@@ -690,7 +710,15 @@ def aplicacion(lista_Jugadores : list[dict])-> None:
                 calcular_y_mostrar_jugador_mayor_cantidad_de_asistencias_totales(
                     lista_Jugadores)
             case 10:
-                mostrar_estadisticas_jugadores(lista_Jugadores, "promedio_puntos_por_partido")
+                mostrar_jugadores_mayores_al_ingresado(
+                    lista_Jugadores, clave_estadistica="estadisticas", 
+                    clave_interior_estadistica="promedio_puntos_por_partido")
+            case 11:
+                mostrar_jugadores_mayores_al_ingresado(lista_Jugadores, clave_estadistica="estadisticas", clave_interior_estadistica="promedio_rebotes_por_partido")
+            case 12:
+                pass
+            case 13:
+                pass
             case _:
                 print("Opcion incorrecta")
         clear_console()
