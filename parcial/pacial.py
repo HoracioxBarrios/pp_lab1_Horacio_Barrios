@@ -399,10 +399,9 @@ def tomar_nobre_mas_estadisticas(
     lista_nombres_ordenados = ordenar_bubble_sort(lista, clave_uno, orden)
     nueva_lista_nombres = []
     nueva_lista_valores = []
-    
-    for jugador_lista_uno in lista:
-        for jugador_lista_dos in lista_nombres_ordenados:
-            if(jugador_lista_uno[clave_uno] == jugador_lista_dos):
+    for jugador_lista_dos in lista_nombres_ordenados:
+        for jugador_lista_uno in lista:
+            if(jugador_lista_dos == jugador_lista_uno[clave_uno]):
                 nombre = jugador_lista_uno[clave_uno]
                 promedio = jugador_lista_uno[clave_dos][clave_dicc_estadisticas]
                 nueva_lista_nombres.append(nombre)
