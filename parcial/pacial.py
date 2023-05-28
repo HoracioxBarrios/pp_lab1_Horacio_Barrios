@@ -707,6 +707,15 @@ def calcular_jugador_con_mas_logros(lista_jugadores : list[dict], maximo = True)
     else:
         print("La lista esta vacia")
         return -1
+# 18
+'''
+18) Permitir al usuario ingresar un valor y mostrar los jugadores que hayan tenido un
+porcentaje de tiros triples superior a ese valor
+'''
+
+
+
+
 
 
 #--Menú y ejecucion de la app
@@ -734,9 +743,9 @@ def opciones_del_menu()-> str:
            "15- Ver los jugadores que tienen el porcentaje de tiros libres superior al valor ingresado.\n"\
            "16- Ver el promedio de puntos por partido del equipo excluyendo al jugador con la menor puntos\n"\
            "17- Ver el jugador con la mayor cantidad de logros obtenidos\n"\
-               
-               
-    ''        
+           "18- Ver los jugadores que hayan tenido un porcentaje de tiros triples superior al valor ingresado.\n"     
+       
+    ''       
     return opciones
 
 def print_dato(dato : str)->None:
@@ -824,7 +833,20 @@ def aplicacion(lista_Jugadores : list[dict])-> None:
             case 17:
                 calcular_jugador_con_mas_logros(lista_Jugadores, maximo= True)
             case 18:
+                mostrar_jugadores_mayores_al_ingresado(
+                    lista_Jugadores, clave_interior_estadistica= "porcentaje_tiros_triples")
+            case 19:
                 pass
+            case 20:
+                pass
+            case 21:
+                pass
+            case 22:
+                pass
+            case 23:
+                pass
+            case 24:
+                break
             case _:
                 print("Opcion incorrecta")
         clear_console()
