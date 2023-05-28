@@ -50,10 +50,12 @@ def mostrar_nombres_posicion_o_ubicacion(
 
 #2
 
-def pedir_ingreso_de_numero(patron_re: str, mensaje_a_mostrar: str) -> int | float:
+def pedir_ingreso_de_numero(
+    patron_re: str, mensaje_a_mostrar: str) -> int | float:
     '''
     Pide al usuario un número.
-    Recibe: (arg1) un patrón Regex para validar y (arg2) un mensaje str para mostrar al usuario.
+    Recibe: (arg1) un patrón Regex para validar y (arg2) un mensaje str 
+    para mostrar al usuario.
     Devuelve: el número ingresado, convertido a int o float.
     '''
     while True:
@@ -594,8 +596,10 @@ def mostrar_jugadores_mayores_al_ingresado(
 #11
 #12
 #13
+#14
 '''
-14) Calcular y mostrar el jugador con la mayor cantidad de bloqueos totales .
+15) Permitir al usuario ingresar un valor y mostrar los jugadores que hayan tenido un
+porcentaje de tiros libres superior a ese valor.
 
 '''
 
@@ -622,9 +626,9 @@ def opciones_del_menu()-> str:
            "12- Ver los jugadores que tienen el promedio asistencias por partido mayor que el valor ingresado.\n"\
            "13- Ver el jugador con la mayor cantidad de robos totales\n"\
            "14- Ver el jugador con la mayor cantidad de bloqueos totales\n"\
-            
-                
-    ""        
+           "15- Ver los jugadores que tienen el porcentaje de tiros libres superior al valor ingresado.\n"\
+ 
+    ''        
     return opciones
 
 def print_dato(dato : str)->None:
@@ -704,7 +708,8 @@ def aplicacion(lista_Jugadores : list[dict])-> None:
                 calcular_y_mostrar_jugador_mayor_estadistica(
                     lista_Jugadores, clave_interior_estadistica = "bloqueos_totales")
             case 15:
-                pass
+                mostrar_jugadores_mayores_al_ingresado(
+                    lista_Jugadores, clave_interior_estadistica="porcentaje_tiros_libres")
             case 16:
                 pass
             case 17:
