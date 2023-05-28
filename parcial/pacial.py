@@ -514,47 +514,22 @@ def separar_datos_de_dicc(clave_estadistica : dict)-> str:
     cadena = "\n".join(pares_clave_valor)
     return cadena
 
-def calcular_y_mostrar_jugador_mayor_cant_rebotes(lista_jugadores : list[dict]):
+def calcular_y_mostrar_jugador_mayor_estadistica(
+    lista_jugadores : list[dict], clave_estadistica : str, clave_interior_estadistica :str):
     '''
     Calcula y muestra el jugador con mayor cantidad de revotes del equipo.
     Recibe la lista de jugadores.
     Devuelve - no aplica.
     '''
     nombre_y_estadistica_dicc = calcular_max_lista_dicc_dicc(
-    lista_jugadores, clave_estadistica = "estadisticas",
-    clave_interior_estadistica = "rebotes_totales")
+    lista_jugadores, clave_estadistica,clave_interior_estadistica)
     dato_str = separar_datos_de_dicc(nombre_y_estadistica_dicc)
     print_dato(dato_str)
 
 #8
 
-def calcular_y_mostrar_jugador_mayor_porcentaje_tiros_de_campo(
-    lista_jugadores : list[dict]):
-    '''
-    calcula y muestra el jugador con mayor porcentaje de tiros de campo.
-    Recibe la lista de jugadores.
-    Devuelve - no aplica.
-    '''
-    nombre_y_estadistica_dicc = calcular_max_lista_dicc_dicc(
-    lista_jugadores, clave_estadistica = "estadisticas",
-    clave_interior_estadistica = "porcentaje_tiros_de_campo")
-    mensaje = separar_datos_de_dicc(nombre_y_estadistica_dicc)
-    print_dato(mensaje)
-    
 #9
-def calcular_y_mostrar_jugador_mayor_cantidad_de_asistencias_totales(
-    lista_jugadores : list[dict]):
-    '''
-    Calcula y muestra el jugador con mayor cantidad de asistencias totales.
-    Recibe la lista de jugadores.
-    Devuelve - no aplica.
-    '''
-    nombre_y_estadistica_dicc = calcular_max_lista_dicc_dicc(
-    lista_jugadores, clave_estadistica = "estadisticas",
-    clave_interior_estadistica = "asistencias_totales")
-    mensaje = separar_datos_de_dicc(nombre_y_estadistica_dicc)
-    print_dato(mensaje)
-  
+
 # 10 
 
 def jugadores_mayores_al_ingresado(
@@ -601,7 +576,7 @@ def mostrar_jugadores_mayores_al_ingresado(
     clave_interior_estadistica = "promedio_puntos_por_partido"):
     '''
     Permite ingresar un valor y busca los que superan ese valor,
-    y los muestra.
+    ademas de mostrarlos por consola.
     Recibe: (arg 1) una lista de jugadores(filtrada antes),
     (arg 2) clave "estadisticas" ,(arg 3) clave del dicc estadisticas.
     ejemplo: "promedio_puntos_por_partido".
@@ -617,9 +592,9 @@ def mostrar_jugadores_mayores_al_ingresado(
     
 #11
 #12
+#13
 '''
-12) Permitir al usuario ingresar un valor y mostrar los jugadores que han promediado
-más asistencias por partido que ese valor
+13) Calcular y mostrar el jugador con la mayor cantidad de robos totales
 '''
 
      
@@ -633,7 +608,7 @@ def opciones_del_menu()-> str:
     opciones = "Bienvenido:\n" \
            "1- Ver Jugadores y Posición de todos los jugadores del Dream Team\n" \
            "2- Seleccionar un jugador para ver sus estadísticas (Opcional: guardar)\n" \
-           "3- Guardar estadísticas del jugador seleccionado\n" \
+           "3- Guardar estadísticas del jugador seleccionado anteriormente.\n" \
            "4- Buscar un jugador por su nombre para ver sus logros\n" \
            "5- Ver el promedio de puntos por partido de todo el equipo del Dream team\n"\
            "6- Ver si el jugador ingresado pertenece al salon de la fama\n" \
@@ -643,7 +618,8 @@ def opciones_del_menu()-> str:
            "10- Ver los jugadores que tienen el promedio de más puntos por partido que el valor ingresado.\n"\
            "11- Ver los jugadores que tienen el promedio de mas rebotes por partido que el valor ingresado.\n"\
            "12- Ver los jugadores que tienen el promedio asistencias por partido mayor que el valor ingresado.\n"\
-            
+           "13- Ver el jugador con la mayor cantidad de robos totales\n"\
+               
     ""        
     return opciones
 
@@ -700,14 +676,17 @@ def aplicacion(lista_Jugadores : list[dict])-> None:
             case 6:
                 buscar_jugador_y_ver_logro(lista_Jugadores)
             case 7:
-                calcular_y_mostrar_jugador_mayor_cant_rebotes(
-                    lista_Jugadores)
+                calcular_y_mostrar_jugador_mayor_estadistica(
+                    lista_Jugadores, clave_estadistica = "estadisticas", 
+                    clave_interior_estadistica = "rebotes_totales")
             case 8:
-                calcular_y_mostrar_jugador_mayor_porcentaje_tiros_de_campo(
-                    lista_Jugadores)
+                calcular_y_mostrar_jugador_mayor_estadistica(
+                    lista_Jugadores, clave_estadistica = "estadisticas", 
+                    clave_interior_estadistica = "porcentaje_tiros_de_campo")
             case 9:
-                calcular_y_mostrar_jugador_mayor_cantidad_de_asistencias_totales(
-                    lista_Jugadores)
+                calcular_y_mostrar_jugador_mayor_estadistica(
+                    lista_Jugadores, clave_estadistica = "estadisticas", 
+                    clave_interior_estadistica = "asistencias_totales")
             case 10:
                 mostrar_jugadores_mayores_al_ingresado(
                     lista_Jugadores, clave_estadistica="estadisticas", 
@@ -721,6 +700,18 @@ def aplicacion(lista_Jugadores : list[dict])-> None:
                     lista_Jugadores, clave_estadistica="estadisticas", 
                     clave_interior_estadistica="promedio_asistencias_por_partido")
             case 13:
+                calcular_y_mostrar_jugador_mayor_estadistica(
+                    lista_Jugadores, clave_estadistica = "estadisticas", 
+                    clave_interior_estadistica = "robos_totales")
+            case 14:
+                pass
+            case 15:
+                pass
+            case 16:
+                pass
+            case 17:
+                pass
+            case 18:
                 pass
             case _:
                 print("Opcion incorrecta")
