@@ -638,15 +638,9 @@ def mostrar_jugadores_mayores_al_ingresado(
 #13
 #14
 #15
-'''
-16) Calcular y mostrar el promedio de puntos por partido del equipo excluyendo al
-jugador con la menor cantidad de puntos por partido
+#16
 
-'''
-# el 5 hace eso
-# primero tengo que hubicar al menor de la clave "promedio_puntos_por_partido"
-#luego de conseguir al mas manco, comparamos con la lista y armamos una nueva lista sin ese jugador.
-# con esa lista calculamos con la funcion del punto 5.
+
 def quitar_el_emenos_habil_segun_clave_estadistica(
     lista_jugadores : list[dict], clave_estadisticas = "estadisticas",
     clave_interior_estadistica = "promedio_puntos_por_partido")-> list[dict]:
