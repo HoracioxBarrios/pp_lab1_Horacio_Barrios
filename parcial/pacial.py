@@ -384,7 +384,8 @@ def ordenar_bubble_sort(lista_original : list[dict], clave = "nombre", orden = "
 
  
 def tomar_nombre_mas_estadisticas_mj_a_lista(lista_jugadores_original : list[dict],
-    lista_jugadores_ordenada_alfabet : list,  clave_nombre="nombre",clave_estadistica= "estadisticas",
+    lista_jugadores_ordenada_alfabet : list,  clave_nombre="nombre",
+    clave_estadistica= "estadisticas",
     clave_interior_estadistica ="promedio_puntos_por_partido"):
     '''
     De una lista obtiene los nombres de los jugadores con su estadistica,
@@ -436,7 +437,8 @@ def calcular_y_mostrar_el_promedio_de_puntos_del_dream_team(
     mensaje_promedio_de_equipo = calcular_promedio_de_puntos_equipo(lista_jugadores)    
     print_dato("El promedio de puntos por partido de todo el equipo es {0} ".format(
         round(mensaje_promedio_de_equipo, 2)))
-    lista_ordenada_alfabeticamente =  ordenar_bubble_sort(lista_jugadores, clave="nombre", orden= "asc")
+    lista_ordenada_alfabeticamente =  ordenar_bubble_sort(
+        lista_jugadores, clave="nombre", orden= "asc")
     
     lista_nombres_ordenado_y_estadisticas = tomar_nombre_mas_estadisticas_mj_a_lista(
         lista_jugadores,lista_ordenada_alfabeticamente ,clave_nombre="nombre",
@@ -606,7 +608,8 @@ def mostrar_estadisticas_jugadores(
     ej("estadisticas").
     Retorna - no aplica
     '''
-    clave_interior_estadistica_guion = clave_interior_estadistica.replace("_"," ").capitalize()
+    clave_interior_estadistica_guion = \
+        clave_interior_estadistica.replace("_"," ").capitalize()
     for jugador in lista_jugadores:
         nombre = jugador["nombre"]
         valor_estadistica = jugador["estadisticas"][clave_interior_estadistica]
@@ -620,15 +623,15 @@ def mostrar_jugadores_mayores_al_ingresado(
     '''
     Permite ingresar un valor y busca los que superan ese valor,
     ademas de mostrarlos por consola.
-    Recibe: (arg 1) una lista de jugadores(filtrada antes),
-    (arg 2) clave de estadistica "estadisticas" ,
+    Recibe: (arg 1) una lista de jugadores,(arg 2) clave de estadistica "estadisticas" ,
     (arg 3) clave del dicc estadisticas. ejemplo: "promedio_puntos_por_partido".
     Devuelve - no aplica
     '''
     lista_jugadores_obtenida = jugadores_mayores_al_ingresado(
         lista_jugadores, clave_estadistica, clave_interior_estadistica)
     if(lista_jugadores_obtenida):
-        mostrar_estadisticas_jugadores(lista_jugadores_obtenida, clave_interior_estadistica)
+        mostrar_estadisticas_jugadores(lista_jugadores_obtenida, 
+                                       clave_interior_estadistica)
     else:
         return False
     
