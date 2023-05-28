@@ -388,7 +388,7 @@ def tomar_nombre_mas_estadisticas_mj_a_lista(lista_jugadores_original : list[dic
     clave_interior_estadistica ="promedio_puntos_por_partido"):
     '''
     De una lista obtiene los nombres de los jugadores con su estadistica,
-    ejemplo promedio de puntos por partido.
+    ejemplo promedio de puntos por partido armando un nuevo diccionario.
     Recibe: (arg 1)una lista de jugadores, (arg 2) una clave ej "nombre",
     (arg 3) otra clave (para diccionario dentro ej: "estadisticas",(arg 4)
     otra clave (para el dentro del dicc estadisticas ejemplo: 
@@ -425,7 +425,7 @@ def imprimir_mensaje_nombres_estaditicas(lista_nombres__estadisticas : list):
         print(nombre_estadisitca)
 
 
-def Calcular_y_mostrar_el_promedio_de_puntos_del_dream_team(
+def calcular_y_mostrar_el_promedio_de_puntos_del_dream_team(
     lista_jugadores : list[dict]):
     '''
     calcula y muestra el promedio de puntos del dream team y luego el promedio
@@ -643,9 +643,48 @@ def mostrar_jugadores_mayores_al_ingresado(
 jugador con la menor cantidad de puntos por partido
 
 '''
+# el 5 hace eso
+# primero tengo que hubicar al menor de la clave "promedio_puntos_por_partido"
+#luego de conseguir al mas manco, comparamos con la lista y armamos una nueva lista sin ese jugador.
+# con esa lista calculamos con la funcion del punto 5.
+def quitar_el_emenos_habil_segun_clave_estadistica(
+    lista_jugadores : list[dict], clave_estadisticas = "estadisticas",
+    clave_interior_estadistica = "promedio_puntos_por_partido")-> list[dict]:
+    '''
+    De la lista quita el menos habil segun estadistica.
+    Recibe: (arg 1) la lista de jugadores, (arg 2) la clave "estadistica",
+    (arg 3) la clave de la estadistica a evaluar. ejemplo :
+    "promedio_puntos_por_partido".
+    Devuelve una nueva lista de jugadores sin el mas habil.
+    '''
+    indice_jugador_menos_habil = calcular_max_min_estadisticas(
+        lista_jugadores, clave_estadisticas, clave_interior_estadistica, maximo= False)
+    nueva_lista_jugadores = []
+    for indice in range(len(lista_jugadores)):
+        if(indice != indice_jugador_menos_habil):
+            nueva_lista_jugadores.append(lista_jugadores[indice])
+    return nueva_lista_jugadores
 
 
-     
+def calcular_y_mostrar_el_promedio_de_puntos_del_dream_team_sin_el_menos_habil(
+    lista_jugadores : list[dict], clave_estadisticas = "estadisticas", 
+    clave_interior_estadistica = "promedio_puntos_por_partido"):
+    '''
+    Calcula y muestra el promedio de puntos del dream team sin incluir al 
+    menos habil segun estadistica.
+    Recibe (arg 1) la lista de jugadores, (arg 2): clave :"estadisticas", 
+    (arg 3) la clave de la estadistica a evaluar. ej: "promedio_puntos_por_partido".
+    Devuelve - no aplica
+    '''
+    nueva_lista_sin_el_menos_habil = quitar_el_emenos_habil_segun_clave_estadistica(
+        lista_jugadores, clave_estadisticas, clave_interior_estadistica)
+    calcular_y_mostrar_el_promedio_de_puntos_del_dream_team(nueva_lista_sin_el_menos_habil)
+    
+ 
+ 
+ 
+ 
+  
 #--Menú y ejecucion de la app
 def opciones_del_menu()-> str:
     '''
@@ -669,7 +708,7 @@ def opciones_del_menu()-> str:
            "13- Ver el jugador con la mayor cantidad de robos totales\n"\
            "14- Ver el jugador con la mayor cantidad de bloqueos totales\n"\
            "15- Ver los jugadores que tienen el porcentaje de tiros libres superior al valor ingresado.\n"\
-           "16- Ver el promedio de puntos por partido del equipo excluyendo al jugador con la menor cantidad de puntos por partido\n"\
+           "16- Ver el promedio de puntos por partido del equipo excluyendo al jugador con la menor puntos\n"\
                
                
     ''        
@@ -723,7 +762,7 @@ def aplicacion(lista_Jugadores : list[dict])-> None:
                 buscar_jugador_y_ver_sus_logros(
                     lista_Jugadores)
             case 5:
-                Calcular_y_mostrar_el_promedio_de_puntos_del_dream_team(
+                calcular_y_mostrar_el_promedio_de_puntos_del_dream_team(
                     lista_Jugadores)
             case 6:
                 buscar_jugador_y_ver_logro(lista_Jugadores)
@@ -755,7 +794,8 @@ def aplicacion(lista_Jugadores : list[dict])-> None:
                 mostrar_jugadores_mayores_al_ingresado(
                     lista_Jugadores, clave_interior_estadistica="porcentaje_tiros_libres")
             case 16:
-                pass
+                    calcular_y_mostrar_el_promedio_de_puntos_del_dream_team_sin_el_menos_habil(
+                        lista_Jugadores, clave_interior_estadistica="promedio_puntos_por_partido")
             case 17:
                 pass
             case 18:
