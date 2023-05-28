@@ -383,8 +383,8 @@ def ordenar_bubble_sort(lista_original : list[dict], clave = "nombre", orden = "
         return lista_nombres
 
  
- 
-def tomar_nombre_mas_estadisticas(
+ #--------------------------------- cambio en el 5 el mansaje por salida
+def tomar_nombre_mas_estadisticas_mj_a_lista(
     lista: list, clave_nombre="nombre",clave_estadistica= "estadisticas",
     clave_interior_estadistica ="promedio_puntos_por_partido", orden="asc"):
     '''
@@ -394,7 +394,7 @@ def tomar_nombre_mas_estadisticas(
     (arg 3) otra clave (para diccionario dentro ej: "estadisticas",(arg 4)
     otra clave (para el dentro del dicc estadisticas ejemplo: 
     "promedio_puntos_por_partido"), (arg 5) orden="asc" (para el ordenamiento)
-    Devuelve - No aplica
+    Devuelve - una nueva lista_ con el nombre ordenado  su estadistica.
     '''
     lista_nombres_ordenados = ordenar_bubble_sort(lista, clave_nombre, orden)
     nueva_lista_nombres = []
@@ -407,11 +407,22 @@ def tomar_nombre_mas_estadisticas(
                 nueva_lista_nombres.append(nombre)
                 nueva_lista_valores.append(promedio)
     clave_dicc_estadisticas_sin_guion = clave_interior_estadistica.replace("_", " ")
+    nueva_lista_nombre_ordenado_y_estadistica = []
     for indice in range(len(nueva_lista_nombres)):
         mensaje = "{0} :  {1}  {2}".format(
             nueva_lista_nombres[indice], clave_dicc_estadisticas_sin_guion,
             nueva_lista_valores[indice])
-        print_dato(mensaje)
+        nueva_lista_nombre_ordenado_y_estadistica.append(mensaje)
+    return nueva_lista_nombre_ordenado_y_estadistica
+
+
+def imprimir_mensaje_nombres_estaditicas(lista_mensaje_nombre_estadisticas : list):
+    '''
+    imprime el mensaje que esta en la lista.
+    '''
+    for elem in lista_mensaje_nombre_estadisticas:
+        print(elem)
+
 
 def Calcular_y_mostrar_el_promedio_de_puntos_del_dream_team(
     lista_jugadores : list[dict]):
@@ -424,10 +435,10 @@ def Calcular_y_mostrar_el_promedio_de_puntos_del_dream_team(
     mensaje_promedio_de_equipo = calcular_promedio_de_puntos_equipo(lista_jugadores)    
     print_dato("El promedio de puntos por partido de todo el equipo es {0} ".format(
         round(mensaje_promedio_de_equipo, 2)))
-    tomar_nombre_mas_estadisticas(lista_jugadores, clave_nombre="nombre",
-                                 clave_estadistica= "estadisticas", 
-                                 clave_interior_estadistica ="promedio_puntos_por_partido",
-                                 orden="asc")
+    lista_nombres_ordenado_y_estadisticas = tomar_nombre_mas_estadisticas_mj_a_lista(
+        lista_jugadores, clave_nombre="nombre",clave_estadistica= "estadisticas",
+        clave_interior_estadistica ="promedio_puntos_por_partido",orden="asc")
+    imprimir_mensaje_nombres_estaditicas(lista_nombres_ordenado_y_estadisticas)
     
 # 6
 def buscar_jugador_y_ver_logro(
