@@ -383,10 +383,9 @@ def ordenar_bubble_sort(lista_original : list[dict], clave = "nombre", orden = "
         return lista_nombres
 
  
- #--------------------------------- cambio en el 5 el mansaje por salida
-def tomar_nombre_mas_estadisticas_mj_a_lista(
-    lista: list, clave_nombre="nombre",clave_estadistica= "estadisticas",
-    clave_interior_estadistica ="promedio_puntos_por_partido", orden="asc"):
+def tomar_nombre_mas_estadisticas_mj_a_lista(lista_jugadores_original : list[dict],
+    lista_jugadores_ordenada_alfabet : list,  clave_nombre="nombre",clave_estadistica= "estadisticas",
+    clave_interior_estadistica ="promedio_puntos_por_partido"):
     '''
     De una lista obtiene los nombres de los jugadores con su estadistica,
     ejemplo promedio de puntos por partido.
@@ -396,11 +395,11 @@ def tomar_nombre_mas_estadisticas_mj_a_lista(
     "promedio_puntos_por_partido"), (arg 5) orden="asc" (para el ordenamiento)
     Devuelve - una nueva lista_ con el nombre ordenado  su estadistica.
     '''
-    lista_nombres_ordenados = ordenar_bubble_sort(lista, clave_nombre, orden)
+    
     nueva_lista_nombres = []
     nueva_lista_valores = []
-    for jugador_lista_ordenada in lista_nombres_ordenados:
-        for jugador_lista_original in lista:
+    for jugador_lista_ordenada in lista_jugadores_ordenada_alfabet:
+        for jugador_lista_original in lista_jugadores_original:
             if(jugador_lista_ordenada == jugador_lista_original[clave_nombre]):
                 nombre = jugador_lista_original[clave_nombre]
                 promedio = jugador_lista_original[clave_estadistica][clave_interior_estadistica]
@@ -429,18 +428,24 @@ def imprimir_mensaje_nombres_estaditicas(lista_nombres__estadisticas : list):
 def Calcular_y_mostrar_el_promedio_de_puntos_del_dream_team(
     lista_jugadores : list[dict]):
     '''
-    calcula y muestra el promedio total del equipo , con el nombre y su promedio
-    individual.
-    Recibe : la lista de Jugadores.
-    Devuelve - no aplica.
+    calcula y muestra el promedio de puntos del dream team y luego el promedio
+    individual de cada uno.
+    Recibe la lista de jugadores.
+    Devuelve- no aplica.
     '''
     mensaje_promedio_de_equipo = calcular_promedio_de_puntos_equipo(lista_jugadores)    
     print_dato("El promedio de puntos por partido de todo el equipo es {0} ".format(
         round(mensaje_promedio_de_equipo, 2)))
+    lista_ordenada_alfabeticamente =  ordenar_bubble_sort(lista_jugadores, clave="nombre", orden= "asc")
+    
     lista_nombres_ordenado_y_estadisticas = tomar_nombre_mas_estadisticas_mj_a_lista(
-        lista_jugadores, clave_nombre="nombre",clave_estadistica= "estadisticas",
-        clave_interior_estadistica ="promedio_puntos_por_partido",orden="asc")
+        lista_jugadores,lista_ordenada_alfabeticamente ,clave_nombre="nombre",
+        clave_estadistica= "estadisticas", 
+        clave_interior_estadistica ="promedio_puntos_por_partido")
+    
     imprimir_mensaje_nombres_estaditicas(lista_nombres_ordenado_y_estadisticas)
+    
+    
     
 # 6
 def buscar_jugador_y_ver_logro(
@@ -638,11 +643,7 @@ def mostrar_jugadores_mayores_al_ingresado(
 jugador con la menor cantidad de puntos por partido
 
 '''
-def ver(lista_jugadores : list[dict]):
-    lista_nombres_ordenado_y_estadisticas = tomar_nombre_mas_estadisticas_mj_a_lista(
-        lista_jugadores, clave_nombre="nombre",clave_estadistica= "estadisticas",
-        clave_interior_estadistica ="promedio_puntos_por_partido",orden="asc")
-    print(lista_nombres_ordenado_y_estadisticas)
+
 
      
 #--Menú y ejecucion de la app
@@ -754,7 +755,7 @@ def aplicacion(lista_Jugadores : list[dict])-> None:
                 mostrar_jugadores_mayores_al_ingresado(
                     lista_Jugadores, clave_interior_estadistica="porcentaje_tiros_libres")
             case 16:
-                ver(lista_Jugadores)
+                pass
             case 17:
                 pass
             case 18:
