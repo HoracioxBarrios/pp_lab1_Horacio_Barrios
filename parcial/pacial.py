@@ -595,7 +595,7 @@ def mostrar_jugadores_mayores_al_ingresado(
 #12
 #13
 '''
-14) Calcular y mostrar el jugador con la mayor cantidad de bloqueos totales.
+14) Calcular y mostrar el jugador con la mayor cantidad de bloqueos totales .
 
 '''
 
