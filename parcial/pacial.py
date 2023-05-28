@@ -680,9 +680,6 @@ def calcular_y_mostrar_el_promedio_de_puntos_del_dream_team_sin_el_menos_habil(
 
 #17
 
-'''
-17) Calcular y mostrar el jugador con la mayor cantidad de logros obtenidos
-''' 
 def calcular_jugador_con_mas_logros(lista_jugadores : list[dict], maximo = True):
     '''
     Calcula el jugador con mas o menos logros y lo muestra.
