@@ -390,7 +390,7 @@ def calcular_y_mostrar_el_promedio_de_puntos_del_dream_team(
     '''
 
     mensaje_promedio_de_equipo = calcular_promedio_de_puntos_equipo(lista_jugadores)
-    print("El promedio de puntos por partido de todo el equipo es {0}\n".format(round(
+    print("El promedio de puntos por partido de TODO EL EQUIPO es: >>>>> {0}".format(round(
         mensaje_promedio_de_equipo, 2)))
 
     lista_ordenada_alfabeticamente = ordenar_bubble_sort(
@@ -667,13 +667,24 @@ ese valor.
 
 '''
 def mostrar_estadistica_ordenado_por_posicion(
-    lista_jugadores_original : list, clave = "porcentaje_tiros_de_campo", mensaje = "Posicion en la cancha"):
+    lista_jugadores_original : list, clave_interior_estadistica = "porcentaje_tiros_de_campo",
+    mensaje = "Posicion en la cancha"):
+    '''
+    permite ingresar un valor y ver los que jugadores que lo superan.
+    Recibe:
+    Devuelve:
+    '''
+    lista_ordenada_jugadores = ordenar_bubble_sort(lista_jugadores_original, clave="posicion",
+                                                   orden="asc")
+    lista_de_jugadores_que_superan = jugadores_mayores_al_ingresado(
+        lista_ordenada_jugadores,clave_estadistica= "estadisticas",
+        clave_interior_estadistica= "porcentaje_tiros_de_campo")
+    if(lista_de_jugadores_que_superan):
+        for jugador in lista_de_jugadores_que_superan:
+            print("{0}: Nombre: {1} : {2} : {3} {4}".format(
+                mensaje, jugador["posicion"], jugador["nombre"],clave_interior_estadistica, 
+            jugador["estadisticas"]["porcentaje_tiros_de_campo"]))
     
-    lista_ordenada_jugadores = ordenar_bubble_sort(lista_jugadores_original, clave="posicion", orden="asc")
-    for jugador in lista_ordenada_jugadores:
-        print("{0} Nombre: {1} {2} {3}".format(mensaje, jugador["posicion"],
-            jugador["nombre"], clave,  jugador["estadisticas"]["porcentaje_tiros_de_campo"]))
-
 
 
 
