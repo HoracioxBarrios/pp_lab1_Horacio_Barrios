@@ -338,16 +338,6 @@ def buscar_jugador_y_ver_sus_logros(lista_jugadores: list[dict]):
         print(" No existe el nombre en la lista")
 
 #5
-def contar_elementos_en_lista(lista_jugadores : list[dict])-> int:
-    '''
-    Cuenta cuantos (jugadores) hay en una lista
-    Recibe la lista de diccionarios heroes.
-    Devuelve la cantidad de jugadores.
-    '''
-    if(lista_jugadores):
-        cantidad_jugadores = len(lista_jugadores)
-        return cantidad_jugadores
-
 def calcular_promedio_de_puntos_equipo(lista_jugadores : list[dict])-> float:
     '''
     Calcula el promedio de puntos por partido de todo el equipo 
@@ -355,7 +345,7 @@ def calcular_promedio_de_puntos_equipo(lista_jugadores : list[dict])-> float:
     Recibe la lista de jugadores. List
     Devuelve el promedio (Float)
     '''
-    cantidad_de_jugadores = contar_elementos_en_lista(lista_jugadores)
+    cantidad_de_jugadores = len(lista_jugadores)
     acum_promedio_jugador_puntos_por_partido = 0
     for jugador in lista_jugadores:
         dicc_estadisticas_jugador = jugador["estadisticas"]
@@ -394,26 +384,26 @@ def ordenar_bubble_sort(lista_original : list[dict], clave = "nombre", orden = "
 
  
  
-def tomar_nobre_mas_estadisticas(
-    lista: list, clave_uno="nombre",clave_estadistica= "estadisticas",
+def tomar_nombre_mas_estadisticas(
+    lista: list, clave_nombre="nombre",clave_estadistica= "estadisticas",
     clave_interior_estadistica ="promedio_puntos_por_partido", orden="asc"):
     '''
     De una lista obtiene los nombres de los jugadores con su estadistica,
     ejemplo promedio de puntos por partido.
     Recibe: (arg 1)una lista de jugadores, (arg 2) una clave ej "nombre",
     (arg 3) otra clave (para diccionario dentro ej: "estadisticas",(arg 4)
-    otra clave (para el dentro del dicc estadisticas ej: 
+    otra clave (para el dentro del dicc estadisticas ejemplo: 
     "promedio_puntos_por_partido"), (arg 5) orden="asc" (para el ordenamiento)
     Devuelve - No aplica
     '''
-    lista_nombres_ordenados = ordenar_bubble_sort(lista, clave_uno, orden)
+    lista_nombres_ordenados = ordenar_bubble_sort(lista, clave_nombre, orden)
     nueva_lista_nombres = []
     nueva_lista_valores = []
-    for jugador_lista_dos in lista_nombres_ordenados:
-        for jugador_lista_uno in lista:
-            if(jugador_lista_dos == jugador_lista_uno[clave_uno]):
-                nombre = jugador_lista_uno[clave_uno]
-                promedio = jugador_lista_uno[clave_estadistica][clave_interior_estadistica]
+    for jugador_lista_ordenada in lista_nombres_ordenados:
+        for jugador_lista_original in lista:
+            if(jugador_lista_ordenada == jugador_lista_original[clave_nombre]):
+                nombre = jugador_lista_original[clave_nombre]
+                promedio = jugador_lista_original[clave_estadistica][clave_interior_estadistica]
                 nueva_lista_nombres.append(nombre)
                 nueva_lista_valores.append(promedio)
     clave_dicc_estadisticas_sin_guion = clave_interior_estadistica.replace("_", " ")
@@ -434,7 +424,7 @@ def Calcular_y_mostrar_el_promedio_de_puntos_del_dream_team(
     mensaje_promedio_de_equipo = calcular_promedio_de_puntos_equipo(lista_jugadores)    
     print_dato("El promedio de puntos por partido de todo el equipo es {0} ".format(
         round(mensaje_promedio_de_equipo, 2)))
-    tomar_nobre_mas_estadisticas(lista_jugadores, clave_uno="nombre",
+    tomar_nombre_mas_estadisticas(lista_jugadores, clave_nombre="nombre",
                                  clave_estadistica= "estadisticas", 
                                  clave_interior_estadistica ="promedio_puntos_por_partido",
                                  orden="asc")
@@ -478,11 +468,13 @@ def calcular_max_lista_dicc_dicc(
     lista_jugadores: list[dict], clave_estadistica = "estadisticas",
     clave_interior_estadistica = "rebotes_totales")-> dict:
     '''
-    calcula el jugador que tiene el maxiomo de estadistica buscada.
+    Calcula el jugador que tiene el maximo de estadistica buscada.
     Recibe (Arg 1) Una lista de jugadores [list[dict[dict]]], 
     (arg 2) clave de dicc exterior ejemplo: "estadisticas", 
     (arg 3) clave del dicc interior ej: "rebotes_totales", 
-    Devuelve un nuevo dicc
+    Devuelve un nuevo dicc con el nombre y la estadistica
+    maxima obtenida Ejemplo:
+    Nombre: john stockto, Robos totales: 3265
     '''
     flag = True
     nuevo_dicc = {}
@@ -597,11 +589,14 @@ def mostrar_jugadores_mayores_al_ingresado(
 #12
 #13
 #14
+#15
 '''
-15) Permitir al usuario ingresar un valor y mostrar los jugadores que hayan tenido un
-porcentaje de tiros libres superior a ese valor.
+16) Calcular y mostrar el promedio de puntos por partido del equipo excluyendo al
+jugador con la menor cantidad de puntos por partido
 
 '''
+def ver(lista_jugadores : list[dict]):
+    Calcular_y_mostrar_el_promedio_de_puntos_del_dream_team(lista_jugadores)
 
      
 #--Menú y ejecucion de la app
@@ -627,7 +622,9 @@ def opciones_del_menu()-> str:
            "13- Ver el jugador con la mayor cantidad de robos totales\n"\
            "14- Ver el jugador con la mayor cantidad de bloqueos totales\n"\
            "15- Ver los jugadores que tienen el porcentaje de tiros libres superior al valor ingresado.\n"\
- 
+           "16- Ver el promedio de puntos por partido del equipo excluyendo al jugador con la menor cantidad de puntos por partido\n"\
+               
+               
     ''        
     return opciones
 
@@ -711,7 +708,7 @@ def aplicacion(lista_Jugadores : list[dict])-> None:
                 mostrar_jugadores_mayores_al_ingresado(
                     lista_Jugadores, clave_interior_estadistica="porcentaje_tiros_libres")
             case 16:
-                pass
+                ver(lista_Jugadores)
             case 17:
                 pass
             case 18:
