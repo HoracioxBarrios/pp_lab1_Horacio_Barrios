@@ -302,7 +302,7 @@ def mostrar_nombres_jugadores(lista_jugadores : list[dict])-> None:
     '''
     lista_nombres_ordenados = ordenar_bubble_sort(lista_jugadores, clave="nombre")
     for jugador in lista_nombres_ordenados:
-        print_dato(jugador)
+        print_dato(jugador["nombre"])
 
 
 def pedir_nombre_y_apellido_jugador()-> str:
@@ -377,77 +377,28 @@ def ordenar_bubble_sort(lista_original : list[dict], clave = "nombre", orden = "
                 if lista[indice][clave] < lista[indice + 1][clave] and orden == "des":
                     lista[indice], lista[indice + 1] = lista[indice + 1], lista[indice]
                     flag_swap = True
-        lista_nombres = []
-        for nombre in lista:
-            lista_nombres.append(nombre[clave])
-        return lista_nombres
-
- 
-def tomar_nombre_mas_estadisticas_mj_a_lista(lista_jugadores_original : list[dict],
-    lista_jugadores_ordenada_alfabet : list,  clave_nombre="nombre",
-    clave_estadistica= "estadisticas",
-    clave_interior_estadistica ="promedio_puntos_por_partido"):
-    '''
-    De una lista obtiene los nombres de los jugadores con su estadistica,
-    ejemplo promedio de puntos por partido armando un nuevo diccionario.
-    Recibe: (arg 1)una lista de jugadores, (arg 2) una clave ej "nombre",
-    (arg 3) otra clave (para diccionario dentro ej: "estadisticas",(arg 4)
-    otra clave (para el dentro del dicc estadisticas ejemplo: 
-    "promedio_puntos_por_partido"), (arg 5) orden="asc" (para el ordenamiento)
-    Devuelve - una nueva lista_ con el nombre ordenado  su estadistica.
-    '''
-    
-    nueva_lista_nombres = []
-    nueva_lista_valores = []
-    for jugador_lista_ordenada in lista_jugadores_ordenada_alfabet:
-        for jugador_lista_original in lista_jugadores_original:
-            if(jugador_lista_ordenada == jugador_lista_original[clave_nombre]):
-                nombre = jugador_lista_original[clave_nombre]
-                promedio = jugador_lista_original[clave_estadistica][clave_interior_estadistica]
-                nueva_lista_nombres.append(nombre)
-                nueva_lista_valores.append(promedio)
-    clave_dicc_estadisticas_sin_guion = clave_interior_estadistica.replace("_", " ")
-    nueva_lista_nombre_ordenado_y_estadistica = []
-    for indice in range(len(nueva_lista_nombres)):
-        mensaje = "{0} :  {1}  {2}".format(
-            nueva_lista_nombres[indice], clave_dicc_estadisticas_sin_guion,
-            nueva_lista_valores[indice])
-        nueva_lista_nombre_ordenado_y_estadistica.append(mensaje)
-    return nueva_lista_nombre_ordenado_y_estadistica
-
-
-def imprimir_mensaje_nombres_estaditicas(lista_nombres__estadisticas : list):
-    '''
-    imprime el mensaje que esta en la lista.
-    Recibe una lista con conmbre y estadisticas de ese player.
-    devuelve- no aplica
-    '''
-    for nombre_estadisitca in lista_nombres__estadisticas:
-        print(nombre_estadisitca)
-
+        
+        return lista
 
 def calcular_y_mostrar_el_promedio_de_puntos_del_dream_team(
-    lista_jugadores : list[dict]):
+    lista_jugadores: list[dict], clave="promedio_puntos_por_partido"):
     '''
-    calcula y muestra el promedio de puntos del dream team y luego el promedio
+    Calcula y muestra el promedio de puntos del dream team y luego el promedio
     individual de cada uno.
     Recibe la lista de jugadores.
-    Devuelve- no aplica.
+    No devuelve ningún valor.
     '''
-    mensaje_promedio_de_equipo = calcular_promedio_de_puntos_equipo(lista_jugadores)    
-    print_dato("El promedio de puntos por partido de todo el equipo es {0} ".format(
-        round(mensaje_promedio_de_equipo, 2)))
-    lista_ordenada_alfabeticamente =  ordenar_bubble_sort(
-        lista_jugadores, clave="nombre", orden= "asc")
-    
-    lista_nombres_ordenado_y_estadisticas = tomar_nombre_mas_estadisticas_mj_a_lista(
-        lista_jugadores,lista_ordenada_alfabeticamente ,clave_nombre="nombre",
-        clave_estadistica= "estadisticas", 
-        clave_interior_estadistica ="promedio_puntos_por_partido")
-    
-    imprimir_mensaje_nombres_estaditicas(lista_nombres_ordenado_y_estadisticas)
-    
-    
+
+    mensaje_promedio_de_equipo = calcular_promedio_de_puntos_equipo(lista_jugadores)
+    print("El promedio de puntos por partido de todo el equipo es {0}\n".format(round(
+        mensaje_promedio_de_equipo, 2)))
+
+    lista_ordenada_alfabeticamente = ordenar_bubble_sort(
+        lista_jugadores, clave="nombre", orden="asc")
+    for jugador in lista_ordenada_alfabeticamente:
+        print("Nombre: {0} - Promedio de puntos por partido: {1}".format(
+            jugador["nombre"], jugador["estadisticas"][clave]))
+
     
 # 6
 def buscar_jugador_y_ver_logro(
@@ -715,7 +666,13 @@ posición en la cancha, que hayan tenido un porcentaje de tiros de campo superio
 ese valor.
 
 '''
-
+def mostrar_estadistica_ordenado_por_posicion(
+    lista_jugadores_original : list, clave = "porcentaje_tiros_de_campo", mensaje = "Posicion en la cancha"):
+    
+    lista_ordenada_jugadores = ordenar_bubble_sort(lista_jugadores_original, clave="posicion", orden="asc")
+    for jugador in lista_ordenada_jugadores:
+        print("{0} Nombre: {1} {2} {3}".format(mensaje, jugador["posicion"],
+            jugador["nombre"], clave,  jugador["estadisticas"]["porcentaje_tiros_de_campo"]))
 
 
 
@@ -737,15 +694,15 @@ def opciones_del_menu()-> str:
            "7- Ver el jugador con la mayor cantidad de rebotes totales.\n" \
            "8- Ver el jugador con el mayor porcentaje de tiros de campo.\n" \
            "9- Ver el jugador con el mayor cantidad de asistencias totales.\n"\
-           "10- Ver los jugadores que tienen el promedio de más puntos por partido \nque el valor ingresado.\n"\
-           "11- Ver los jugadores que tienen el promedio de mas rebotes por partido \nque el valor ingresado.\n"\
-           "12- Ver los jugadores que tienen el promedio asistencias por partido \nmayor que el valor ingresado.\n"\
+           "10- Ver los jugadores que tienen el promedio de más puntos por partido que el valor ingresado.\n"\
+           "11- Ver los jugadores que tienen el promedio de mas rebotes por partido que el valor ingresado.\n"\
+           "12- Ver los jugadores que tienen el promedio asistencias por partido mayor que el valor ingresado.\n"\
            "13- Ver el jugador con la mayor cantidad de robos totales.\n"\
-           "14- Ver el jugador con la mayor cantidad de bloqueos totales\n"\
-           "15- Ver los jugadores que tienen el porcentaje de tiros libres superior\nal valor ingresado.\n"\
-           "16- Ver el promedio de puntos por partido del equipo excluyendo al \njugador con la menor puntos.\n"\
+           "14- Ver el jugador con la mayor cantidad de bloqueos totales.\n"\
+           "15- Ver los jugadores que tienen el porcentaje de tiros libres superior al valor ingresado.\n"\
+           "16- Ver el promedio de puntos por partido del equipo excluyendo al jugador con la menor puntos.\n"\
            "17- Ver el jugador con la mayor cantidad de logros obtenidos.\n"\
-           "18- Ver los jugadores que hayan tenido un porcentaje de tiros triples \nsuperior al valor ingresado.\n"\
+           "18- Ver los jugadores que hayan tenido un porcentaje de tiros triples superior al valor ingresado.\n"\
            "19- Ver el jugador con la mayor cantidad de temporadas jugadas.\n"\
            "20- Ver los jugadores ordenados por posición en la cancha, que hayan \ntenido un porcentaje de tiros de campo superior al valor ingresado.\n"   
        
@@ -843,7 +800,7 @@ def aplicacion(lista_Jugadores : list[dict])-> None:
                 calcular_y_mostrar_jugador_mayor_estadistica(
                     lista_Jugadores, clave_interior_estadistica = "temporadas")
             case 20:
-                pass
+                mostrar_estadistica_ordenado_por_posicion(lista_Jugadores)
             case 21:
                 pass
             case 22:
