@@ -477,44 +477,67 @@ def buscar_jugador_y_ver_logro(
 
 #7
 
-def calcular_max_lista_dicc_dicc(
+def calcular_max_min_estadisticas(
     lista_jugadores: list[dict], clave_estadistica = "estadisticas",
-    clave_interior_estadistica = "rebotes_totales")-> dict:
+    clave_interior_estadistica = "rebotes_totales", maximo = True)-> int:
     '''
-    Calcula el jugador que tiene el maximo de estadistica buscada.
-    Recibe (Arg 1) Una lista de jugadores [list[dict[dict]]], 
-    (arg 2) clave de dicc exterior ejemplo: "estadisticas", 
-    (arg 3) clave del dicc interior ej: "rebotes_totales", 
-    Devuelve un nuevo dicc con el nombre y la estadistica
-    maxima obtenida Ejemplo:
-    Nombre: john stockto, Robos totales: 3265
+    Calcula el maximo o minimo de las estadisticas segun clave.
+    Recibe: (arg 1)La lista de jugadores, (arg 2) la clave "estadisticas,
+    (arg 3) la clave interior del diccionario estadisticas ej: "rebotes_totales",
+    (arg 4) si maximo o minimo (maximo = True) por defecto.
     '''
-    flag = True
-    nuevo_dicc = {}
-    for indice in range(len(lista_jugadores)):
-        diccionario_estadisticas = lista_jugadores[indice][clave_estadistica]
-        revotes = diccionario_estadisticas[clave_interior_estadistica]
-        
-        if(flag or revotes > max_revotes): 
-            max_revotes = revotes
-            max_indice = indice
-            flag = False        
-    nuevo_dicc["nombre"] = \
-    lista_jugadores[max_indice]["nombre"]
+    if(lista_jugadores):
+        flag_primera_iteracion = True
+        for indice in range(len(lista_jugadores)):
+            diccionario_estadisticas = lista_jugadores[indice][clave_estadistica]
+            valor_estadistica = diccionario_estadisticas[clave_interior_estadistica]
+            
+            if(flag_primera_iteracion or 
+            (valor_estadistica > max_min_estadistica and maximo == True) or 
+            (valor_estadistica < max_min_estadistica and maximo == False)): 
+                max_min_estadistica = valor_estadistica
+                max_min_indice = indice
+                flag_primera_iteracion = False    
+        return max_min_indice
+    else:
+        print("La lista está vacia")
+        return -1
+
+def armar_diccionario_jugador_max_min_estadisticas(
+    lista_jugadores : list[dict], max_min_indice : int,clave_estadistica = "estadisticas",
+    clave_interior_estadistica = "rebotes_totales")-> dict | int:
+    '''
+    Arma un diccionario con el nombre y la estadistica maxima o minima 
+    obtenida. ejemplo: Nombre : Michael Jordan, Rebotes totales : 3520.
+    Recibe (arg 1 ) la lista de jugadores, (arg 2) el indice maximo o
+    minimo obtenido anteriormente. 
+    (arg 3) la clave "estadisticas", (arg 4) la clave de la estadistica
+    especifica del diccionario (Ejemplo : "rebotes_totales").
+    '''
+    if max_min_indice is None:
+        print("Error al conseguir el jugador con la maxima o minima estadistica")
+        return -1
+    jugador_max_min_obtenido = lista_jugadores[max_min_indice]
     
-    nuevo_dicc[clave_interior_estadistica] = max_revotes
-    return nuevo_dicc
+    nuevo_dicc_nombre_estadistica_max_min = {}
+    nuevo_dicc_nombre_estadistica_max_min["nombre"] = jugador_max_min_obtenido["nombre"]
+    nuevo_dicc_nombre_estadistica_max_min[clave_interior_estadistica] = \
+        jugador_max_min_obtenido[clave_estadistica][clave_interior_estadistica]
+    
+    return nuevo_dicc_nombre_estadistica_max_min
 
 
-def separar_datos_de_dicc(clave_estadistica : dict)-> str:
+def preparar_datos_nombre_estadistica_de_diccionario_a_texto(
+    diccionario_nombre_estadistica : dict)-> str:
     '''
-    Del diccionario destadistica separa el texto, por ejemplo queda
-    nombre : 'Lili' \n goles : 15-
-    Recibe el diccionario.
-    devuelve una cadena formateada.
+    De un diccionario estadisticas arma una cadena str para imprimir.
+    Recibe el diccionario  con los datos por ejemplo:  
+    Nombre : Michael Jordan, Rebotes totales : 3520
+    
+    Devuelve una cadena formateada para imprimir por consola.
     '''
     pares_clave_valor = []
-    for clave, valor in clave_estadistica.items():
+    for clave, valor in diccionario_nombre_estadistica.items():
         texto_par = "{0}: {1}".format(clave, valor)
         pares_clave_valor.append(texto_par.capitalize().replace("_", " "))
 
@@ -522,17 +545,24 @@ def separar_datos_de_dicc(clave_estadistica : dict)-> str:
     return cadena
 
 def calcular_y_mostrar_jugador_mayor_estadistica(
-    lista_jugadores : list[dict], clave_interior_estadistica :str, clave_estadistica = "estadisticas"):
+    lista_jugadores : list[dict], clave_estadistica = "estadisticas", 
+    clave_interior_estadistica = "rebotes_totales"):
     '''
-    Calcula y muestra el jugador con mayor estadistica 'x' del equipo.
-    Recibe (arg 1)la lista de jugadores.(arg 2) clave de la estadistica ejemplo:
-    "asistencias_totales", (arg 3)Opcional ,por defecto clave "estadisticas".
-    Devuelve - no aplica.
+   Calcula y muestra el nombre con su maxima estadistica, segun clave.
+   Recibe (arg 1)la lsita de jugadores, (arg 2) la clave estadisticas,
+   (arg 3) la clave de la estadistica ejemplo ("rebotes_totales").
+   Devuelve: No aplica
     '''
-    nombre_y_estadistica_dicc = calcular_max_lista_dicc_dicc(
-    lista_jugadores, clave_estadistica,clave_interior_estadistica)
-    dato_str = separar_datos_de_dicc(nombre_y_estadistica_dicc)
-    print_dato(dato_str)
+    max_min_indice = calcular_max_min_estadisticas(
+    lista_jugadores, clave_estadistica,clave_interior_estadistica, maximo= True)
+    
+    jugador_estadistica_dicc = armar_diccionario_jugador_max_min_estadisticas(
+    lista_jugadores, max_min_indice ,clave_estadistica,
+    clave_interior_estadistica)
+    
+    cadena = preparar_datos_nombre_estadistica_de_diccionario_a_texto(
+        jugador_estadistica_dicc)
+    print_dato(cadena)
 
 #8
 
