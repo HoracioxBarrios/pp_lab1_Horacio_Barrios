@@ -710,7 +710,9 @@ def calcular_jugador_con_mas_logros(lista_jugadores : list[dict], maximo = True)
 # 18
 # 19
 '''
-19) Calcular y mostrar el jugador con la mayor cantidad de temporadas jugadas
+20) Permitir al usuario ingresar un valor y mostrar los jugadores , ordenados por
+posición en la cancha, que hayan tenido un porcentaje de tiros de campo superior a
+ese valor.
 
 '''
 
@@ -726,25 +728,26 @@ def opciones_del_menu()-> str:
     Devuelve: una cadena str .
     '''
     opciones = "Bienvenido:\n" \
-           "1- Ver Jugadores y Posición de todos los jugadores del Dream Team\n" \
-           "2- Seleccionar un jugador para ver sus estadísticas (Opcional: guardar)\n" \
+           "1- Ver Jugadores y Posición de todos los jugadores del Dream Team.\n" \
+           "2- Seleccionar un jugador para ver sus estadísticas (Opcional: guardar).\n" \
            "3- Guardar estadísticas del jugador seleccionado anteriormente.\n" \
-           "4- Buscar un jugador por su nombre para ver sus logros\n" \
-           "5- Ver el promedio de puntos por partido de todo el equipo del Dream team\n"\
-           "6- Ver si el jugador ingresado pertenece al salon de la fama\n" \
-           "7- Ver el jugador con la mayor cantidad de rebotes totales\n" \
-           "8- Ver el jugador con el mayor porcentaje de tiros de campo\n" \
-           "9- Ver el jugador con el mayor cantidad de asistencias totales\n"\
-           "10- Ver los jugadores que tienen el promedio de más puntos por partido que el valor ingresado.\n"\
-           "11- Ver los jugadores que tienen el promedio de mas rebotes por partido que el valor ingresado.\n"\
-           "12- Ver los jugadores que tienen el promedio asistencias por partido mayor que el valor ingresado.\n"\
-           "13- Ver el jugador con la mayor cantidad de robos totales\n"\
+           "4- Buscar un jugador por su nombre para ver sus logros.\n" \
+           "5- Ver el promedio de puntos por partido de todo el equipo del Dream team.\n"\
+           "6- Ver si el jugador ingresado pertenece al salon de la fama.\n" \
+           "7- Ver el jugador con la mayor cantidad de rebotes totales.\n" \
+           "8- Ver el jugador con el mayor porcentaje de tiros de campo.\n" \
+           "9- Ver el jugador con el mayor cantidad de asistencias totales.\n"\
+           "10- Ver los jugadores que tienen el promedio de más puntos por partido \nque el valor ingresado.\n"\
+           "11- Ver los jugadores que tienen el promedio de mas rebotes por partido \nque el valor ingresado.\n"\
+           "12- Ver los jugadores que tienen el promedio asistencias por partido \nmayor que el valor ingresado.\n"\
+           "13- Ver el jugador con la mayor cantidad de robos totales.\n"\
            "14- Ver el jugador con la mayor cantidad de bloqueos totales\n"\
-           "15- Ver los jugadores que tienen el porcentaje de tiros libres superior al valor ingresado.\n"\
-           "16- Ver el promedio de puntos por partido del equipo excluyendo al jugador con la menor puntos\n"\
-           "17- Ver el jugador con la mayor cantidad de logros obtenidos\n"\
-           "18- Ver los jugadores que hayan tenido un porcentaje de tiros triples superior al valor ingresado.\n"\
-           "19- Ver el jugador con la mayor cantidad de temporadas jugadas\n"    
+           "15- Ver los jugadores que tienen el porcentaje de tiros libres superior\nal valor ingresado.\n"\
+           "16- Ver el promedio de puntos por partido del equipo excluyendo al \njugador con la menor puntos.\n"\
+           "17- Ver el jugador con la mayor cantidad de logros obtenidos.\n"\
+           "18- Ver los jugadores que hayan tenido un porcentaje de tiros triples \nsuperior al valor ingresado.\n"\
+           "19- Ver el jugador con la mayor cantidad de temporadas jugadas.\n"\
+           "20- Ver los jugadores ordenados por posición en la cancha, que hayan \ntenido un porcentaje de tiros de campo superior al valor ingresado.\n"   
        
     ''       
     return opciones
