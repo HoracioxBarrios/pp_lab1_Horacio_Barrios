@@ -676,12 +676,42 @@ def calcular_y_mostrar_el_promedio_de_puntos_del_dream_team_sin_el_menos_habil(
     nueva_lista_sin_el_menos_habil = quitar_el_emenos_habil_segun_clave_estadistica(
         lista_jugadores, clave_estadisticas, clave_interior_estadistica)
     calcular_y_mostrar_el_promedio_de_puntos_del_dream_team(nueva_lista_sin_el_menos_habil)
-    
- 
- 
- 
- 
-  
+
+
+#17
+
+'''
+17) Calcular y mostrar el jugador con la mayor cantidad de logros obtenidos
+''' 
+def calcular_jugador_con_mas_logros(lista_jugadores : list[dict], maximo = True):
+    '''
+    Calcula el jugador con mas o menos logros y lo muestra.
+    Recibe (arg 1) la lista de jugadores, (arg 2) maximo o minimo
+    por defecto maximo = True
+    Devuelve -1 en caso de error.
+    '''
+    if(lista_jugadores):
+        flag_max_min = True
+        for indice in range(len(lista_jugadores)):
+            lista_logros =  lista_jugadores[indice]["logros"]
+            cantidad_logros = len(lista_logros)
+            
+            if(flag_max_min or (cantidad_logros > max_min_logros and maximo == True) 
+               or (cantidad_logros < max_min_logros and maximo == False)):
+                max_min_logros = cantidad_logros
+                max_min_indice = indice
+                flag_max_min = False
+        if(maximo):
+            print("{0} es el jugador con mas logros con: {1}".format(
+                lista_jugadores[max_min_indice]["nombre"], max_min_logros))
+        else:
+            print("{0} es el jugador con menos logros con: {1}".format(
+            lista_jugadores[max_min_indice]["nombre"], max_min_logros))
+    else:
+        print("La lista esta vacia")
+        return -1
+
+
 #--Menú y ejecucion de la app
 def opciones_del_menu()-> str:
     '''
@@ -706,6 +736,7 @@ def opciones_del_menu()-> str:
            "14- Ver el jugador con la mayor cantidad de bloqueos totales\n"\
            "15- Ver los jugadores que tienen el porcentaje de tiros libres superior al valor ingresado.\n"\
            "16- Ver el promedio de puntos por partido del equipo excluyendo al jugador con la menor puntos\n"\
+           "17- Ver el jugador con la mayor cantidad de logros obtenidos\n"\
                
                
     ''        
@@ -794,7 +825,7 @@ def aplicacion(lista_Jugadores : list[dict])-> None:
                     calcular_y_mostrar_el_promedio_de_puntos_del_dream_team_sin_el_menos_habil(
                         lista_Jugadores, clave_interior_estadistica="promedio_puntos_por_partido")
             case 17:
-                pass
+                calcular_jugador_con_mas_logros(lista_Jugadores, maximo= True)
             case 18:
                 pass
             case _:
