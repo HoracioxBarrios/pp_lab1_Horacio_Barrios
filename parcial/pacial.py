@@ -416,18 +416,20 @@ def tomar_nombre_mas_estadisticas_mj_a_lista(
     return nueva_lista_nombre_ordenado_y_estadistica
 
 
-def imprimir_mensaje_nombres_estaditicas(lista_mensaje_nombre_estadisticas : list):
+def imprimir_mensaje_nombres_estaditicas(lista_nombres__estadisticas : list):
     '''
     imprime el mensaje que esta en la lista.
+    Recibe una lista con conmbre y estadisticas de ese player.
+    devuelve- no aplica
     '''
-    for elem in lista_mensaje_nombre_estadisticas:
-        print(elem)
+    for nombre_estadisitca in lista_nombres__estadisticas:
+        print(nombre_estadisitca)
 
 
 def Calcular_y_mostrar_el_promedio_de_puntos_del_dream_team(
     lista_jugadores : list[dict]):
     '''
-    calcula y muetra el promedio total del equipo , con el nombre y su promedio
+    calcula y muestra el promedio total del equipo , con el nombre y su promedio
     individual.
     Recibe : la lista de Jugadores.
     Devuelve - no aplica.
@@ -607,7 +609,10 @@ jugador con la menor cantidad de puntos por partido
 
 '''
 def ver(lista_jugadores : list[dict]):
-    Calcular_y_mostrar_el_promedio_de_puntos_del_dream_team(lista_jugadores)
+    lista_nombres_ordenado_y_estadisticas = tomar_nombre_mas_estadisticas_mj_a_lista(
+        lista_jugadores, clave_nombre="nombre",clave_estadistica= "estadisticas",
+        clave_interior_estadistica ="promedio_puntos_por_partido",orden="asc")
+    print(lista_nombres_ordenado_y_estadisticas)
 
      
 #--Menú y ejecucion de la app
