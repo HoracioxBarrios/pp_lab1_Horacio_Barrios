@@ -515,10 +515,11 @@ def separar_datos_de_dicc(clave_estadistica : dict)-> str:
     return cadena
 
 def calcular_y_mostrar_jugador_mayor_estadistica(
-    lista_jugadores : list[dict], clave_estadistica : str, clave_interior_estadistica :str):
+    lista_jugadores : list[dict], clave_interior_estadistica :str, clave_estadistica = "estadisticas"):
     '''
-    Calcula y muestra el jugador con mayor cantidad de revotes del equipo.
-    Recibe la lista de jugadores.
+    Calcula y muestra el jugador con mayor estadistica 'x' del equipo.
+    Recibe (arg 1)la lista de jugadores.(arg 2) clave de la estadistica ejemplo:
+    "asistencias_totales", (arg 3)Opcional ,por defecto clave "estadisticas".
     Devuelve - no aplica.
     '''
     nombre_y_estadistica_dicc = calcular_max_lista_dicc_dicc(
@@ -572,14 +573,14 @@ def mostrar_estadisticas_jugadores(
         
         
 def mostrar_jugadores_mayores_al_ingresado(
-    lista_jugadores : list[dict], clave_estadistica, 
+    lista_jugadores : list[dict], clave_estadistica = "estadisticas", 
     clave_interior_estadistica = "promedio_puntos_por_partido"):
     '''
     Permite ingresar un valor y busca los que superan ese valor,
     ademas de mostrarlos por consola.
     Recibe: (arg 1) una lista de jugadores(filtrada antes),
-    (arg 2) clave "estadisticas" ,(arg 3) clave del dicc estadisticas.
-    ejemplo: "promedio_puntos_por_partido".
+    (arg 2) clave de estadistica "estadisticas" ,
+    (arg 3) clave del dicc estadisticas. ejemplo: "promedio_puntos_por_partido".
     Devuelve - no aplica
     '''
     lista_jugadores_obtenida = jugadores_mayores_al_ingresado(
@@ -594,7 +595,8 @@ def mostrar_jugadores_mayores_al_ingresado(
 #12
 #13
 '''
-13) Calcular y mostrar el jugador con la mayor cantidad de robos totales
+14) Calcular y mostrar el jugador con la mayor cantidad de bloqueos totales.
+
 '''
 
      
@@ -619,7 +621,9 @@ def opciones_del_menu()-> str:
            "11- Ver los jugadores que tienen el promedio de mas rebotes por partido que el valor ingresado.\n"\
            "12- Ver los jugadores que tienen el promedio asistencias por partido mayor que el valor ingresado.\n"\
            "13- Ver el jugador con la mayor cantidad de robos totales\n"\
-               
+           "14- Ver el jugador con la mayor cantidad de bloqueos totales\n"\
+            
+                
     ""        
     return opciones
 
@@ -677,34 +681,28 @@ def aplicacion(lista_Jugadores : list[dict])-> None:
                 buscar_jugador_y_ver_logro(lista_Jugadores)
             case 7:
                 calcular_y_mostrar_jugador_mayor_estadistica(
-                    lista_Jugadores, clave_estadistica = "estadisticas", 
-                    clave_interior_estadistica = "rebotes_totales")
+                    lista_Jugadores, clave_interior_estadistica = "rebotes_totales")
             case 8:
                 calcular_y_mostrar_jugador_mayor_estadistica(
-                    lista_Jugadores, clave_estadistica = "estadisticas", 
-                    clave_interior_estadistica = "porcentaje_tiros_de_campo")
+                    lista_Jugadores, clave_interior_estadistica = "porcentaje_tiros_de_campo")
             case 9:
                 calcular_y_mostrar_jugador_mayor_estadistica(
-                    lista_Jugadores, clave_estadistica = "estadisticas", 
-                    clave_interior_estadistica = "asistencias_totales")
+                    lista_Jugadores, clave_interior_estadistica = "asistencias_totales")
             case 10:
                 mostrar_jugadores_mayores_al_ingresado(
-                    lista_Jugadores, clave_estadistica="estadisticas", 
-                    clave_interior_estadistica="promedio_puntos_por_partido")
+                    lista_Jugadores, clave_interior_estadistica="promedio_puntos_por_partido")
             case 11:
                 mostrar_jugadores_mayores_al_ingresado(
-                    lista_Jugadores, clave_estadistica="estadisticas", 
-                    clave_interior_estadistica="promedio_rebotes_por_partido")
+                    lista_Jugadores, clave_interior_estadistica="promedio_rebotes_por_partido")
             case 12:
                 mostrar_jugadores_mayores_al_ingresado(
-                    lista_Jugadores, clave_estadistica="estadisticas", 
-                    clave_interior_estadistica="promedio_asistencias_por_partido")
+                    lista_Jugadores, clave_interior_estadistica="promedio_asistencias_por_partido")
             case 13:
                 calcular_y_mostrar_jugador_mayor_estadistica(
-                    lista_Jugadores, clave_estadistica = "estadisticas", 
-                    clave_interior_estadistica = "robos_totales")
+                    lista_Jugadores, clave_interior_estadistica = "robos_totales")
             case 14:
-                pass
+                calcular_y_mostrar_jugador_mayor_estadistica(
+                    lista_Jugadores, clave_interior_estadistica = "bloqueos_totales")
             case 15:
                 pass
             case 16:
