@@ -312,7 +312,7 @@ def mostrar_nombres_jugadores_ordenados(lista_jugadores : list[dict])-> None:
     Recibe la lista de jugadores.
     Devuelve - None
     '''
-    lista_nombres_ordenados = ordenar_bubble_sort(lista_jugadores, clave="nombre")
+    lista_nombres_ordenados = ordenar_lista_dicc_bubble_sort(lista_jugadores, clave="nombre")
     for jugador in lista_nombres_ordenados:
         print("{0}".format(jugador["nombre"]))
 
@@ -370,12 +370,12 @@ def calcular_promedio_de_puntos_equipo(lista_jugadores : list[dict])-> float:
     return promedio_equipo
 
 
-def ordenar_bubble_sort(
+def ordenar_lista_dicc_bubble_sort(
     lista_original : list[dict], clave = "nombre", orden = "asc")-> list | int:
     '''
-    Ordena los elementos de una lista segun clave.
+    Ordena los elementos de una lista de jugadores segun clave.
     Recibe: (arg 1) una lista de jugadores, (arg2) una clave ej:("nombre"),
-    (arg 3) el orden( "asc" o "des").
+    (arg 3) el orden( "asc" o "desc").
     Devuelve: una lista de nombres ordenada alfabeticamente. list[dict]
     o -1 si la lista esta vacia.
     '''
@@ -389,7 +389,7 @@ def ordenar_bubble_sort(
                 if lista[indice][clave] > lista[indice + 1][clave] and orden == "asc":
                     lista[indice], lista[indice + 1] = lista[indice + 1], lista[indice]
                     flag_swap = True
-                if lista[indice][clave] < lista[indice + 1][clave] and orden == "des":
+                if lista[indice][clave] < lista[indice + 1][clave] and orden == "desc":
                     lista[indice], lista[indice + 1] = lista[indice + 1], lista[indice]
                     flag_swap = True
         len_lista -= 1
@@ -412,7 +412,7 @@ def calcular_y_mostrar_el_promedio_de_puntos_del_dream_team(
             "El promedio de puntos por partido de TODO EL EQUIPO es: >>>>> {0}".format(
                 round(mensaje_promedio_de_equipo, 2)))
 
-        lista_ordenada_alfabeticamente = ordenar_bubble_sort(
+        lista_ordenada_alfabeticamente = ordenar_lista_dicc_bubble_sort(
             lista_jugadores, clave="nombre", orden="asc")
         for jugador in lista_ordenada_alfabeticamente:
             print("Nombre: {0} - Promedio de puntos por partido: {1}".format(
@@ -708,7 +708,7 @@ def mostrar_estadistica_ordenado_por_posicion(
     Devuelve: None o -1 
     '''
     if(lista_jugadores):
-        lista_ordenada_jugadores = ordenar_bubble_sort(lista_jugadores, 
+        lista_ordenada_jugadores = ordenar_lista_dicc_bubble_sort(lista_jugadores, 
                                                        clave="posicion", orden="asc")
         lista_de_jugadores_que_superan = jugadores_mayores_al_ingresado(
             lista_ordenada_jugadores,clave_estadistica,
@@ -731,7 +731,59 @@ Calcular de cada jugador cuál es su posición en cada uno de los siguientes ran
 ● Asistencias
 ● Robos
 
+
+for jugador in lista_jugadores:
+        print(jugador["nombre"])#         nombres
+        # print(jugador["estadisticas"])# diccionario estadisticas
+        # print(jugador["estadisticas"][clave_a_evaluar]) #   valores
 '''
+def filtrar_estadistica(lista_jugadores : list[dict],clave_a_evaluar= "puntos_totales" ):
+    '''
+    De filtrauna lista de dict y arma una nueva lista dict con los datos :
+    [{'nombre': 'Magic Johnson', 'puntos_totales': 17707},...]
+    Recibe una lista de jugadores list [dict] y una clave ejemplo:
+    "puntos_totales"
+    Devuelve una lista de dict con los datos listos para ordenar
+    segun necesidad.
+    '''
+    lista_nombres_estadisticas_a_ordenar = []
+    
+    for jugador in lista_jugadores:
+        nuevo_dicc = {}
+        nombre = jugador["nombre"]
+        dicc_estadistica = jugador["estadisticas"]
+        nuevo_dicc["nombre"] = nombre
+        for clave, valor in dicc_estadistica.items():
+            if clave == clave_a_evaluar:
+                nuevo_dicc[clave] = valor
+                lista_nombres_estadisticas_a_ordenar.append(nuevo_dicc)
+    return lista_nombres_estadisticas_a_ordenar            
+   
+        
+        
+
+def maximo_pepe(lista_jugadores):
+    lista_a_ordenar_nombre_estadistic_puntos_totales = filtrar_estadistica(lista_jugadores, clave_a_evaluar="puntos_totales")
+    lista_a_ordenar_nombre_estadistic_rebotes = filtrar_estadistica(lista_jugadores, clave_a_evaluar="rebotes_totales")
+    lista_a_ordenar_nombre_estadistic_asistencias = filtrar_estadistica(lista_jugadores, clave_a_evaluar="asistencias_totales")
+    lista_a_ordenar_nombre_estadistic_puntos_robos = filtrar_estadistica(lista_jugadores, clave_a_evaluar="robos_totales")
+    
+    lista_ordenada_puntos = ordenar_lista_dicc_bubble_sort(lista_a_ordenar_nombre_estadistic_puntos_totales, clave="puntos_totales", orden="desc")
+    lista_ordenada_rebotes = ordenar_lista_dicc_bubble_sort(lista_a_ordenar_nombre_estadistic_rebotes, clave="rebotes_totales", orden="desc")
+    lista_ordenada_asistencias = ordenar_lista_dicc_bubble_sort(lista_a_ordenar_nombre_estadistic_asistencias, clave="asistencias_totales", orden="desc")
+    lista_ordenada_robos = ordenar_lista_dicc_bubble_sort(lista_a_ordenar_nombre_estadistic_puntos_robos, clave="robos_totales", orden="desc")
+    for dato_puntos in lista_ordenada_puntos:
+            print(dato_puntos)
+            
+    for dato_rebotes in lista_ordenada_rebotes:
+            print(dato_rebotes)
+            
+    for dato_asistencias in lista_ordenada_asistencias:
+            print(dato_asistencias)
+            
+    for dato_robos in lista_ordenada_robos:
+            print(dato_robos)
+    
 
 #--Menú y ejecucion de la app
 def opciones_del_menu()-> str:
@@ -742,7 +794,7 @@ def opciones_del_menu()-> str:
     '''
     opciones = "Bienvenido:\n" \
            "1- Ver Jugadores y Posición de todos los jugadores del Dream Team.\n" \
-           "2- Seleccionar un jugador para ver sus estadísticas (Opcional: guardar).\n" \
+           "2- Seleccionar un jugador para ver sus estadísticas (Opcional: guardar-en la opcion 3).\n" \
            "3- Guardar estadísticas del jugador seleccionado anteriormente.\n" \
            "4- Buscar un jugador por su nombre para ver sus logros.\n" \
            "5- Ver el promedio de puntos por partido de todo el equipo del Dream team.\n"\
@@ -760,8 +812,13 @@ def opciones_del_menu()-> str:
            "17- Ver el jugador con la mayor cantidad de logros obtenidos.\n"\
            "18- Ver los jugadores que hayan tenido un porcentaje de tiros triples superior al valor ingresado.\n"\
            "19- Ver el jugador con la mayor cantidad de temporadas jugadas.\n"\
-           "20- Ver los jugadores ordenados por posición en la cancha, que hayan \ntenido un porcentaje de tiros de campo superior al valor ingresado.\n"   
-       
+           "20- Ver los jugadores ordenados por posición en la cancha, que hayan tenido un porcentaje de tiros \nde campo superior al valor ingresado.\n"\
+           "21- Opcion no disponible\n"\
+           "22- Opcion no disponible\n"\
+           "23- ver ranking de les estadisticas de los jugadores (Opcional: guardar)"\
+           "24- Salir"
+           
+           
     ''       
     return opciones
 
@@ -864,7 +921,7 @@ def aplicacion(lista_Jugadores : list[dict])-> None:
             case 22:
                 print("No está dispinible esta opcion")
             case 23:
-                pass
+                maximo_pepe(lista_Jugadores)
             case 24:
                 break
             case _:
