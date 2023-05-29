@@ -23,39 +23,41 @@ def leer_archivo_json(nombre_path : str)-> list[dict]:
 
 #1
 def mostrar_nombres_posicion_o_ubicacion(
-    lista_de_jugadores: list[dict] , ver_indice_ubi = False)-> None | int:
+    lista_de_jugadores: list[dict] , ver_indice_del_jugador = False)-> None | int:
     '''
-    Muestra los nombres, posicion de cada jugador y opcionalmente su indice.
-    Recibe:(arg 1) una lista de jugadores y(arg 2) opcional puede 
-    elegir ver el indice donde esta cada jugador (ver_indice = True).
+    Muestra los nombres y posicion dentro de la cnacha de cada jugador, 
+    opcionalmente tambien su indice.
+    Recibe:(arg 1) una lista de jugadores y (arg 2) opcional puede 
+    elegir ver el indice donde esta cada jugador (ver indice = True).
 
     Devuelve: None o -1 en caso de lista vacia
     '''
     if(lista_de_jugadores):
-        if(ver_indice_ubi):
+        if(ver_indice_del_jugador):
             for indice in range(len(lista_de_jugadores)):
                 dato_jugador = "Ubicacion {0}: {1}- {2}".format(
                     indice, lista_de_jugadores[indice]["nombre"], 
                     lista_de_jugadores[indice]["posicion"])
-                print_dato(dato_jugador)
+                print(dato_jugador)
         else:
             for indice in range(len(lista_de_jugadores)):
                 dato_jugador = "{0}- {1}".format(
                     lista_de_jugadores[indice]["nombre"],
                     lista_de_jugadores[indice]["posicion"])
-                print_dato(dato_jugador)
+                print(dato_jugador)
     else:
         print("La lista está vacia")
         return -1
-
+    
 #2
-
-def pedir_ingreso_de_numero(
-    patron_re: str, mensaje_a_mostrar: str) -> int | float:
+def pedir_ingreso_de_numero_al_usuario(
+    patron_re: str, mensaje_a_mostrar= "Ingrese un valor numérico: ") -> int | float:
     '''
-    Pide al usuario un número.
-    Recibe: (arg1) un patrón Regex para validar y (arg2) un mensaje str 
-    para mostrar al usuario.
+    Pide al usuario que ingrese un numero por consola.
+    Recibe: (arg1) un patrón Regex para validar el numero 
+    y (arg2) un mensaje string para mostrar al usuario.
+    Ejemplo: "Ingrese un valor numérico: " por defecto.
+    
     Devuelve: el número ingresado, convertido a int o float.
     '''
     while True:
@@ -77,30 +79,33 @@ def comprobar_indice_valido(
     lista_jugadores : list[dict], indice_elegido: int)-> bool:
     '''
     Comprueba si el indice pasado por parametro es valido.
-    Recibe: (arg1)lista_jugadores y (arg2)el numero (int ) que 
-    representa al indice a evaluar si esta en la lista.
+    Recibe: (arg1) lista_jugadores y (arg2) el numero (int ) que 
+    representa al indice a evaluar en la lista. 
+    un indice representa un jugador (diccionario). 
     Deveulve: boolean
     '''
-    len_lista = len(lista_jugadores)
-    if(indice_elegido >= 0 and indice_elegido < len_lista):
-        return True
+    if(lista_jugadores):
+        len_lista = len(lista_jugadores)
+        if(indice_elegido >= 0 and indice_elegido < len_lista):
+            return True
+        else:
+            return False
     else:
+        print("La lista esta vacia")
         return False
     
 def seleccionar_jugador_segun_indice(lista_jugadores : list[dict])-> int | None:
     '''
-    De los jugadores existentes permite al usuario elegir uno 
-    segun su indice.
+    De los jugadores existentes permite al usuario elegir uno  segun su indice.
     Recibe una lista de Jugadores.
-    Devuelve: el indice del jugador elegido, o 
-    -1 en caso de ser lista vacia.
+    Devuelve: el indice del jugador elegido, o -1 en caso de ser lista vacia.
     '''
     if(lista_jugadores):
         while(True):
-            mostrar_nombres_posicion_o_ubicacion(lista_jugadores, 
-                                                 ver_indice_ubi =True)
+            mostrar_nombres_posicion_o_ubicacion(
+                lista_jugadores, ver_indice_del_jugador =True)
             mensaje = ">>>>> Ingrese numero de (indice) del jugador para ver sus estadisticas: "
-            indice_elegido = pedir_ingreso_de_numero(r"^[0-9]+$", mensaje)
+            indice_elegido = pedir_ingreso_de_numero_al_usuario(r"^[0-9]+$", mensaje)
             existe_indice = comprobar_indice_valido(lista_jugadores,
                                                     indice_elegido)
             if(existe_indice):
@@ -112,14 +117,15 @@ def seleccionar_jugador_segun_indice(lista_jugadores : list[dict])-> int | None:
         print("La lista está vacia")
         return -1
 
-def mensaje_estadisticas_para_guardar(
+def preparar_mensaje_estadisticas_para_guardar(
     lista_jugadores: list[dict], indice_elegido: int)-> str | int:
     '''
-    Arma el mensaje de estadisticas del jugador para guardar a csv.
-    Recibe: (arg 1) una lista de jugadores.(arg 2) el 
-    indice elegido por el usuario.(Int).
-    Devuelve una cadena formateada para csv. o -1 si 
-    lista esta vacia
+    Arma o prepara el mensaje de estadisticas del jugador para 
+    guardar a csv.
+    Recibe: (arg 1) una lista de jugadores.
+    (arg 2) el indice elegido por el usuario.(Int).
+    Devuelve una cadena formateada para csv. 
+    o si lista esta vacia -1.
     '''
     if(lista_jugadores):
         lista_titulo = ["Nombre", "Posicion"]
@@ -143,18 +149,19 @@ def mensaje_estadisticas_para_guardar(
         return -1
 
 
-def mensaje_estadisticas_para_mostrar(
+def preparar_mensaje_estadisticas_para_mostrar(
     lista_jugadores : list[dict], indice_elegido : int)-> str | int:
     '''
-    Arma el mensaje de estadisticas del jugador para mostrar al usuario.
+    Prerara el mensaje de estadisticas del jugador para mostrar 
+    al usuario.
     Recibe: (arg 1) una lista de jugadores.(arg 2) el 
     indice elegido por el usuario.(Int).
-    Devuelve una cadena formateada para mostrar al usuario. o -1 si 
-    lista esta vacia.
+    Devuelve una cadena formateada para mostrar al usuario. 
+    o -1 si lista esta vacia.
     '''
     if(lista_jugadores):
         for indice in range(len(lista_jugadores)):
-                if(indice == indice_elegido):#cambios
+                if(indice == indice_elegido):
                     dato_nombre_y_posicion = "Nombre: {0}\nPosicion: {1}".format(
                         lista_jugadores[indice]["nombre"],
                         lista_jugadores[indice]["posicion"])
@@ -174,20 +181,20 @@ def mensaje_estadisticas_para_mostrar(
     
 
 
-def preparar_texto_estadisticas_mostrar_o_guardar(
+def mostrar_o_guardar_texto_estadistica(
         lista_jugadores : list[dict], indice_elegido : int, para_guardar = False)-> str:
     '''
-    Prepara un texto con el nombre del jugador y sus estadisticas.
+    prepara el texto si el ususario desea mostrarlo o guardardarlo
     Recibe: (arg 1) la lista de jugadores y (arg 2) el indice (int) 
     que eligio el usuario.
     Devuelve: la cadena de texto.
     '''
     if(para_guardar):
-        mensaje = mensaje_estadisticas_para_guardar(
+        mensaje = preparar_mensaje_estadisticas_para_guardar(
             lista_jugadores, indice_elegido)
         return mensaje
     else:
-        mensaje = mensaje_estadisticas_para_mostrar(
+        mensaje = preparar_mensaje_estadisticas_para_mostrar(
             lista_jugadores, indice_elegido)
         return mensaje
 #3
@@ -196,11 +203,13 @@ def guardar_a_csv(path_nombre : str, dato_a_guardar : str)-> None:
     Guarda datos str a archivo .csv
     Recibe (arg 1)el nombre con la ruta donde se va a guardar el archivo.
     arg(2) el dato a guardar (str).
-    Retorna - (None) o No aplica.
+    Retorna - (None).
     '''
     with open(path_nombre, "w") as archivo:
         archivo.write(dato_a_guardar)
         mostrar_mensaje_se_guardo_como(path_nombre)
+        
+        
 
 def mostrar_mensaje_se_guardo_como(path_nombre : str)-> None:
     ''' 
@@ -237,7 +246,7 @@ def desea_guardar_como_archivo_csv(path_nombre : str, dato_a_guardar : str)-> No
     Pregunta al usuario si quiere guardar el archivo a csv.
     Recibe (arg 1) el nombre con la ruta donde se va a gudardar(str).
     (arg 2) el dato a guardar(str).
-    Devuelve: No aplica.
+    Devuelve: None.
     '''
     mensaje = ">>>>> Desea Guardarlo como archivo? si/no "
     respuesta = si_no_del_usuario(mensaje)
@@ -249,21 +258,23 @@ def desea_guardar_como_archivo_csv(path_nombre : str, dato_a_guardar : str)-> No
     
 def mostrar_estadisticas_del_jugador_elegido( lista_jugadores : list[dict])-> int:
     '''
-    Seleciona y muestra las estadisticas del jugador elegido.
-    Recibe: La lista de Jugadores
-    Devuelve el indice del jugador elegido.
+    Permite al usuario elecionar un indice, muestra las estadisticas del 
+    jugador elegido.
+    Recibe: La lista de Jugadores.
+    Devuelve el indice (ubicacion del jugador elegido).
     '''
     indice_elegido = seleccionar_jugador_segun_indice(lista_jugadores)
-    nombre_mas_estadisticas_para_mostrar = preparar_texto_estadisticas_mostrar_o_guardar(
+    nombre_mas_estadisticas_para_mostrar = mostrar_o_guardar_texto_estadistica(
         lista_jugadores, indice_elegido, para_guardar= False)
-    print_dato(nombre_mas_estadisticas_para_mostrar)
+    print("{0}".format(nombre_mas_estadisticas_para_mostrar))
     return indice_elegido
 
 
 def sacar_nombre_de_cadena_con_regex(exprecion_re_nombre :str, cadena : str)-> str:
     ''' 
     De una cadena toma el nombre del jugador segun expresion regular.
-    Recibe una expresion regular para tomar el nombre (arg 2) y la cadena str.
+    Recibe una expresion regular para tomar el nombre,
+    (arg 2)la cadena str.
     Devuelve el nombre del jugador.
     '''
     nombre_lista = re.findall(exprecion_re_nombre, cadena)
@@ -274,35 +285,36 @@ def sacar_nombre_de_cadena_con_regex(exprecion_re_nombre :str, cadena : str)-> s
 def guardar_estadisticas_del_jugador_elegido(
     lista_jugadores : list[dict], indice_elegido : int)-> None:
     '''
-    Permite guardar a archivo las estadisticas del jugador antes
-    elegido.
+    Permite guardar a archivo csv las estadisticas del jugador
+    antes elegido.
     Recibe: (arg 1) la lista de jugadores, y (arg 2) el indice
-    de la ulbicacion del jugador.
+    ulbicacion del jugador.
     Devuelve - None
     '''
-    nombre_mas_estadisticas_para_mostrar = preparar_texto_estadisticas_mostrar_o_guardar(
+    nombre_mas_estadisticas_para_mostrar = mostrar_o_guardar_texto_estadistica(
         lista_jugadores, indice_elegido, para_guardar= False)
     nombre_del_jugador_con_espacios =sacar_nombre_de_cadena_con_regex(
         r"Nombre: (.*)", nombre_mas_estadisticas_para_mostrar)
     nombre_del_jugador_guion_con_bajo = nombre_del_jugador_con_espacios.replace(" ", "_")
-    path_nombre_formateado = "parcial\estadisticas_por_jugador\estadisticas_del_jugador_{0}.csv".format(
+    path_nombre_formateado = \
+        "parcial\estadisticas_por_jugador\estadisticas_del_jugador_{0}.csv".format(
         nombre_del_jugador_guion_con_bajo)
-    nombre_mas_estadisticas_para_guardar = preparar_texto_estadisticas_mostrar_o_guardar(
+    nombre_mas_estadisticas_para_guardar = mostrar_o_guardar_texto_estadistica(
         lista_jugadores, indice_elegido, para_guardar= True)
     desea_guardar_como_archivo_csv(
         path_nombre_formateado,nombre_mas_estadisticas_para_guardar)
 
 
 #4
-def mostrar_nombres_jugadores(lista_jugadores : list[dict])-> None:
+def mostrar_nombres_jugadores_ordenados(lista_jugadores : list[dict])-> None:
     '''
-    Muestra los nombres de los jugadores.
+    Muestra los nombres de los jugadores ordenados.
     Recibe la lista de jugadores.
-    Devuelve - No aplica
+    Devuelve - None
     '''
     lista_nombres_ordenados = ordenar_bubble_sort(lista_jugadores, clave="nombre")
     for jugador in lista_nombres_ordenados:
-        print_dato(jugador["nombre"])
+        print("{0}".format(jugador["nombre"]))
 
 
 def pedir_nombre_y_apellido_jugador()-> str:
@@ -318,13 +330,14 @@ def pedir_nombre_y_apellido_jugador()-> str:
         r"^[A-Za-z]+\s{1}[A-Za-z]+$", nombre_apellido_cap)
     return nombre_validado.lower().strip()
 
-def buscar_jugador_y_ver_sus_logros(lista_jugadores: list[dict]):
+def buscar_jugador_y_ver_sus_logros(lista_jugadores: list[dict])-> None:
     '''
-    Imprime por consola los logros del jugador buscado.
+    Permite ingresar nombre y apellido del jugador para ver sus
+    logros obtenidos.
     Recibe la lista de jugadores.
-    Devuelve - No aplica ------
+    Devuelve - None ---
     '''
-    mostrar_nombres_jugadores(lista_jugadores)
+    mostrar_nombres_jugadores_ordenados(lista_jugadores)
     nombre_ingresado_lower = pedir_nombre_y_apellido_jugador()
     encontrado = False
     for jugador in lista_jugadores:
@@ -333,7 +346,7 @@ def buscar_jugador_y_ver_sus_logros(lista_jugadores: list[dict]):
             print("---- jugador encontrado ----")
             cadena_logros = "Nombre del Jugador: {0}\n{1}".format(
                 jugador["nombre"], "\n".join(jugador["logros"]))
-            print_dato(cadena_logros)
+            print(cadena_logros)
     if encontrado == False:
         print(" No existe el nombre en la lista")
 
@@ -341,7 +354,7 @@ def buscar_jugador_y_ver_sus_logros(lista_jugadores: list[dict]):
 def calcular_promedio_de_puntos_equipo(lista_jugadores : list[dict])-> float:
     '''
     Calcula el promedio de puntos por partido de todo el equipo 
-    del Dream team.
+    Dream team.
     Recibe la lista de jugadores. List
     Devuelve el promedio (Float)
     '''
@@ -352,17 +365,19 @@ def calcular_promedio_de_puntos_equipo(lista_jugadores : list[dict])-> float:
         for clave, valor in dicc_estadisticas_jugador.items():
             if(clave == "promedio_puntos_por_partido"):   
                 acum_promedio_jugador_puntos_por_partido += valor
-    promedio_equipo =acum_promedio_jugador_puntos_por_partido / cantidad_de_jugadores
+    promedio_equipo = acum_promedio_jugador_puntos_por_partido / cantidad_de_jugadores
     
     return promedio_equipo
 
 
-def ordenar_bubble_sort(lista_original : list[dict], clave = "nombre", orden = "asc")-> list:
+def ordenar_bubble_sort(
+    lista_original : list[dict], clave = "nombre", orden = "asc")-> list | int:
     '''
-    Ordena segun clave
-    Recibe: (arg 1)una lista , (arg2) una clave ej:("nombre"),
+    Ordena los elementos de una lista segun clave.
+    Recibe: (arg 1) una lista de jugadores, (arg2) una clave ej:("nombre"),
     (arg 3) el orden( "asc" o "des").
-    Devuelve: una lista de nombres ordenada alfabeticamente. list
+    Devuelve: una lista de nombres ordenada alfabeticamente. list[dict]
+    o -1 si la lista esta vacia.
     '''
     if(lista_original):
         lista = lista_original[:]
@@ -377,42 +392,50 @@ def ordenar_bubble_sort(lista_original : list[dict], clave = "nombre", orden = "
                 if lista[indice][clave] < lista[indice + 1][clave] and orden == "des":
                     lista[indice], lista[indice + 1] = lista[indice + 1], lista[indice]
                     flag_swap = True
-        
+        len_lista -= 1
         return lista
+    else:
+        print("La lista está vacia")
+        return -1
 
 def calcular_y_mostrar_el_promedio_de_puntos_del_dream_team(
-    lista_jugadores: list[dict], clave="promedio_puntos_por_partido"):
+    lista_jugadores: list[dict], clave="promedio_puntos_por_partido")-> None | int:
     '''
-    Calcula y muestra el promedio de puntos del dream team y luego el promedio
+    Calcula y muestra el promedio de puntos del dream team, luego el promedio
     individual de cada uno.
     Recibe la lista de jugadores.
     No devuelve ningún valor.
     '''
+    if(lista_jugadores):
+        mensaje_promedio_de_equipo = calcular_promedio_de_puntos_equipo(lista_jugadores)
+        print(
+            "El promedio de puntos por partido de TODO EL EQUIPO es: >>>>> {0}".format(
+                round(mensaje_promedio_de_equipo, 2)))
 
-    mensaje_promedio_de_equipo = calcular_promedio_de_puntos_equipo(lista_jugadores)
-    print("El promedio de puntos por partido de TODO EL EQUIPO es: >>>>> {0}".format(round(
-        mensaje_promedio_de_equipo, 2)))
-
-    lista_ordenada_alfabeticamente = ordenar_bubble_sort(
-        lista_jugadores, clave="nombre", orden="asc")
-    for jugador in lista_ordenada_alfabeticamente:
-        print("Nombre: {0} - Promedio de puntos por partido: {1}".format(
-            jugador["nombre"], jugador["estadisticas"][clave]))
-
+        lista_ordenada_alfabeticamente = ordenar_bubble_sort(
+            lista_jugadores, clave="nombre", orden="asc")
+        for jugador in lista_ordenada_alfabeticamente:
+            print("Nombre: {0} - Promedio de puntos por partido: {1}".format(
+                jugador["nombre"], jugador["estadisticas"][clave]))
+    else:
+        print("La lista está vacia")
+        return -1
     
 # 6
-def buscar_jugador_y_ver_logro(
-    lista_jugadores, clave_nombre="nombre", clave_logros="logros",
+def buscar_jugador_para_ver_logro(
+    lista_jugadores: list[dict], clave_nombre="nombre", clave_logros="logros",
     valor_logro="Miembro del Salon de la Fama del Baloncesto", 
-    mensaje_a_mostrar_en_print="Pertenece"):
+    mensaje_a_mostrar_en_print="Pertenece")-> None:
     '''
-    Permite al usuario ingresar el nombre de un jugador y mostrar su logro.
+    Permite al usuario ingresar el nombre de un jugador para ve un logro.
     ejemplo : si pertenece al salon de la fama.
-    Recibe (arg ) la lista de jugadores, (arg 2) la clave_logros ejemplo ="logros",
-    (arg 3) valor_logro ejemplo ="Miembro del Salon de la Fama del Baloncesto",
-    (arg 4)mensaje_a_mostrar_en_print ejemplo ="Pertenece"
+    Recibe (arg ) la lista de jugadores, (arg 2) la clave_logros 
+    ejemplo ="logros", (arg 3) valor_logro ejemplo = "Miembro del Salon de 
+    la Fama del Baloncesto",
+    (arg 4)mensaje_a_mostrar_en_print ejemplo ="Pertenece".
+    Deveulve : None
     '''
-    mostrar_nombres_jugadores(lista_jugadores)
+    mostrar_nombres_jugadores_ordenados(lista_jugadores)
     nombre_ingresado_lower = pedir_nombre_y_apellido_jugador()
     encontrado = False
     flag_ok_condicion = False
@@ -432,15 +455,13 @@ def buscar_jugador_y_ver_logro(
         else:
             print("No {0} como: {1}".format(mensaje_a_mostrar_en_print, valor_logro))
 
-
 #7
-
 def calcular_max_min_estadisticas(
     lista_jugadores: list[dict], clave_estadistica = "estadisticas",
     clave_interior_estadistica = "rebotes_totales", maximo = True)-> int:
     '''
     Calcula el maximo o minimo de las estadisticas segun clave.
-    Recibe: (arg 1)La lista de jugadores, (arg 2) la clave "estadisticas,
+    Recibe: (arg 1) La lista de jugadores, (arg 2) la clave "estadisticas,
     (arg 3) la clave interior del diccionario estadisticas ej: "rebotes_totales",
     (arg 4) si maximo o minimo (maximo = True) por defecto.
     '''
@@ -475,41 +496,52 @@ def armar_diccionario_jugador_max_min_estadisticas(
     if max_min_indice is None:
         print("Error al conseguir el jugador con la maxima o minima estadistica")
         return -1
-    jugador_max_min_obtenido = lista_jugadores[max_min_indice]
+    else:
+        jugador_max_min_obtenido = lista_jugadores[max_min_indice]
+        
+        nuevo_dicc_nombre_estadistica_max_min = {}
+        nuevo_dicc_nombre_estadistica_max_min["nombre"] = jugador_max_min_obtenido["nombre"]
+        nuevo_dicc_nombre_estadistica_max_min[clave_interior_estadistica] = \
+            jugador_max_min_obtenido[clave_estadistica][clave_interior_estadistica]
     
-    nuevo_dicc_nombre_estadistica_max_min = {}
-    nuevo_dicc_nombre_estadistica_max_min["nombre"] = jugador_max_min_obtenido["nombre"]
-    nuevo_dicc_nombre_estadistica_max_min[clave_interior_estadistica] = \
-        jugador_max_min_obtenido[clave_estadistica][clave_interior_estadistica]
-    
-    return nuevo_dicc_nombre_estadistica_max_min
+        return nuevo_dicc_nombre_estadistica_max_min
 
 
 def preparar_datos_nombre_estadistica_de_diccionario_a_texto(
     diccionario_nombre_estadistica : dict)-> str:
     '''
-    De un diccionario estadisticas arma una cadena str para imprimir.
-    Recibe el diccionario  con los datos por ejemplo:  
+    De un diccionario estadisticas prepara una cadena str.
+    Recibe: el diccionario con los datos por ejemplo:  
     Nombre : Michael Jordan, Rebotes totales : 3520
     
     Devuelve una cadena formateada para imprimir por consola.
+    con formato:
+    Nombre: karl malone
+    Rebotes totales: 14968
     '''
-    pares_clave_valor = []
-    for clave, valor in diccionario_nombre_estadistica.items():
-        texto_par = "{0}: {1}".format(clave, valor)
-        pares_clave_valor.append(texto_par.capitalize().replace("_", " "))
+    if(diccionario_nombre_estadistica):
+        pares_clave_valor = []
+        for clave, valor in diccionario_nombre_estadistica.items():
+            texto_par = "{0}: {1}".format(clave, valor)
+            pares_clave_valor.append(texto_par.capitalize().replace("_", " "))
 
-    cadena = "\n".join(pares_clave_valor)
-    return cadena
+        cadena = "\n".join(pares_clave_valor)
+        return cadena
+    else:
+        print("Esta vacio")
+        return -1
 
 def calcular_y_mostrar_jugador_mayor_estadistica(
     lista_jugadores : list[dict], clave_estadistica = "estadisticas", 
-    clave_interior_estadistica = "rebotes_totales"):
+    clave_interior_estadistica = "rebotes_totales")-> None:
     '''
-   Calcula y muestra el nombre con su maxima estadistica, segun clave.
-   Recibe (arg 1)la lsita de jugadores, (arg 2) la clave estadisticas,
-   (arg 3) la clave de la estadistica ejemplo ("rebotes_totales").
-   Devuelve: No aplica
+    Calcula y muestra el nombre con su maxima estadistica, segun clave.
+    se muestra con formato:
+    Nombre: karl malone
+    Rebotes totales: 14968
+    Recibe (arg 1)la lsita de jugadores, (arg 2) la clave estadisticas,
+    (arg 3) la clave de la estadistica ejemplo ("rebotes_totales").
+    Devuelve: None
     '''
     max_min_indice = calcular_max_min_estadisticas(
     lista_jugadores, clave_estadistica,clave_interior_estadistica, maximo= True)
@@ -520,28 +552,23 @@ def calcular_y_mostrar_jugador_mayor_estadistica(
     
     cadena = preparar_datos_nombre_estadistica_de_diccionario_a_texto(
         jugador_estadistica_dicc)
-    print_dato(cadena)
+    print("{0}".format(cadena))
 
-#8
-
-#9
-
-# 10 
-
-def jugadores_mayores_al_ingresado(
-    lista_jugadores: list[dict], clave_estadistica, 
+#8 - 9 - 10
+def jugadores_mayores_al_ingresado(lista_jugadores: list[dict], clave_estadistica, 
     clave_interior_estadistica)-> list[dict]:
     '''
     Permite ingresar un valor y busca los que superan ese valor.
-    Recibe: (arg 1) la lista de jugadores, (arg 2) clave dicc estadisticas.
-    (ej: clave_dicc_ext ="estadisticas")
-    (arg 3) la clave dentro del dicc estadisticas (ej "promedio_puntos_por_partido")) 
+    Recibe: (arg 1) la lista de jugadores, 
+    (arg 2) clave dicc estadisticas ejemplo "estadisticas".
+    (arg 3) la clave dentro del dicc estadisticas (ej: "promedio_puntos_por_partido"))
+    Devuelve una nueva lista con los jugadores que cumplen el requisito. 
     '''
     nueva_lista_Jugadores = []
     mensaje_a_mostrar = "Ingrese un valor numérico: "
-    numero_ingresado = pedir_ingreso_de_numero(r"^[0-9]+|\.[0-9]+$", mensaje_a_mostrar)
+    numero_ingresado = pedir_ingreso_de_numero_al_usuario(r"^[0-9]+|\.[0-9]+$",
+                                                          mensaje_a_mostrar)
     encontrado = False
-    
     for jugador in lista_jugadores:
         if jugador[clave_estadistica][clave_interior_estadistica] > numero_ingresado:
             nueva_lista_Jugadores.append(jugador)
@@ -552,50 +579,47 @@ def jugadores_mayores_al_ingresado(
         return nueva_lista_Jugadores
     
 def mostrar_estadisticas_jugadores(
-    lista_jugadores : list[dict], clave_interior_estadistica: str):
+    lista_jugadores : list[dict],clave_estadistica = "estadisticas", 
+    clave_interior_estadistica = "promedio_puntos_por_partido")-> None:
     '''
     Muestra las estadisticas de los jugadores.
     Recibe (arg 1) la lista de jugadores. y (arg 2) la clave del dicc 
-    ej("estadisticas").
-    Retorna - no aplica
+    estadistica ) "estadisticas", (arg 3) la clave del dicc de la 
+    estadistica por ejemplo "promedio_puntos_por_partido".
+    Retorna - None
     '''
     clave_interior_estadistica_guion = \
         clave_interior_estadistica.replace("_"," ").capitalize()
     for jugador in lista_jugadores:
         nombre = jugador["nombre"]
-        valor_estadistica = jugador["estadisticas"][clave_interior_estadistica]
+        valor_estadistica = jugador[clave_estadistica][clave_interior_estadistica]
         print("{0}: {1}: {2}".format(
             nombre, clave_interior_estadistica_guion, valor_estadistica))
         
         
 def mostrar_jugadores_mayores_al_ingresado(
     lista_jugadores : list[dict], clave_estadistica = "estadisticas", 
-    clave_interior_estadistica = "promedio_puntos_por_partido"):
+    clave_interior_estadistica = "promedio_puntos_por_partido")-> None | int:
     '''
-    Permite ingresar un valor y busca los que superan ese valor,
-    ademas de mostrarlos por consola.
-    Recibe: (arg 1) una lista de jugadores,(arg 2) clave de estadistica "estadisticas" ,
-    (arg 3) clave del dicc estadisticas. ejemplo: "promedio_puntos_por_partido".
-    Devuelve - no aplica
+    Permite ingresar un valor, busca y muestra por consola los que 
+    superan ese valor.
+    Recibe: (arg 1) una lista de jugadores,(arg 2) clave de estadistica
+    "estadisticas" , (arg 3) clave del dicc de la estadistica. 
+    ejemplo: "promedio_puntos_por_partido".
+    Devuelve None o -1 si No se obtuvo la lista_obtenuida.
     '''
     lista_jugadores_obtenida = jugadores_mayores_al_ingresado(
         lista_jugadores, clave_estadistica, clave_interior_estadistica)
     if(lista_jugadores_obtenida):
-        mostrar_estadisticas_jugadores(lista_jugadores_obtenida, 
-                                       clave_interior_estadistica)
+        mostrar_estadisticas_jugadores(
+            lista_jugadores_obtenida,clave_estadistica, 
+            clave_interior_estadistica)
     else:
-        return False
+        return -1
     
-    
-#11
-#12
-#13
-#14
-#15
-#16
+#11 -12 - 13 -14 -15 -16
 
-
-def quitar_el_emenos_habil_segun_clave_estadistica(
+def quitar_el_menos_habil_segun_clave_estadistica(
     lista_jugadores : list[dict], clave_estadisticas = "estadisticas",
     clave_interior_estadistica = "promedio_puntos_por_partido")-> list[dict]:
     '''
@@ -603,40 +627,50 @@ def quitar_el_emenos_habil_segun_clave_estadistica(
     Recibe: (arg 1) la lista de jugadores, (arg 2) la clave "estadistica",
     (arg 3) la clave de la estadistica a evaluar. ejemplo :
     "promedio_puntos_por_partido".
-    Devuelve una nueva lista de jugadores sin el mas habil.
+    Devuelve una nueva lista de jugadores sin el menos habil.
+    o -1 si la lista esta vacia.
     '''
-    indice_jugador_menos_habil = calcular_max_min_estadisticas(
-        lista_jugadores, clave_estadisticas, clave_interior_estadistica, maximo= False)
-    nueva_lista_jugadores = []
-    for indice in range(len(lista_jugadores)):
-        if(indice != indice_jugador_menos_habil):
-            nueva_lista_jugadores.append(lista_jugadores[indice])
-    return nueva_lista_jugadores
+    if(lista_jugadores):
+        indice_jugador_menos_habil = calcular_max_min_estadisticas(
+            lista_jugadores, clave_estadisticas, clave_interior_estadistica, 
+            maximo= False)
+        nueva_lista_jugadores = []
+        for indice in range(len(lista_jugadores)):
+            if(indice != indice_jugador_menos_habil):
+                nueva_lista_jugadores.append(lista_jugadores[indice])
+        return nueva_lista_jugadores
+    else:
+        print("La lista está vacia")
+        return -1
 
 
 def calcular_y_mostrar_el_promedio_de_puntos_del_dream_team_sin_el_menos_habil(
     lista_jugadores : list[dict], clave_estadisticas = "estadisticas", 
-    clave_interior_estadistica = "promedio_puntos_por_partido"):
+    clave_interior_estadistica = "promedio_puntos_por_partido")-> None | int:
     '''
     Calcula y muestra el promedio de puntos del dream team sin incluir al 
     menos habil segun estadistica.
     Recibe (arg 1) la lista de jugadores, (arg 2): clave :"estadisticas", 
     (arg 3) la clave de la estadistica a evaluar. ej: "promedio_puntos_por_partido".
-    Devuelve - no aplica
+    Devuelve - None o -1
     '''
-    nueva_lista_sin_el_menos_habil = quitar_el_emenos_habil_segun_clave_estadistica(
-        lista_jugadores, clave_estadisticas, clave_interior_estadistica)
-    calcular_y_mostrar_el_promedio_de_puntos_del_dream_team(nueva_lista_sin_el_menos_habil)
-
+    if(lista_jugadores):
+        nueva_lista_sin_el_menos_habil = quitar_el_menos_habil_segun_clave_estadistica(
+            lista_jugadores, clave_estadisticas, clave_interior_estadistica)
+        calcular_y_mostrar_el_promedio_de_puntos_del_dream_team(
+            nueva_lista_sin_el_menos_habil)
+    else:
+        return -1
 
 #17
 
-def calcular_jugador_con_mas_logros(lista_jugadores : list[dict], maximo = True):
+def calcular_jugador_con_mas_logros(
+    lista_jugadores : list[dict], maximo = True)-> None | int:
     '''
     Calcula el jugador con mas o menos logros y lo muestra.
     Recibe (arg 1) la lista de jugadores, (arg 2) maximo o minimo
     por defecto maximo = True
-    Devuelve -1 en caso de error.
+    Devuelve: None o  -1 en caso de error.
     '''
     if(lista_jugadores):
         flag_max_min = True
@@ -658,8 +692,8 @@ def calcular_jugador_con_mas_logros(lista_jugadores : list[dict], maximo = True)
     else:
         print("La lista esta vacia")
         return -1
-# 18
-# 19
+# 18 - 19
+
 '''
 20) Permitir al usuario ingresar un valor y mostrar los jugadores , ordenados por
 posición en la cancha, que hayan tenido un porcentaje de tiros de campo superior a
@@ -667,25 +701,34 @@ ese valor.
 
 '''
 def mostrar_estadistica_ordenado_por_posicion(
-    lista_jugadores_original : list, clave_interior_estadistica = "porcentaje_tiros_de_campo",
-    mensaje = "Posicion en la cancha"):
+    lista_jugadores : list, clave_estadistica = "estadisticas", 
+    clave_interior_estadistica = "porcentaje_tiros_de_campo",
+    mensaje = "Posicion en la cancha")-> None | int:
     '''
-    permite ingresar un valor y ver los que jugadores que lo superan.
-    Recibe:
-    Devuelve:
+    Permite ingresar un valor y ver los que jugadores que lo superan ordenado
+    por posicion en la cancha..
+    Recibe: (arg 1) la lista de jugadores, (arg 2) la clave del dicc estadistica = 
+    "estadisticas", 
+    (arg 3) la clave de la estadistica a evaluar = "porcentaje_tiros_de_campo".
+    mensaje a mostrar en el print (mensaje = "Posicion en la cancha").
+    Devuelve: None o -1 
     '''
-    lista_ordenada_jugadores = ordenar_bubble_sort(lista_jugadores_original, clave="posicion",
-                                                   orden="asc")
-    lista_de_jugadores_que_superan = jugadores_mayores_al_ingresado(
-        lista_ordenada_jugadores,clave_estadistica= "estadisticas",
-        clave_interior_estadistica= "porcentaje_tiros_de_campo")
-    if(lista_de_jugadores_que_superan):
-        for jugador in lista_de_jugadores_que_superan:
-            print("{0}: Nombre: {1} : {2} : {3} {4}".format(
-                mensaje, jugador["posicion"], jugador["nombre"],clave_interior_estadistica, 
-            jugador["estadisticas"]["porcentaje_tiros_de_campo"]))
-    
-
+    if(lista_jugadores):
+        lista_ordenada_jugadores = ordenar_bubble_sort(lista_jugadores, 
+                                                       clave="posicion", orden="asc")
+        lista_de_jugadores_que_superan = jugadores_mayores_al_ingresado(
+            lista_ordenada_jugadores,clave_estadistica,
+            clave_interior_estadistica= "porcentaje_tiros_de_campo")
+        
+        if(lista_de_jugadores_que_superan):
+            for jugador in lista_de_jugadores_que_superan:
+                print("{0}: Nombre: {1} : {2} : {3} {4}".format(
+                    mensaje, jugador["posicion"], jugador["nombre"],
+                    clave_interior_estadistica, 
+                    jugador["estadisticas"]["porcentaje_tiros_de_campo"]))
+    else:
+        print("La lista está vacia")
+        return -1
 
 
 #--Menú y ejecucion de la app
@@ -720,15 +763,6 @@ def opciones_del_menu()-> str:
     ''       
     return opciones
 
-def print_dato(dato : str)->None:
-    '''
-    Imprime una cadena de texto.
-    Recibe una cadena.
-    Devuelve: No aplica.
-    '''
-    print("{0}".format(dato))
-    
-
 def menu_principal()-> int:
     '''
     Imprime el menu y toma una opcion del usuario
@@ -736,9 +770,9 @@ def menu_principal()-> int:
     devuelve la opcion elegida, en caso de False devuelve -1
     '''
     opciones_para_el_usuario = opciones_del_menu()
-    print_dato(opciones_para_el_usuario)
+    print(opciones_para_el_usuario)
     mensaje_a_mostrar = "Por favor ingrese una opcion: "
-    numero_ingresado = pedir_ingreso_de_numero(r"^[0-9]+$", mensaje_a_mostrar)
+    numero_ingresado = pedir_ingreso_de_numero_al_usuario(r"^[0-9]+$", mensaje_a_mostrar)
     return numero_ingresado
    
    
@@ -771,7 +805,7 @@ def aplicacion(lista_Jugadores : list[dict])-> None:
                 calcular_y_mostrar_el_promedio_de_puntos_del_dream_team(
                     lista_Jugadores)
             case 6:
-                buscar_jugador_y_ver_logro(lista_Jugadores)
+                buscar_jugador_para_ver_logro(lista_Jugadores)
             case 7:
                 calcular_y_mostrar_jugador_mayor_estadistica(
                     lista_Jugadores, clave_interior_estadistica = "rebotes_totales")
@@ -813,15 +847,15 @@ def aplicacion(lista_Jugadores : list[dict])-> None:
             case 20:
                 mostrar_estadistica_ordenado_por_posicion(lista_Jugadores)
             case 21:
-                pass
+                print("No está dispinible esta opcion")
             case 22:
-                pass
+                print("No está dispinible esta opcion")
             case 23:
                 pass
             case 24:
                 break
             case _:
-                print("Opcion incorrecta")
+                print("Opcion incorrecta, por favor intente nuevamente.")
         clear_console()
  
         
