@@ -724,22 +724,10 @@ def mostrar_estadistica_ordenado_por_posicion(
         print("La lista está vacia")
         return -1
 #23
-'''
-Calcular de cada jugador cuál es su posición en cada uno de los siguientes ranking
-● Puntos
-● Rebotes
-● Asistencias
-● Robos
 
-
-for jugador in lista_jugadores:
-        print(jugador["nombre"])#         nombres
-        # print(jugador["estadisticas"])# diccionario estadisticas
-        # print(jugador["estadisticas"][clave_a_evaluar]) #   valores
-'''
 def filtrar_estadistica(lista_jugadores : list[dict],clave_a_evaluar= "puntos_totales" ):
     '''
-    De filtrauna lista de dict y arma una nueva lista dict con los datos :
+    Filtra una lista de dict y arma una nueva lista dict con los datos:
     [{'nombre': 'Magic Johnson', 'puntos_totales': 17707},...]
     Recibe una lista de jugadores list [dict] y una clave ejemplo:
     "puntos_totales"
@@ -759,31 +747,111 @@ def filtrar_estadistica(lista_jugadores : list[dict],clave_a_evaluar= "puntos_to
                 lista_nombres_estadisticas_a_ordenar.append(nuevo_dicc)
     return lista_nombres_estadisticas_a_ordenar            
    
-        
-        
 
-def maximo_pepe(lista_jugadores):
-    lista_a_ordenar_nombre_estadistic_puntos_totales = filtrar_estadistica(lista_jugadores, clave_a_evaluar="puntos_totales")
-    lista_a_ordenar_nombre_estadistic_rebotes = filtrar_estadistica(lista_jugadores, clave_a_evaluar="rebotes_totales")
-    lista_a_ordenar_nombre_estadistic_asistencias = filtrar_estadistica(lista_jugadores, clave_a_evaluar="asistencias_totales")
-    lista_a_ordenar_nombre_estadistic_puntos_robos = filtrar_estadistica(lista_jugadores, clave_a_evaluar="robos_totales")
+
+def ordena_por_estadisticas(
+        lista_jugadores : list[dict], clave_a_evaluar, orden):
+    '''
+    Ordena las estadisticas de una lista de diccionarios, segun clave.
+    Recibe una lista de jugadores original.
+    Devuelve una lista de dicc con las estadisticas ordenada.
+    "asc"  o "desc".
+    '''
+    lista_a_ordenar_nombre_estadistic = filtrar_estadistica(
+        lista_jugadores, clave_a_evaluar)
+    lista_ordenada = ordenar_lista_dicc_bubble_sort(
+        lista_a_ordenar_nombre_estadistic,clave_a_evaluar, orden)
+
+    return lista_ordenada
+
+
+def armar_lista_detalle_estadisticas_ranking(
+        lista_original : list[dict])-> list[dict]:
+    '''
+    De una lista de jugadores por estadisticas y las lista en una nueva.
+    Recibe una lista de jugadores original.
+    Devuelve una lista de dicc con los jugadores ordenados por ranking.
+    '''
+    list_detalles = []
+    lista_claves = [
+        "puntos_totales", "rebotes_totales", "asistencias_totales", "robos_totales"]
+    for jugador in lista_original:
+        nuevo_diccionario = {}
+        nombre = jugador["nombre"]
+        for clave in lista_claves:
+            lista_ordenada = ordena_por_estadisticas(
+                lista_original, clave, orden="desc")
+            ranking_obtenuido = traer_valor_ranking(lista_ordenada, nombre)
+            nuevo_diccionario["nombre"] = nombre
+            nuevo_diccionario[clave] = ranking_obtenuido
+        list_detalles.append(nuevo_diccionario)
+    return list_detalles
+
+
+def traer_valor_ranking(lista_ordenada : list[dict], nombre :str)-> int:
+    '''
+    de una lista ordenada verifica que el nombre sea igual
+    al ingresado por parametro si es asi trae el valor
+    que representa el puesto de ese jugador en el ranking
+    de por ejemplo: "robos totales"
+    Recibe una lista ordenada desde estadistica mas alta
+    a mas baja (orden descendente)
+    Devuelve el indice que simboliza el numero que le corresponde
+    al jugador en el ranking.
+    '''
+    for indice in range(len(lista_ordenada)):
+        if(lista_ordenada[indice]["nombre"] == nombre):
+            return indice +1
+
+
+def preparar_mensaje_para_guardar(
+    lista_jugadores: list[dict])-> str | int:
+    '''
+    Prepara el mensaje de estadisticas de los jugadores para 
+    guardar a csv.
+    Recibe: (arg 1) una lista de jugadores.
+    (arg 2) el indice elegido por el usuario.(Int).
+    Devuelve una cadena formateada para csv. 
+    o si lista esta vacia -1.
+    '''
+    flag_primer_jugador = True
+    if(lista_jugadores):
+        header_list = []
+        values_list = []
+        for jugador in lista_jugadores:
+            for clave, valor in jugador.items():
+                clave_refactorizada = str (clave).replace("_"," ").capitalize()
+                if(flag_primer_jugador):
+                    values_list.append(str(valor))
+                else:
+                    if(clave == "nombre"):
+                        valor_con_espacio = "\n{0}".format(valor)
+                        values_list.append(str(valor_con_espacio))
+                    else:
+                        values_list.append(str(valor))
+                if(clave_refactorizada not in header_list):
+                    header_list.append(clave_refactorizada)
+            flag_primer_jugador = False
+    cadena_titulos = ",".join(header_list)
+    cadena_valores = ",".join(values_list)
+    resultado = "{0}\n{1}".format(cadena_titulos, cadena_valores)
+    path = "parcial\detalles\detalles_ranking_de_estadisticas.csv"
+    desea_guardar_como_archivo_csv(path, resultado)
+
     
-    lista_ordenada_puntos = ordenar_lista_dicc_bubble_sort(lista_a_ordenar_nombre_estadistic_puntos_totales, clave="puntos_totales", orden="desc")
-    lista_ordenada_rebotes = ordenar_lista_dicc_bubble_sort(lista_a_ordenar_nombre_estadistic_rebotes, clave="rebotes_totales", orden="desc")
-    lista_ordenada_asistencias = ordenar_lista_dicc_bubble_sort(lista_a_ordenar_nombre_estadistic_asistencias, clave="asistencias_totales", orden="desc")
-    lista_ordenada_robos = ordenar_lista_dicc_bubble_sort(lista_a_ordenar_nombre_estadistic_puntos_robos, clave="robos_totales", orden="desc")
-    for dato_puntos in lista_ordenada_puntos:
-            print(dato_puntos)
-            
-    for dato_rebotes in lista_ordenada_rebotes:
-            print(dato_rebotes)
-            
-    for dato_asistencias in lista_ordenada_asistencias:
-            print(dato_asistencias)
-            
-    for dato_robos in lista_ordenada_robos:
-            print(dato_robos)
-    
+def ordenar_y_guardar_ranking_de_jugadores(lista_jugadores : list[dict])-> None:
+    '''
+    Ordena y guarda a csv los datos de los jugadores rankeados.
+    Recibe la lista de jugadores.
+    Devuelve - None
+    '''
+    lista_detalles_estadisticas_ranking = armar_lista_detalle_estadisticas_ranking(
+        lista_jugadores)
+   
+    preparar_mensaje_para_guardar(lista_detalles_estadisticas_ranking)
+
+
+#--------------------------------------------------  
 
 #--Menú y ejecucion de la app
 def opciones_del_menu()-> str:
@@ -815,7 +883,7 @@ def opciones_del_menu()-> str:
            "20- Ver los jugadores ordenados por posición en la cancha, que hayan tenido un porcentaje de tiros \nde campo superior al valor ingresado.\n"\
            "21- Opcion no disponible\n"\
            "22- Opcion no disponible\n"\
-           "23- ver ranking de les estadisticas de los jugadores (Opcional: guardar)"\
+           "23- Guardar ranking de les estadisticas de los jugadores (Opcional: guardar)"\
            "24- Salir"
            
            
@@ -921,7 +989,7 @@ def aplicacion(lista_Jugadores : list[dict])-> None:
             case 22:
                 print("No está dispinible esta opcion")
             case 23:
-                maximo_pepe(lista_Jugadores)
+                ordenar_y_guardar_ranking_de_jugadores(lista_Jugadores)
             case 24:
                 break
             case _:
