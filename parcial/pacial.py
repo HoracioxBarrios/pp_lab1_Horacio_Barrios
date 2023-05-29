@@ -693,13 +693,7 @@ def calcular_jugador_con_mas_logros(
         print("La lista esta vacia")
         return -1
 # 18 - 19
-
-'''
-20) Permitir al usuario ingresar un valor y mostrar los jugadores , ordenados por
-posición en la cancha, que hayan tenido un porcentaje de tiros de campo superior a
-ese valor.
-
-'''
+#20
 def mostrar_estadistica_ordenado_por_posicion(
     lista_jugadores : list, clave_estadistica = "estadisticas", 
     clave_interior_estadistica = "porcentaje_tiros_de_campo",
@@ -729,7 +723,15 @@ def mostrar_estadistica_ordenado_por_posicion(
     else:
         print("La lista está vacia")
         return -1
+#23
+'''
+Calcular de cada jugador cuál es su posición en cada uno de los siguientes ranking
+● Puntos
+● Rebotes
+● Asistencias
+● Robos
 
+'''
 
 #--Menú y ejecucion de la app
 def opciones_del_menu()-> str:
@@ -808,39 +810,50 @@ def aplicacion(lista_Jugadores : list[dict])-> None:
                 buscar_jugador_para_ver_logro(lista_Jugadores)
             case 7:
                 calcular_y_mostrar_jugador_mayor_estadistica(
-                    lista_Jugadores, clave_interior_estadistica = "rebotes_totales")
+                    lista_Jugadores, 
+                    clave_interior_estadistica = "rebotes_totales")
             case 8:
                 calcular_y_mostrar_jugador_mayor_estadistica(
-                    lista_Jugadores, clave_interior_estadistica = "porcentaje_tiros_de_campo")
+                    lista_Jugadores, 
+                    clave_interior_estadistica = "porcentaje_tiros_de_campo")
             case 9:
                 calcular_y_mostrar_jugador_mayor_estadistica(
-                    lista_Jugadores, clave_interior_estadistica = "asistencias_totales")
+                    lista_Jugadores, 
+                    clave_interior_estadistica = "asistencias_totales")
             case 10:
                 mostrar_jugadores_mayores_al_ingresado(
-                    lista_Jugadores, clave_interior_estadistica = "promedio_puntos_por_partido")
+                    lista_Jugadores, 
+                    clave_interior_estadistica = "promedio_puntos_por_partido")
             case 11:
                 mostrar_jugadores_mayores_al_ingresado(
-                    lista_Jugadores, clave_interior_estadistica = "promedio_rebotes_por_partido")
+                    lista_Jugadores, 
+                    clave_interior_estadistica = "promedio_rebotes_por_partido")
             case 12:
                 mostrar_jugadores_mayores_al_ingresado(
-                    lista_Jugadores, clave_interior_estadistica = "promedio_asistencias_por_partido")
+                    lista_Jugadores, 
+                    clave_interior_estadistica = "promedio_asistencias_por_partido")
             case 13:
                 calcular_y_mostrar_jugador_mayor_estadistica(
-                    lista_Jugadores, clave_interior_estadistica = "robos_totales")
+                    lista_Jugadores, 
+                    clave_interior_estadistica = "robos_totales")
             case 14:
                 calcular_y_mostrar_jugador_mayor_estadistica(
-                    lista_Jugadores, clave_interior_estadistica = "bloqueos_totales")
+                    lista_Jugadores, 
+                    clave_interior_estadistica = "bloqueos_totales")
             case 15:
                 mostrar_jugadores_mayores_al_ingresado(
-                    lista_Jugadores, clave_interior_estadistica = "porcentaje_tiros_libres")
+                    lista_Jugadores, 
+                    clave_interior_estadistica = "porcentaje_tiros_libres")
             case 16:
                     calcular_y_mostrar_el_promedio_de_puntos_del_dream_team_sin_el_menos_habil(
-                        lista_Jugadores, clave_interior_estadistica = "promedio_puntos_por_partido")
+                        lista_Jugadores, 
+                        clave_interior_estadistica = "promedio_puntos_por_partido")
             case 17:
                 calcular_jugador_con_mas_logros(lista_Jugadores, maximo = True)
             case 18:
                 mostrar_jugadores_mayores_al_ingresado(
-                    lista_Jugadores, clave_interior_estadistica = "porcentaje_tiros_triples")
+                    lista_Jugadores, 
+                    clave_interior_estadistica = "porcentaje_tiros_triples")
             case 19:
                 calcular_y_mostrar_jugador_mayor_estadistica(
                     lista_Jugadores, clave_interior_estadistica = "temporadas")
