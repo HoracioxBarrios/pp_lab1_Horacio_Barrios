@@ -849,7 +849,139 @@ def ordenar_y_guardar_ranking_de_jugadores(lista_jugadores : list[dict])-> None:
         lista_jugadores)
    
     preparar_mensaje_para_guardar(lista_detalles_estadisticas_ranking)
+#--------------------------------------------------
+#EXTRA Punto 1
+'''
+Determinar la cantidad de jugadores que hay por cada posición.
+Ejemplo:
+Base: 2
+Alero: 3
+...
 
+'''
+
+def calcular_cantidad_tipo(lista_jugadores : list[dict], clave : str)-> dict:
+    '''
+    Calcula la cantidad por tipo de valor , segun clave.
+    Recibe: (arg1) una lista de jugadores
+    (arg2) una key "posicion"
+    Devuelve : un dccionario
+    '''
+    if(lista_jugadores):
+        nuevo_diccionario = {}
+        for jugador in lista_jugadores:
+            valor_tipo_original = jugador[clave]
+            valor_tipo_capitalized = str (valor_tipo_original).capitalize()
+            if(valor_tipo_capitalized == ""):
+                valor_tipo_capitalized = "No tiene"
+            
+            if(valor_tipo_capitalized in nuevo_diccionario):
+                nuevo_diccionario[valor_tipo_capitalized] += 1
+            else:
+                nuevo_diccionario[valor_tipo_capitalized] = 1
+        
+        return nuevo_diccionario
+    else:
+        return {'"Error": “La lista se encuentra vacía”'}
+
+def mostrar_dicc_cantidad_tipo(diccionario_posiciones)-> None:
+    '''
+    recorre y muestra las claves y los valores de un diccionario.
+    Recibe un diccionario
+    devuelve - None
+    '''
+    for clave, valor  in diccionario_posiciones.items():
+        posiciones = "Posicion: {0} Cantidad: {1}".format(clave, valor)
+        print(posiciones)
+
+
+
+def calcular_y_mostrar_posiciones_cantidad(lista_jugadores, clave)-> None:
+    '''
+    calcula y muestra las posiciones y la cantidad de cada posicion 
+    de los jugadores.
+    Recibe (arg 1)una lista de jugadores , (arg 2) una clave ejemplo 
+    "posiciones
+    Devuelve : None
+    '''
+    cantidad_posiciones = calcular_cantidad_tipo(
+        lista_jugadores, clave)
+    mostrar_dicc_cantidad_tipo(cantidad_posiciones)
+
+# Punto 2
+'''
+Mostrar la lista de jugadores ordenadas por la cantidad de All-Star de forma descendente. 
+La salida por pantalla debe tener un formato similar a este:
+Michael Jordan (14 veces All Star)
+Magic Johnson (12 veces All-Star)
+
+'''
+
+def obtener_nombre_y_datos_all_star_ganados(
+        lista_jugadores: list[dict| list| str])-> dict:
+    '''
+    Obtiene los datos nombre y veces que ganó el jugador.
+    ejemplo : "14 veces All-Star"
+    recibe una lista de jugadores list
+    '''
+    nuevo_dicc = {}
+    for indice in range(len(lista_jugadores)):
+        lista_logros = lista_jugadores[indice]["logros"]
+        for logro in lista_logros:
+            numero_all_star_list = re.findall(
+                r'(\d+)\s+veces\s+All-Star', logro)
+            if numero_all_star_list:
+                numero_all_star_str = "".join(numero_all_star_list)
+                nuevo_dicc[lista_jugadores[indice]["nombre"]] = int(
+                    numero_all_star_str)
+    return nuevo_dicc
+
+def ordenar_diccionario(dicc_jugadores : dict, orden="desc")-> dict:
+    '''
+    Ordena un dccionario por su valores
+    Recibe un dccionario (nombre,valor)
+    devuelve un dicc ordenado.
+    '''
+    claves = list(dicc_jugadores.keys())
+    len_de_dicc = len(claves) -1
+    flag_swap = True
+
+    while flag_swap:
+        flag_swap = False
+        for i in range(len_de_dicc):
+            if (dicc_jugadores[claves[i]] < dicc_jugadores[claves[i + 1]] and orden == "desc") or \
+               (dicc_jugadores[claves[i]] > dicc_jugadores[claves[i + 1]] and orden == "asc"):
+                claves[i], claves[i + 1] = claves[i + 1], claves[i]
+                flag_swap = True
+
+    diccionario_ordenado = {clave: dicc_jugadores[clave] for clave in claves}
+    return diccionario_ordenado
+
+
+
+def ordenar_por_cantidad(lista_jugadores)-> None:
+    '''
+    Ordenar por cantidad de veces que ganó all star.
+    Recibe una lista de jugadores.
+    Devuelve -None
+    '''
+    diccionario_all_star_nombre_cantidades = obtener_nombre_y_datos_all_star_ganados(
+        lista_jugadores)
+    dicc_ordenado = ordenar_diccionario(
+        diccionario_all_star_nombre_cantidades, orden="desc")
+    for clave, valor in dicc_ordenado.items():
+        resultado = "{0} {1} Veces All stars".format(clave, valor)
+        print(resultado)
+    
+# 3
+'''
+Determinar qué jugador tiene las mejores estadísticas en cada valor. La salida por pantalla 
+debe tener un formato similar a este:
+Mayor cantidad de temporadas: Karl Malone (19)
+Mayor cantidad de puntos totales: Karl Malon (36928)
+
+
+'''
 
 #--------------------------------------------------  
 
@@ -883,10 +1015,11 @@ def opciones_del_menu()-> str:
            "20- Ver los jugadores ordenados por posición en la cancha, que hayan tenido un porcentaje de tiros \nde campo superior al valor ingresado.\n"\
            "21- Opcion no disponible\n"\
            "22- Opcion no disponible\n"\
-           "23- Guardar ranking de les estadisticas de los jugadores (Opcional: guardar)"\
-           "24- Salir"
+           "23- Guardar ranking de les estadisticas de los jugadores (Opcional: guardar)\n"\
+           "24- Determinar la cantidad de jugadores que hay por cada posición.\n"\
+           "25- Ver la lista de jugadores ordenadas por la cantidad de All-Star de forma descendente."
            
-           
+     
     ''       
     return opciones
 
@@ -902,110 +1035,3 @@ def menu_principal()-> int:
     numero_ingresado = pedir_ingreso_de_numero_al_usuario(r"^[0-9]+$", mensaje_a_mostrar)
     return numero_ingresado
    
-   
-def aplicacion(lista_Jugadores : list[dict])-> None:
-    '''
-    Opciones para el usuario
-    Recibe la lista de Jugadores
-    Devuelve: no aplica.
-    '''
-    flag_guardar_estadisticas = False
-    while(True):
-        opciones = menu_principal()
-        match(opciones):
-            case 1:
-                mostrar_nombres_posicion_o_ubicacion(lista_Jugadores)
-            case 2:
-                indice_elegido = mostrar_estadisticas_del_jugador_elegido(
-                    lista_Jugadores)
-                flag_guardar_estadisticas = True
-            case 3:
-                if(flag_guardar_estadisticas):
-                    guardar_estadisticas_del_jugador_elegido(
-                        lista_Jugadores, indice_elegido)
-                else:
-                    print("Pase por el punto 2 primero")
-            case 4:
-                buscar_jugador_y_ver_sus_logros(
-                    lista_Jugadores)
-            case 5:
-                calcular_y_mostrar_el_promedio_de_puntos_del_dream_team(
-                    lista_Jugadores)
-            case 6:
-                buscar_jugador_para_ver_logro(lista_Jugadores)
-            case 7:
-                calcular_y_mostrar_jugador_mayor_estadistica(
-                    lista_Jugadores, 
-                    clave_interior_estadistica = "rebotes_totales")
-            case 8:
-                calcular_y_mostrar_jugador_mayor_estadistica(
-                    lista_Jugadores, 
-                    clave_interior_estadistica = "porcentaje_tiros_de_campo")
-            case 9:
-                calcular_y_mostrar_jugador_mayor_estadistica(
-                    lista_Jugadores, 
-                    clave_interior_estadistica = "asistencias_totales")
-            case 10:
-                mostrar_jugadores_mayores_al_ingresado(
-                    lista_Jugadores, 
-                    clave_interior_estadistica = "promedio_puntos_por_partido")
-            case 11:
-                mostrar_jugadores_mayores_al_ingresado(
-                    lista_Jugadores, 
-                    clave_interior_estadistica = "promedio_rebotes_por_partido")
-            case 12:
-                mostrar_jugadores_mayores_al_ingresado(
-                    lista_Jugadores, 
-                    clave_interior_estadistica = "promedio_asistencias_por_partido")
-            case 13:
-                calcular_y_mostrar_jugador_mayor_estadistica(
-                    lista_Jugadores, 
-                    clave_interior_estadistica = "robos_totales")
-            case 14:
-                calcular_y_mostrar_jugador_mayor_estadistica(
-                    lista_Jugadores, 
-                    clave_interior_estadistica = "bloqueos_totales")
-            case 15:
-                mostrar_jugadores_mayores_al_ingresado(
-                    lista_Jugadores, 
-                    clave_interior_estadistica = "porcentaje_tiros_libres")
-            case 16:
-                    calcular_y_mostrar_el_promedio_de_puntos_del_dream_team_sin_el_menos_habil(
-                        lista_Jugadores, 
-                        clave_interior_estadistica = "promedio_puntos_por_partido")
-            case 17:
-                calcular_jugador_con_mas_logros(lista_Jugadores, maximo = True)
-            case 18:
-                mostrar_jugadores_mayores_al_ingresado(
-                    lista_Jugadores, 
-                    clave_interior_estadistica = "porcentaje_tiros_triples")
-            case 19:
-                calcular_y_mostrar_jugador_mayor_estadistica(
-                    lista_Jugadores, clave_interior_estadistica = "temporadas")
-            case 20:
-                mostrar_estadistica_ordenado_por_posicion(lista_Jugadores)
-            case 21:
-                print("No está dispinible esta opcion")
-            case 22:
-                print("No está dispinible esta opcion")
-            case 23:
-                ordenar_y_guardar_ranking_de_jugadores(lista_Jugadores)
-            case 24:
-                break
-            case _:
-                print("Opcion incorrecta, por favor intente nuevamente.")
-        clear_console()
- 
-        
-
-def main()-> None:
-    '''
-    Ejecuta la aplicacion
-    Recibe: -
-    Devuelve: -No aplica
-    '''
-    lista_jugadores = leer_archivo_json("parcial\dt.json")
-    aplicacion(lista_jugadores)
-    
-
-main()#Inicio del programa
