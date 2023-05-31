@@ -975,12 +975,11 @@ def ordenar_por_cantidad(lista_jugadores)-> None:
     
 # 3
 '''
-Determinar qué jugador tiene las mejores estadísticas en cada valor. La salida por pantalla 
+Determinar qué jugador tiene las mejores estadísticas en cada valor. 
+La salida por pantalla 
 debe tener un formato similar a este:
 Mayor cantidad de temporadas: Karl Malone (19)
 Mayor cantidad de puntos totales: Karl Malon (36928)
-
-
 '''
 
 #--------------------------------------------------  
@@ -1017,7 +1016,11 @@ def opciones_del_menu()-> str:
            "22- Opcion no disponible\n"\
            "23- Guardar ranking de les estadisticas de los jugadores (Opcional: guardar)\n"\
            "24- Determinar la cantidad de jugadores que hay por cada posición.\n"\
-           "25- Ver la lista de jugadores ordenadas por la cantidad de All-Star de forma descendente."
+           "25- Ver la lista de jugadores ordenadas por la cantidad de All-Star de forma descendente."\
+           "26- A completar - Punto extra Opcion no disponible\n"\
+           "27- A completar - Punto extra Opcion no disponible\n"\
+           "28- Salir\n"
+           
            
      
     ''       
