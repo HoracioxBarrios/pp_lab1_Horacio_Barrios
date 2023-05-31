@@ -1,21 +1,21 @@
 
 from pacial import (menu_principal, 
-                     mostrar_nombres_posicion_o_ubicacion, 
-                     mostrar_estadisticas_del_jugador_elegido,
-                     guardar_estadisticas_del_jugador_elegido,
-                     buscar_jugador_y_ver_sus_logros,
-                     calcular_y_mostrar_el_promedio_de_puntos_del_dream_team,
-                     buscar_jugador_para_ver_logro,
-                     calcular_y_mostrar_jugador_mayor_estadistica,
-                     mostrar_jugadores_mayores_al_ingresado,
-                     calcular_y_mostrar_el_promedio_de_puntos_del_dream_team_sin_el_menos_habil,
-                     calcular_jugador_con_mas_logros,
-                     mostrar_estadistica_ordenado_por_posicion,
-                     ordenar_y_guardar_ranking_de_jugadores,
-                     calcular_y_mostrar_posiciones_cantidad,
-                     ordenar_por_cantidad,
-                     clear_console,
-                     leer_archivo_json)
+                    mostrar_nombres_posicion_o_ubicacion, 
+                    mostrar_estadisticas_del_jugador_elegido,
+                    guardar_estadisticas_del_jugador_elegido,
+                    buscar_jugador_y_ver_sus_logros,
+                    calcular_y_mostrar_el_promedio_de_puntos_del_dream_team,
+                    buscar_jugador_para_ver_logro,
+                    calcular_y_mostrar_jugador_mayor_estadistica,
+                    mostrar_jugadores_mayores_al_ingresado,
+                    calcular_y_mostrar_el_promedio_de_puntos_del_dream_team_sin_el_menos_habil,
+                    calcular_jugador_con_mas_logros,
+                    mostrar_estadistica_ordenado_por_posicion,
+                    ordenar_y_guardar_ranking_de_jugadores,
+                    calcular_y_mostrar_posiciones_cantidad,
+                    ordenar_por_cantidad,
+                    clear_console,
+                    leer_archivo_json)
                     
 
 def aplicacion(lista_Jugadores : list[dict])-> None:
@@ -111,6 +111,10 @@ def aplicacion(lista_Jugadores : list[dict])-> None:
                 ordenar_por_cantidad(lista_Jugadores)
             case 26:
                 pass
+            case 27:
+                pass
+            case 29:
+                break
             case _:
                 print("Opcion incorrecta, por favor intente nuevamente.")
         clear_console()
