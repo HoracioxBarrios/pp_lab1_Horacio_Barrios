@@ -1016,7 +1016,7 @@ def opciones_del_menu()-> str:
            "22- Opcion no disponible\n"\
            "23- Guardar ranking de les estadisticas de los jugadores (Opcional: guardar)\n"\
            "24- Determinar la cantidad de jugadores que hay por cada posición.\n"\
-           "25- Ver la lista de jugadores ordenadas por la cantidad de All-Star de forma descendente."\
+           "25- Ver la lista de jugadores ordenadas por la cantidad de All-Star de forma descendente.\n"\
            "26- A completar - Punto extra Opcion no disponible\n"\
            "27- A completar - Punto extra Opcion no disponible\n"\
            "28- Salir\n"
