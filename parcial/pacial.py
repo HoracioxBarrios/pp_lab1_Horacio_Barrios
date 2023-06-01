@@ -980,6 +980,7 @@ La salida por pantalla
 debe tener un formato similar a este:
 Mayor cantidad de temporadas: Karl Malone (19)
 Mayor cantidad de puntos totales: Karl Malon (36928)
+
 '''
 def determinar_jugadores_mejores_ranking(lista_jugadores : list [dict] ):
     lista_de_claves_estadisticas = ["temporadas", "puntos_totales", "promedio_puntos_por_partido", 
@@ -988,15 +989,27 @@ def determinar_jugadores_mejores_ranking(lista_jugadores : list [dict] ):
                           "robos_totales", "bloqueos_totales", "porcentaje_tiros_de_campo",
                           "porcentaje_tiros_libres", "porcentaje_tiros_triples"]
     for clave_a in lista_de_claves_estadisticas:
-        max_min_indice = calcular_max_min_estadisticas(
-        lista_jugadores, "estadisticas", clave_a , maximo= True)
+        max_min_indice = calcular_max_min_estadisticas( lista_jugadores, 
+                                                       "estadisticas", clave_a ,
+                                                       maximo= True)
         
         
-        jugador_estadistica_dicc = armar_diccionario_jugador_max_min_estadistica_punto_extra(
-        lista_jugadores, max_min_indice ,"estadisticas", clave_a)
-        print(jugador_estadistica_dicc)
+        jugador_estadistica_dicc = \
+        armar_diccionario_jugador_max_min_estadistica_punto_extra( 
+                                                                  lista_jugadores, max_min_indice,
+                                                                  "estadisticas", clave_a)
+        lista_elementos = []
+        for clave, valor in jugador_estadistica_dicc.items():
+            clave = clave.replace("_", " ").capitalize()
+            valor = valor.replace("_", " ").capitalize()
+            elemento = '{0} {1}'.format(clave, valor)
+            lista_elementos.append(elemento)
 
-#{'mayor': 'porcentaje_tiros_triples', 'Christian Laettner': 48.5}
+            cadena = ' '.join(lista_elementos)
+
+        print(cadena)
+
+
 
 '''
 como debe quedar el mensaje: Mayor cantidad de temporadas: Karl Malone (19)
@@ -1018,12 +1031,13 @@ def armar_diccionario_jugador_max_min_estadistica_punto_extra(
         print("Error al conseguir el jugador con la maxima o minima estadistica")
         return -1
     else:
-        jugador_max_min_obtenido = lista_jugadores[max_min_indice]
+        jugador_max_min_indice_obtenido = lista_jugadores[max_min_indice]
         
         nuevo_dicc_nombre_estadistica_max_min = {}
         nuevo_dicc_nombre_estadistica_max_min["mayor"] = clave_interior_estadistica
-        nombre_actual = jugador_max_min_obtenido["nombre"]
-        nuevo_dicc_nombre_estadistica_max_min[nombre_actual] = str(jugador_max_min_obtenido[clave_estadistica][clave_interior_estadistica])
+        nombre_actual = jugador_max_min_indice_obtenido["nombre"]
+        nuevo_dicc_nombre_estadistica_max_min[nombre_actual] = str(
+            jugador_max_min_indice_obtenido[clave_estadistica][clave_interior_estadistica])
       
         
     
