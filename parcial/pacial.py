@@ -908,7 +908,7 @@ def calcular_y_mostrar_posiciones_cantidad(lista_jugadores, clave)-> None:
         lista_jugadores, clave)
     mostrar_dicc_cantidad_tipo(cantidad_posiciones)
 
-# Punto 2
+#EXTRA Punto 2
 '''
 Mostrar la lista de jugadores ordenadas por la cantidad de All-Star de forma descendente. 
 La salida por pantalla debe tener un formato similar a este:
@@ -973,7 +973,7 @@ def ordenar_por_cantidad(lista_jugadores)-> None:
         resultado = "{0} {1} Veces All stars".format(clave, valor)
         print(resultado)
     
-# 3
+#EXTRA Punto 3
 '''
 Determinar qué jugador tiene las mejores estadísticas en cada valor. 
 La salida por pantalla 
@@ -981,6 +981,56 @@ debe tener un formato similar a este:
 Mayor cantidad de temporadas: Karl Malone (19)
 Mayor cantidad de puntos totales: Karl Malon (36928)
 '''
+def determinar_jugadores_mejores_ranking(lista_jugadores : list [dict] ):
+    lista_de_claves_estadisticas = ["temporadas", "puntos_totales", "promedio_puntos_por_partido", 
+                          "rebotes_totales", "promedio_rebotes_por_partido", 
+                          "asistencias_totales", "promedio_asistencias_por_partido", 
+                          "robos_totales", "bloqueos_totales", "porcentaje_tiros_de_campo",
+                          "porcentaje_tiros_libres", "porcentaje_tiros_triples"]
+    for clave_a in lista_de_claves_estadisticas:
+        max_min_indice = calcular_max_min_estadisticas(
+        lista_jugadores, "estadisticas", clave_a , maximo= True)
+        
+        
+        jugador_estadistica_dicc = armar_diccionario_jugador_max_min_estadistica_punto_extra(
+        lista_jugadores, max_min_indice ,"estadisticas", clave_a)
+        print(jugador_estadistica_dicc)
+
+#{'mayor': 'porcentaje_tiros_triples', 'Christian Laettner': 48.5}
+
+'''
+como debe quedar el mensaje: Mayor cantidad de temporadas: Karl Malone (19)
+'''
+{'mayor': 'porcentaje_tiros_triples', 'Christian Laettner': 48.5}
+
+def armar_diccionario_jugador_max_min_estadistica_punto_extra(
+    lista_jugadores : list[dict], max_min_indice : int,clave_estadistica = "estadisticas",
+    clave_interior_estadistica = "rebotes_totales")-> dict:
+    '''
+    Arma un diccionario con el nombre y la estadistica maxima o minima 
+    obtenida. ejemplo: Nombre : Michael Jordan, Rebotes totales : 3520.
+    Recibe (arg 1 ) la lista de jugadores, (arg 2) el indice maximo o
+    minimo obtenido anteriormente. 
+    (arg 3) la clave "estadisticas", (arg 4) la clave de la estadistica
+    especifica del diccionario (Ejemplo : "rebotes_totales").
+    '''
+    if max_min_indice is None:
+        print("Error al conseguir el jugador con la maxima o minima estadistica")
+        return -1
+    else:
+        jugador_max_min_obtenido = lista_jugadores[max_min_indice]
+        
+        nuevo_dicc_nombre_estadistica_max_min = {}
+        nuevo_dicc_nombre_estadistica_max_min["mayor"] = clave_interior_estadistica
+        nombre_actual = jugador_max_min_obtenido["nombre"]
+        nuevo_dicc_nombre_estadistica_max_min[nombre_actual] = str(jugador_max_min_obtenido[clave_estadistica][clave_interior_estadistica])
+      
+        
+    
+        return nuevo_dicc_nombre_estadistica_max_min
+
+
+
 
 #--------------------------------------------------  
 
@@ -1017,7 +1067,7 @@ def opciones_del_menu()-> str:
            "23- Guardar ranking de les estadisticas de los jugadores (Opcional: guardar)\n"\
            "24- Determinar la cantidad de jugadores que hay por cada posición.\n"\
            "25- Ver la lista de jugadores ordenadas por la cantidad de All-Star de forma descendente.\n"\
-           "26- A completar - Punto extra Opcion no disponible\n"\
+           "26- Determinar qué jugador tiene las mejores estadísticas en cada valor de estadistica\n"\
            "27- A completar - Punto extra Opcion no disponible\n"\
            "28- Salir\n"
            

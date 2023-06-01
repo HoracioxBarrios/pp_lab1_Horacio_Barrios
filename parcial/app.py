@@ -15,7 +15,8 @@ from pacial import (menu_principal,
                     calcular_y_mostrar_posiciones_cantidad,
                     ordenar_por_cantidad,
                     clear_console,
-                    leer_archivo_json)
+                    leer_archivo_json,
+                    determinar_jugadores_mejores_ranking)
                     
 
 def aplicacion(lista_Jugadores : list[dict])-> None:
@@ -110,7 +111,7 @@ def aplicacion(lista_Jugadores : list[dict])-> None:
             case 25:
                 ordenar_por_cantidad(lista_Jugadores)
             case 26:
-                pass
+                determinar_jugadores_mejores_ranking(lista_Jugadores)
             case 27:
                 pass
             case 29:
