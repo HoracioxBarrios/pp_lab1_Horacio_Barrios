@@ -982,39 +982,8 @@ Mayor cantidad de temporadas: Karl Malone (19)
 Mayor cantidad de puntos totales: Karl Malon (36928)
 
 '''
-def determinar_jugadores_mejores_ranking(lista_jugadores : list [dict] ):
-    lista_de_claves_estadisticas = ["temporadas", "puntos_totales", "promedio_puntos_por_partido", 
-                          "rebotes_totales", "promedio_rebotes_por_partido", 
-                          "asistencias_totales", "promedio_asistencias_por_partido", 
-                          "robos_totales", "bloqueos_totales", "porcentaje_tiros_de_campo",
-                          "porcentaje_tiros_libres", "porcentaje_tiros_triples"]
-    for clave_a in lista_de_claves_estadisticas:
-        max_min_indice = calcular_max_min_estadisticas( lista_jugadores, 
-                                                       "estadisticas", clave_a ,
-                                                       maximo= True)
-        
-        
-        jugador_estadistica_dicc = \
-        armar_diccionario_jugador_max_min_estadistica_punto_extra( 
-                                                                  lista_jugadores, max_min_indice,
-                                                                  "estadisticas", clave_a)
-        lista_elementos = []
-        for clave, valor in jugador_estadistica_dicc.items():
-            clave = clave.replace("_", " ").capitalize()
-            valor = valor.replace("_", " ").capitalize()
-            elemento = '{0} {1}'.format(clave, valor)
-            lista_elementos.append(elemento)
-
-            cadena = ' '.join(lista_elementos)
-
-        print(cadena)
 
 
-
-'''
-como debe quedar el mensaje: Mayor cantidad de temporadas: Karl Malone (19)
-'''
-{'mayor': 'porcentaje_tiros_triples', 'Christian Laettner': 48.5}
 
 def armar_diccionario_jugador_max_min_estadistica_punto_extra(
     lista_jugadores : list[dict], max_min_indice : int,clave_estadistica = "estadisticas",
@@ -1043,6 +1012,40 @@ def armar_diccionario_jugador_max_min_estadistica_punto_extra(
     
         return nuevo_dicc_nombre_estadistica_max_min
 
+
+
+
+def determinar_jugadores_mejores_ranking(lista_jugadores : list [dict] )-> None:
+    '''
+    Determina los jugadores que tienen los mejores puntos en cada estadistica.
+    Recibe la Lista de jugadores.
+    Devuelve - no plica.
+    '''
+    lista_de_claves_estadisticas = ["temporadas", "puntos_totales", "promedio_puntos_por_partido", 
+                          "rebotes_totales", "promedio_rebotes_por_partido", 
+                          "asistencias_totales", "promedio_asistencias_por_partido", 
+                          "robos_totales", "bloqueos_totales", "porcentaje_tiros_de_campo",
+                          "porcentaje_tiros_libres", "porcentaje_tiros_triples"]
+    for clave_a in lista_de_claves_estadisticas:
+        max_min_indice = calcular_max_min_estadisticas( lista_jugadores, 
+                                                       "estadisticas", clave_a ,
+                                                       maximo= True)
+        
+        
+        jugador_estadistica_dicc = \
+        armar_diccionario_jugador_max_min_estadistica_punto_extra( 
+                                                                  lista_jugadores, max_min_indice,
+                                                                  "estadisticas", clave_a)
+        lista_elementos = []
+        for clave, valor in jugador_estadistica_dicc.items():
+            clave = str (clave).replace("_", " ").capitalize()
+            valor = str (valor).replace("_", " ").capitalize()
+            elemento = '{0} {1}'.format(clave, valor)
+            lista_elementos.append(elemento)
+
+            cadena = ' '.join(lista_elementos)
+
+        print(cadena)
 
 
 
